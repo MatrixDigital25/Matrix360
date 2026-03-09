@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
 import { Button } from '@/src/components/ui/Button';
-import { BrainCircuit, CheckCircle2, MapPin, Briefcase, MessageSquare, Calendar, Target } from 'lucide-react';
+import { BrainCircuit, CheckCircle2, MapPin, Briefcase, MessageSquare, Calendar, Target, Sparkles, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const MATCHES = [
@@ -50,122 +50,112 @@ export default function MatchResults() {
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-5xl mx-auto space-y-8"
+      className="max-w-5xl mx-auto space-y-6"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-border-light pb-8">
-        <div className="flex items-start space-x-5">
-          <div className="h-14 w-14 rounded-xl bg-interaction-primary/10 flex items-center justify-center flex-shrink-0 border border-interaction-primary/20">
-            <BrainCircuit className="h-7 w-7 text-interaction-primary" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-heading font-bold text-text-main mb-2">Curated Expert Matches</h1>
-            <p className="text-text-muted text-lg max-w-2xl">Based on your challenge parameters, Matrix360 has identified strategic advisors whose expertise aligns with your objectives.</p>
-          </div>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-panel-border pb-6">
+        <div>
+          <h1 className="text-2xl font-heading font-bold text-text-main">Expert Alignment Report</h1>
+          <p className="text-text-muted text-sm">AI-curated strategic advisors for "APAC Market Entry Strategy Q4"</p>
         </div>
-        <div className="flex items-center space-x-2 text-sm text-text-muted bg-white px-4 py-2 rounded-full border border-border-light shadow-sm flex-shrink-0">
-          <CheckCircle2 className="h-4 w-4 text-alert-opportunity" />
-          <span className="font-medium">Analyzed 1,452 profiles in 1.2s</span>
+        <div className="flex items-center gap-3">
+          <Badge variant="secondary" className="bg-interaction-primary/10 text-interaction-primary border-interaction-primary/20">
+            <Sparkles className="h-3 w-3 mr-1" />
+            1,452 Profiles Scanned
+          </Badge>
+          <Button variant="secondary" size="sm">Modify Challenge</Button>
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-4">
         {MATCHES.map((match, i) => (
           <motion.div
             key={match.id}
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.1 }}
           >
-            <Card className="border-border-light bg-white hover:border-interaction-primary/30 hover:shadow-md transition-all overflow-hidden relative group">
-              {i === 0 && (
-                <div className="absolute top-0 right-0 bg-amber-500 text-white text-xs font-bold px-4 py-1.5 rounded-bl-lg z-10 shadow-sm">
-                  Top Recommendation
-                </div>
-              )}
+            <Card className="border-panel-border bg-panel-bg hover:border-interaction-primary/40 transition-all overflow-hidden group">
               <CardContent className="p-0 flex flex-col md:flex-row">
-                {/* Left Column: Profile Info */}
-                <div className="p-6 md:w-1/3 border-b md:border-b-0 md:border-r border-border-light bg-gray-50 flex flex-col items-center text-center">
-                  <div className="relative mb-5">
+                {/* Profile Summary */}
+                <div className="p-5 md:w-1/4 border-b md:border-b-0 md:border-r border-panel-border bg-secondary-bg/50 flex flex-col items-center text-center">
+                  <div className="relative mb-4">
                     <img 
                       src={match.img} 
                       alt={match.name} 
-                      className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-sm group-hover:border-interaction-primary/20 transition-colors"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-panel-border group-hover:border-interaction-primary/30 transition-colors"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute -bottom-2 -right-2 h-12 w-12 rounded-full bg-white border-2 border-border-light flex flex-col items-center justify-center shadow-sm">
-                      <span className="text-sm font-bold text-interaction-primary leading-none">{match.match}%</span>
-                      <span className="text-[8px] font-bold text-text-muted uppercase tracking-wider mt-0.5">Match</span>
+                    <div className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full bg-panel-bg border border-panel-border flex flex-col items-center justify-center shadow-sm">
+                      <span className="text-[10px] font-bold text-interaction-primary">{match.match}%</span>
                     </div>
                   </div>
                   <Link to={`/consultants/${match.id}`} className="hover:underline">
-                    <h3 className="text-xl font-bold text-text-main mb-1 group-hover:text-interaction-primary transition-colors">{match.name}</h3>
+                    <h3 className="text-sm font-bold text-text-main mb-0.5 group-hover:text-interaction-primary transition-colors">{match.name}</h3>
                   </Link>
-                  <p className="text-sm font-medium text-text-muted mb-5">{match.title}</p>
+                  <p className="text-[10px] text-text-muted mb-4">{match.title}</p>
                   
-                  <div className="w-full space-y-3 text-left mb-6 bg-white p-3 rounded-lg border border-border-light">
-                    <div className="flex items-center text-xs font-medium text-text-muted">
-                      <MapPin className="h-4 w-4 mr-2 text-interaction-primary" />
+                  <div className="w-full space-y-2 text-left mb-4">
+                    <div className="flex items-center text-[10px] text-text-muted">
+                      <MapPin className="h-3 w-3 mr-2 text-interaction-primary" />
                       {match.location}
                     </div>
-                    <div className="flex items-center text-xs font-medium text-text-muted">
-                      <Briefcase className="h-4 w-4 mr-2 text-interaction-primary" />
-                      {match.exp} Experience
+                    <div className="flex items-center text-[10px] text-text-muted">
+                      <Briefcase className="h-3 w-3 mr-2 text-interaction-primary" />
+                      {match.exp} Exp
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap justify-center gap-2 mt-auto">
-                    {match.tags.map(tag => (
-                      <Badge key={tag} variant="secondary" className="text-[10px] px-2.5 py-1 bg-white border-border-light font-medium text-text-muted">
+                  <div className="flex flex-wrap justify-center gap-1.5">
+                    {match.tags.slice(0, 2).map(tag => (
+                      <Badge key={tag} variant="secondary" className="text-[8px] px-1.5 py-0">
                         {tag}
                       </Badge>
                     ))}
                   </div>
                 </div>
 
-                {/* Right Column: AI Rationale & Actions */}
-                <div className="p-6 md:w-2/3 flex flex-col">
-                  <div className="mb-6">
-                    <h4 className="text-sm font-bold text-text-main flex items-center mb-3 uppercase tracking-wider">
-                      <BrainCircuit className="h-4 w-4 mr-2 text-interaction-primary" />
-                      Strategic Alignment Rationale
-                    </h4>
-                    <p className="text-sm text-text-main leading-relaxed p-5 rounded-xl bg-interaction-primary/5 border border-interaction-primary/20 font-medium">
+                {/* AI Rationale */}
+                <div className="p-5 md:w-3/4 flex flex-col">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-[10px] font-bold text-text-muted uppercase tracking-widest flex items-center">
+                        <BrainCircuit className="h-3 w-3 mr-2 text-interaction-primary" />
+                        Strategic Alignment Rationale
+                      </h4>
+                      {i === 0 && <Badge variant="green" className="text-[9px]">Top Recommendation</Badge>}
+                    </div>
+                    <p className="text-xs text-text-main leading-relaxed bg-secondary-bg p-3 rounded-lg border border-panel-border">
                       {match.rationale}
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-5 mb-8">
-                    <div className="p-4 rounded-xl bg-gray-50 border border-border-light">
-                      <div className="flex justify-between items-center mb-2">
-                        <p className="text-xs font-bold text-text-muted uppercase tracking-wider">Industry Fit</p>
-                        <span className="text-xs font-bold text-interaction-primary">{match.match}%</span>
+                  <div className="mt-4 flex items-center justify-between pt-4 border-t border-panel-border">
+                    <div className="flex gap-4">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[9px] font-bold text-text-muted uppercase">Industry Fit</span>
+                        <div className="h-1 w-24 bg-secondary-bg rounded-full overflow-hidden">
+                          <div className="h-full bg-interaction-primary" style={{ width: `${match.match}%` }} />
+                        </div>
                       </div>
-                      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-[var(--color-interaction-secondary)] to-[var(--color-ai-violet)] rounded-full transition-all duration-1000" style={{ width: `${match.match}%` }}></div>
-                      </div>
-                    </div>
-                    <div className="p-4 rounded-xl bg-gray-50 border border-border-light">
-                      <div className="flex justify-between items-center mb-2">
-                        <p className="text-xs font-bold text-text-muted uppercase tracking-wider">Regional Expertise</p>
-                        <span className="text-xs font-bold text-interaction-primary">{match.match > 90 ? 100 : match.match - 5}%</span>
-                      </div>
-                      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-[var(--color-interaction-secondary)] to-[var(--color-ai-violet)] rounded-full transition-all duration-1000" style={{ width: `${match.match > 90 ? 100 : match.match - 5}%` }}></div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[9px] font-bold text-text-muted uppercase">Regional Exp</span>
+                        <div className="h-1 w-24 bg-secondary-bg rounded-full overflow-hidden">
+                          <div className="h-full bg-ai-cyan" style={{ width: `${match.match - 5}%` }} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-col sm:flex-row gap-4 pt-6 border-t border-border-light">
-                    <Link to="/enterprise/workspace" className="flex-1">
-                      <Button variant="primary" className="w-full h-12 text-base shadow-sm">
-                        <MessageSquare className="mr-2 h-5 w-5" />
-                        Initiate Engagement
+                    <div className="flex gap-2">
+                      <Button variant="secondary" size="sm" className="h-8 text-[10px]">
+                        <Calendar className="h-3 w-3 mr-1.5" />
+                        Schedule Intro
                       </Button>
-                    </Link>
-                    <Button variant="secondary" className="flex-1 h-12 text-base bg-white border-border-light hover:bg-gray-50 shadow-sm">
-                      <Calendar className="mr-2 h-5 w-5 text-text-muted" />
-                      Schedule Introduction
-                    </Button>
+                      <Link to="/enterprise/workspace">
+                        <Button variant="primary" size="sm" className="h-8 text-[10px]">
+                          <MessageSquare className="h-3 w-3 mr-1.5" />
+                          Initiate Engagement
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </CardContent>

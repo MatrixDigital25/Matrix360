@@ -3,17 +3,18 @@ import { motion } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
 import { Button } from '@/src/components/ui/Button';
-import { Target, Activity, Users, PlusCircle, ArrowRight, BrainCircuit, BarChart3, AlertTriangle, CheckCircle2, Briefcase, ChevronRight, Shield, Globe, Calendar, Zap, Network, LayoutDashboard } from 'lucide-react';
+import { Target, Activity, Users, PlusCircle, ArrowRight, BrainCircuit, BarChart3, AlertTriangle, CheckCircle2, Briefcase, ChevronRight, Shield, Globe, Calendar, Zap, Network, LayoutDashboard, Workflow } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/src/utils/cn';
 import { BarChart } from '@/src/components/ui/Charts';
+import { SystemDiagram } from '@/src/components/ui/SystemDiagram';
 
 export default function EnterpriseDashboard() {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-8 max-w-7xl mx-auto"
+      className="space-y-12 max-w-7xl mx-auto"
     >
       {/* 1. Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-panel-border">
@@ -32,12 +33,12 @@ export default function EnterpriseDashboard() {
       </div>
 
       {/* 2. Signals Section */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <Activity className="h-5 w-5 mr-2 text-interaction-primary" />
           Signals
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg">
             <CardContent className="p-5">
               <div className="flex items-start space-x-4">
@@ -86,14 +87,14 @@ export default function EnterpriseDashboard() {
       </section>
 
       {/* 3. Insights Section */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <BrainCircuit className="h-5 w-5 mr-2 text-interaction-primary" />
           Insights
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border">
+            <CardHeader className="pb-4 border-b border-panel-border p-5">
               <CardTitle className="text-lg flex items-center">
                 <Globe className="mr-2 h-5 w-5 text-interaction-primary" />
                 Industry Radar
@@ -123,7 +124,7 @@ export default function EnterpriseDashboard() {
           </Card>
 
           <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border">
+            <CardHeader className="pb-4 border-b border-panel-border p-5">
               <CardTitle className="text-lg flex items-center">
                 <Network className="mr-2 h-5 w-5 text-interaction-primary" />
                 Stakeholder Intelligence Map
@@ -164,7 +165,7 @@ export default function EnterpriseDashboard() {
           </Card>
 
           <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border">
+            <CardHeader className="pb-4 border-b border-panel-border p-5">
               <CardTitle className="text-lg flex items-center">
                 <BrainCircuit className="mr-2 h-5 w-5 text-interaction-primary" />
                 AI Strategy Insights
@@ -189,16 +190,33 @@ export default function EnterpriseDashboard() {
         </div>
       </section>
 
+      {/* Client Workflow Visualization */}
+      <section className="space-y-6">
+        <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
+          <Workflow className="h-5 w-5 mr-2 text-interaction-primary" />
+          Strategic Workflow
+        </h2>
+        <Card className="border-panel-border shadow-sm bg-panel-bg overflow-hidden">
+          <CardHeader className="pb-4 border-b border-panel-border p-5">
+            <CardTitle className="text-lg">End-to-End Strategy Lifecycle</CardTitle>
+            <CardDescription>Visualizing the journey from strategic input to automated execution.</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <SystemDiagram type="client-workflow" className="border-none rounded-none aspect-video md:aspect-[21/9]" />
+          </CardContent>
+        </Card>
+      </section>
+
       {/* 4. Actions Section */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <Zap className="h-5 w-5 mr-2 text-interaction-primary" />
           Actions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/enterprise/challenge">
-              <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
+              <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">
                 <div className="h-12 w-12 rounded-full bg-interaction-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <PlusCircle className="h-6 w-6 text-interaction-primary" />
                 </div>
@@ -210,7 +228,7 @@ export default function EnterpriseDashboard() {
 
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/enterprise/match">
-              <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
+              <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">
                 <div className="h-12 w-12 rounded-full bg-ai-cyan/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Calendar className="h-6 w-6 text-ai-cyan" />
                 </div>
@@ -222,7 +240,7 @@ export default function EnterpriseDashboard() {
 
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/enterprise/workspace">
-              <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
+              <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">
                 <div className="h-12 w-12 rounded-full bg-alert-opportunity/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Zap className="h-6 w-6 text-alert-opportunity" />
                 </div>

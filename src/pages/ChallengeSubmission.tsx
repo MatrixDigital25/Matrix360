@@ -3,178 +3,197 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/Card';
 import { Button } from '@/src/components/ui/Button';
+import { Badge } from '@/src/components/ui/Badge';
 import { Input, Textarea } from '@/src/components/ui/Input';
-import { Target, BrainCircuit, ArrowRight, Shield, CheckCircle2 } from 'lucide-react';
+import { Target, BrainCircuit, ArrowRight, Shield, CheckCircle2, Info, Sparkles } from 'lucide-react';
 
 export default function ChallengeSubmission() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [step, setStep] = useState(1);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call and AI processing
+    // Simulate AI processing
     setTimeout(() => {
       setIsSubmitting(false);
       navigate('/enterprise/match');
-    }, 2000);
+    }, 2500);
   };
 
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-5xl mx-auto space-y-8"
+      className="max-w-4xl mx-auto space-y-6"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-border-light pb-8">
-        <div className="flex items-start space-x-5">
-          <div className="h-14 w-14 rounded-xl bg-interaction-primary/10 flex items-center justify-center flex-shrink-0 border border-interaction-primary/20">
-            <Target className="h-7 w-7 text-interaction-primary" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-heading font-bold text-text-main mb-2">Define Strategic Challenge</h1>
-            <p className="text-text-muted text-lg max-w-2xl">Articulate your organizational objective to initiate the expert matching process and establish a secure collaboration workspace.</p>
-          </div>
+      <div className="flex items-center justify-between mb-2">
+        <div>
+          <h1 className="text-2xl font-heading font-bold text-text-main">New Strategic Challenge</h1>
+          <p className="text-text-muted text-sm">Define your objective to initiate expert matching.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {[1, 2, 3].map((s) => (
+            <div 
+              key={s} 
+              className={`h-1.5 w-8 rounded-full transition-all ${s <= step ? 'bg-interaction-primary' : 'bg-secondary-bg border border-panel-border'}`} 
+            />
+          ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <Card className="bg-white border-border-light shadow-sm">
-            <CardHeader className="border-b border-border-light pb-6 mb-6">
-              <CardTitle className="text-xl">Challenge Parameters</CardTitle>
-              <CardDescription className="text-base">Provide detailed context to ensure alignment with the most relevant strategic advisors.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="space-y-3">
-                  <label className="text-sm font-bold text-text-main uppercase tracking-wider">Initiative Title</label>
-                  <Input required placeholder="e.g., APAC Market Entry Strategy Q4" className="h-12 text-base" />
-                </div>
+          <Card className="border-panel-border bg-panel-bg shadow-sm">
+            <CardContent className="p-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {step === 1 && (
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Initiative Title</label>
+                      <Input required placeholder="e.g., APAC Market Entry Strategy Q4" className="h-10 text-sm" />
+                    </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <label className="text-sm font-bold text-text-main uppercase tracking-wider">Industry Context</label>
-                    <select required className="flex h-12 w-full rounded-md border border-border-light bg-white px-4 py-2 text-base text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-interaction-primary transition-shadow">
-                      <option value="">Select Industry...</option>
-                      <option value="technology">Technology & Software</option>
-                      <option value="healthcare">Healthcare & Life Sciences</option>
-                      <option value="finance">Financial Services</option>
-                      <option value="manufacturing">Advanced Manufacturing</option>
-                      <option value="energy">Energy & Utilities</option>
-                      <option value="retail">Retail & Consumer Goods</option>
-                    </select>
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-sm font-bold text-text-main uppercase tracking-wider">Target Region</label>
-                    <select required className="flex h-12 w-full rounded-md border border-border-light bg-white px-4 py-2 text-base text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-interaction-primary transition-shadow">
-                      <option value="">Select Region...</option>
-                      <option value="global">Global / Multi-Region</option>
-                      <option value="na">North America</option>
-                      <option value="emea">EMEA</option>
-                      <option value="apac">APAC</option>
-                      <option value="latam">LATAM</option>
-                    </select>
-                  </div>
-                </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Industry</label>
+                        <select required className="flex h-10 w-full rounded-md border border-panel-border bg-secondary-bg px-3 py-1 text-sm text-text-main focus:outline-none focus:border-interaction-primary transition-colors">
+                          <option value="">Select...</option>
+                          <option value="tech">Technology</option>
+                          <option value="health">Healthcare</option>
+                          <option value="finance">Finance</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Region</label>
+                        <select required className="flex h-10 w-full rounded-md border border-panel-border bg-secondary-bg px-3 py-1 text-sm text-text-main focus:outline-none focus:border-interaction-primary transition-colors">
+                          <option value="">Select...</option>
+                          <option value="global">Global</option>
+                          <option value="apac">APAC</option>
+                          <option value="emea">EMEA</option>
+                        </select>
+                      </div>
+                    </div>
 
-                <div className="space-y-3">
-                  <label className="text-sm font-bold text-text-main uppercase tracking-wider">Strategic Problem Description</label>
-                  <Textarea required placeholder="Describe the core issue, current state, and why external expertise is needed..." className="min-h-[160px] text-base p-4" />
-                  <p className="text-xs text-text-muted">Be as specific as possible regarding the challenges you are facing.</p>
-                </div>
+                    <div className="flex justify-end">
+                      <Button type="button" onClick={() => setStep(2)} variant="primary" className="h-10 px-6">
+                        Next Step
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
 
-                <div className="space-y-3">
-                  <label className="text-sm font-bold text-text-main uppercase tracking-wider">Expected Outcome / Deliverables</label>
-                  <Textarea required placeholder="What does success look like? (e.g., Go-to-market plan, risk assessment report, regulatory compliance roadmap)" className="min-h-[120px] text-base p-4" />
-                </div>
+                {step === 2 && (
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Strategic Problem</label>
+                      <Textarea required placeholder="Describe the core issue..." className="min-h-[120px] text-sm p-3 bg-secondary-bg border-panel-border" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Expected Outcome</label>
+                      <Textarea required placeholder="What does success look like?" className="min-h-[100px] text-sm p-3 bg-secondary-bg border-panel-border" />
+                    </div>
+                    <div className="flex justify-between">
+                      <Button type="button" onClick={() => setStep(1)} variant="secondary" className="h-10 px-6">Back</Button>
+                      <Button type="button" onClick={() => setStep(3)} variant="primary" className="h-10 px-6">
+                        Next Step
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <label className="text-sm font-bold text-text-main uppercase tracking-wider">Engagement Timeline</label>
-                    <select required className="flex h-12 w-full rounded-md border border-border-light bg-white px-4 py-2 text-base text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-interaction-primary transition-shadow">
-                      <option value="">Select Timeline...</option>
-                      <option value="immediate">Immediate (Next 2 weeks)</option>
-                      <option value="short">Short-term (1-3 months)</option>
-                      <option value="medium">Medium-term (3-6 months)</option>
-                      <option value="long">Long-term (6+ months)</option>
-                    </select>
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-sm font-bold text-text-main uppercase tracking-wider">Budget Allocation</label>
-                    <select required className="flex h-12 w-full rounded-md border border-border-light bg-white px-4 py-2 text-base text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-interaction-primary transition-shadow">
-                      <option value="">Select Budget Range...</option>
-                      <option value="tier1">$10k - $50k</option>
-                      <option value="tier2">$50k - $150k</option>
-                      <option value="tier3">$150k - $500k</option>
-                      <option value="tier4">$500k+</option>
-                    </select>
-                  </div>
-                </div>
+                {step === 3 && (
+                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Timeline</label>
+                        <select required className="flex h-10 w-full rounded-md border border-panel-border bg-secondary-bg px-3 py-1 text-sm text-text-main focus:outline-none focus:border-interaction-primary transition-colors">
+                          <option value="short">1-3 Months</option>
+                          <option value="medium">3-6 Months</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Budget Range</label>
+                        <select required className="flex h-10 w-full rounded-md border border-panel-border bg-secondary-bg px-3 py-1 text-sm text-text-main focus:outline-none focus:border-interaction-primary transition-colors">
+                          <option value="t1">$10k - $50k</option>
+                          <option value="t2">$50k - $150k</option>
+                        </select>
+                      </div>
+                    </div>
 
-                <div className="pt-8 border-t border-border-light flex items-center justify-between">
-                  <div className="flex items-center text-sm text-text-muted">
-                    <Shield className="h-4 w-4 mr-2 text-interaction-primary" />
-                    Information is securely encrypted.
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="h-12 px-8 text-base shadow-sm"
-                    isLoading={isSubmitting}
-                  >
-                    {isSubmitting ? 'Analyzing Requirements...' : 'Submit & Find Experts'}
-                    {!isSubmitting && <ArrowRight className="ml-2 h-5 w-5" />}
-                  </Button>
-                </div>
+                    <div className="p-4 bg-interaction-primary/5 border border-interaction-primary/20 rounded-xl flex items-start gap-3">
+                      <Shield className="h-5 w-5 text-interaction-primary shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-xs font-bold text-text-main">Enterprise Security Active</p>
+                        <p className="text-[10px] text-text-muted leading-relaxed">Your challenge data is encrypted and will only be shared with high-confidence expert matches under NDA.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between pt-4">
+                      <Button type="button" onClick={() => setStep(2)} variant="secondary" className="h-10 px-6">Back</Button>
+                      <Button 
+                        type="submit" 
+                        variant="primary" 
+                        className="h-10 px-8"
+                        isLoading={isSubmitting}
+                      >
+                        {isSubmitting ? 'Analyzing Requirements...' : 'Submit & Find Experts'}
+                      </Button>
+                    </div>
+                  </motion.div>
+                )}
               </form>
             </CardContent>
           </Card>
         </div>
 
         <div className="space-y-6">
-          <Card className="border-border-light bg-white shadow-sm">
-            <CardHeader className="pb-4 border-b border-border-light">
-              <CardTitle className="flex items-center text-lg text-text-main">
-                <BrainCircuit className="mr-2 h-5 w-5 text-interaction-primary" />
-                Intelligent Matching
+          <Card className="border-panel-border bg-panel-bg">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-interaction-primary" />
+                AI Assistant
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-6">
-              <p className="text-sm text-text-muted mb-6 leading-relaxed">
-                Our matching engine analyzes your challenge parameters against our curated network of strategic advisors to identify the optimal fit based on industry experience, functional expertise, and availability.
+            <CardContent className="space-y-4">
+              <p className="text-[11px] text-text-muted leading-relaxed">
+                I can help you refine your challenge to get better expert matches. Try to be specific about your regional constraints.
               </p>
-              <ul className="space-y-4 text-sm text-text-main font-medium">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-alert-opportunity mr-3 flex-shrink-0" />
-                  <span>Precise alignment with strategic goals</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-alert-opportunity mr-3 flex-shrink-0" />
-                  <span>Access to vetted, high-caliber experts</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-alert-opportunity mr-3 flex-shrink-0" />
-                  <span>Secure collaboration environment</span>
-                </li>
-              </ul>
+              <div className="space-y-2">
+                <h4 className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Suggested Tags</h4>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant="secondary" className="text-[9px] cursor-pointer hover:bg-interaction-primary/10 transition-colors">Market Entry</Badge>
+                  <Badge variant="secondary" className="text-[9px] cursor-pointer hover:bg-interaction-primary/10 transition-colors">Supply Chain</Badge>
+                  <Badge variant="secondary" className="text-[9px] cursor-pointer hover:bg-interaction-primary/10 transition-colors">Compliance</Badge>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-border-light shadow-sm">
-            <CardHeader className="pb-4 border-b border-border-light">
-              <CardTitle className="text-lg text-text-main">Example Challenges</CardTitle>
+          <Card className="border-panel-border bg-panel-bg">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Info className="h-4 w-4 text-interaction-primary" />
+                Matching Logic
+              </CardTitle>
             </CardHeader>
-            <CardContent className="pt-6">
-              <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-gray-50 border border-border-light cursor-pointer hover:border-interaction-primary/30 hover:bg-white transition-all group">
-                  <h4 className="text-sm font-bold text-text-main mb-2 group-hover:text-interaction-primary transition-colors">Regulatory Compliance Strategy</h4>
-                  <p className="text-xs text-text-muted leading-relaxed">Navigating new EU AI Act requirements for enterprise software deployments.</p>
-                </div>
-                <div className="p-4 rounded-lg bg-gray-50 border border-border-light cursor-pointer hover:border-interaction-primary/30 hover:bg-white transition-all group">
-                  <h4 className="text-sm font-bold text-text-main mb-2 group-hover:text-interaction-primary transition-colors">Supply Chain Resilience</h4>
-                  <p className="text-xs text-text-muted leading-relaxed">Mitigating geopolitical risks and restructuring semiconductor manufacturing logistics.</p>
-                </div>
-              </div>
+            <CardContent>
+              <ul className="space-y-3">
+                {[
+                  'Industry alignment check',
+                  'Functional expertise scan',
+                  'Regional presence verify',
+                  'Availability synchronization'
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-[10px] text-text-muted">
+                    <CheckCircle2 className="h-3 w-3 text-alert-opportunity" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </CardContent>
           </Card>
         </div>

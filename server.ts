@@ -102,6 +102,20 @@ db.exec(`
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (engagement_id) REFERENCES engagements(engagement_id)
   );
+
+  CREATE TABLE consultant_applications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    full_name TEXT NOT NULL,
+    professional_title TEXT NOT NULL,
+    organization TEXT NOT NULL,
+    years_experience INTEGER NOT NULL,
+    industry TEXT NOT NULL,
+    specializations TEXT NOT NULL,
+    linkedin_url TEXT NOT NULL,
+    bio TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 
 // Insert some mock data
@@ -120,6 +134,9 @@ db.exec(`
 
   INSERT INTO engagement_consultants (engagement_id, consultant_id)
   VALUES (1, 1);
+
+  INSERT INTO consultant_applications (full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio, status)
+  VALUES ('Jane Doe', 'Enterprise Admin', 'Matrix Global', 10, 'Technology', 'AI, Cloud, FinTech', 'https://linkedin.com/in/janedoe', 'Highly experienced strategy consultant with a focus on AI and digital transformation. I have led multiple multi-million dollar projects across Europe and North America.', 'pending');
 `);
 
 async function startServer() {
@@ -189,7 +206,7 @@ async function startServer() {
   // --- Engagement APIs ---
   app.post("/api/engagements", (req, res) => {
     const { challenge_id, enterprise_id, consultant_ids } = req.body;
-    
+
     const stmt = db.prepare("INSERT INTO engagements (challenge_id, enterprise_id, status) VALUES (?, ?, 'Active')");
     const info = stmt.run(challenge_id, enterprise_id);
     const engagementId = info.lastInsertRowid;
@@ -326,67 +343,29 @@ async function startServer() {
     return res.status(422).json({ error: "Could not extract this profile. Please fill the form manually." });
   });
 
-  // --- Consultant Application APIs (Neon PostgreSQL) ---
-  function getNeonDb() {
-    const raw = process.env.DATABASE_URL;
-    if (!raw) throw new Error("DATABASE_URL environment variable is not set");
-    const url = raw.replace(/[&?]channel_binding=[^&]*/g, '');
-    return neon(url);
-  }
-
-  app.post("/api/applications", async (req, res) => {
+  // --- Consultant Application APIs (SQLite Fallback) ---
+  app.post("/api/applications", (req, res) => {
     try {
-      const sql = getNeonDb();
-      await sql`
-        CREATE TABLE IF NOT EXISTS consultant_applications (
-          id SERIAL PRIMARY KEY,
-          full_name TEXT NOT NULL,
-          professional_title TEXT NOT NULL,
-          organization TEXT NOT NULL,
-          years_experience INTEGER NOT NULL,
-          industry TEXT NOT NULL,
-          specializations TEXT NOT NULL,
-          linkedin_url TEXT NOT NULL,
-          bio TEXT NOT NULL,
-          status TEXT NOT NULL DEFAULT 'pending',
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-        )
-      `;
       const { full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio } = req.body;
       if (!full_name || !professional_title || !organization || !years_experience || !industry || !specializations || !linkedin_url || !bio) {
         return res.status(400).json({ error: "All fields are required" });
       }
-      const result = await sql`
-        INSERT INTO consultant_applications (full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio)
-        VALUES (${full_name}, ${professional_title}, ${organization}, ${Number(years_experience)}, ${industry}, ${specializations}, ${linkedin_url}, ${bio})
-        RETURNING id
-      `;
-      return res.json({ success: true, id: result[0].id });
+      const stmt = db.prepare(`
+        INSERT INTO consultant_applications 
+        (full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      const info = stmt.run(full_name, professional_title, organization, Number(years_experience), industry, specializations, linkedin_url, bio);
+      return res.json({ success: true, id: info.lastInsertRowid });
     } catch (error: any) {
       console.error("Application submission error:", error);
       return res.status(500).json({ error: "Failed to submit application" });
     }
   });
 
-  app.get("/api/admin/applications", async (req, res) => {
+  app.get("/api/admin/applications", (req, res) => {
     try {
-      const sql = getNeonDb();
-      await sql`
-        CREATE TABLE IF NOT EXISTS consultant_applications (
-          id SERIAL PRIMARY KEY,
-          full_name TEXT NOT NULL,
-          professional_title TEXT NOT NULL,
-          organization TEXT NOT NULL,
-          years_experience INTEGER NOT NULL,
-          industry TEXT NOT NULL,
-          specializations TEXT NOT NULL,
-          linkedin_url TEXT NOT NULL,
-          bio TEXT NOT NULL,
-          status TEXT NOT NULL DEFAULT 'pending',
-          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-        )
-      `;
-      const applications = await sql`SELECT * FROM consultant_applications ORDER BY created_at DESC`;
+      const applications = db.prepare("SELECT * FROM consultant_applications ORDER BY created_at DESC").all();
       return res.json(applications);
     } catch (error: any) {
       console.error("Fetch applications error:", error);

@@ -6,13 +6,14 @@ import { Badge } from '@/src/components/ui/Badge';
 import { Button } from '@/src/components/ui/Button';
 import { Briefcase, CheckCircle, Clock, Calendar, FileText, BrainCircuit, Users, ChevronRight, MessageSquare, Activity, Target, Zap, Upload, Network, AlertTriangle } from 'lucide-react';
 import { cn } from '@/src/utils/cn';
+import { SystemDiagram } from '@/src/components/ui/SystemDiagram';
 
 export default function ConsultantDashboard() {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-8 max-w-7xl mx-auto"
+      className="space-y-12 max-w-7xl mx-auto"
     >
       {/* 1. Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-panel-border">
@@ -29,12 +30,12 @@ export default function ConsultantDashboard() {
       </div>
 
       {/* 2. Signals Section */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <Activity className="h-5 w-5 mr-2 text-interaction-primary" />
           Signals
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg">
             <CardContent className="p-5 flex items-start space-x-4">
               <div className="h-10 w-10 rounded-lg bg-interaction-primary/10 flex items-center justify-center flex-shrink-0">
@@ -77,14 +78,14 @@ export default function ConsultantDashboard() {
       </section>
 
       {/* 3. Insights Section */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <BrainCircuit className="h-5 w-5 mr-2 text-interaction-primary" />
           Insights
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border">
+            <CardHeader className="pb-4 border-b border-panel-border p-5">
               <CardTitle className="text-lg flex items-center">
                 <Network className="mr-2 h-5 w-5 text-interaction-primary" />
                 Industry Intelligence Feed
@@ -111,7 +112,7 @@ export default function ConsultantDashboard() {
           </Card>
 
           <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border">
+            <CardHeader className="pb-4 border-b border-panel-border p-5">
               <CardTitle className="text-lg flex items-center">
                 <BrainCircuit className="mr-2 h-5 w-5 text-interaction-primary" />
                 AI Strategy Suggestions
@@ -135,7 +136,7 @@ export default function ConsultantDashboard() {
           </Card>
 
           <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border">
+            <CardHeader className="pb-4 border-b border-panel-border p-5">
               <CardTitle className="text-lg flex items-center">
                 <Target className="mr-2 h-5 w-5 text-interaction-primary" />
                 Client Context Insights
@@ -172,16 +173,33 @@ export default function ConsultantDashboard() {
         </div>
       </section>
 
+      {/* Collaboration Network */}
+      <section className="space-y-6">
+        <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
+          <Users className="h-5 w-5 mr-2 text-interaction-primary" />
+          Collaboration Network
+        </h2>
+        <Card className="border-panel-border shadow-sm bg-panel-bg overflow-hidden">
+          <CardHeader className="pb-4 border-b border-panel-border p-5">
+            <CardTitle className="text-lg">Expert-AI Synergy</CardTitle>
+            <CardDescription>Visualizing how consultants and AI agents collaborate on client strategies.</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <SystemDiagram type="consultant-collaboration" className="border-none rounded-none aspect-video md:aspect-[21/9]" />
+          </CardContent>
+        </Card>
+      </section>
+
       {/* 4. Actions Section */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <Zap className="h-5 w-5 mr-2 text-interaction-primary" />
           Actions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/enterprise/workspace">
-              <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
+              <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">
                 <div className="h-12 w-12 rounded-full bg-interaction-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Upload className="h-6 w-6 text-interaction-primary" />
                 </div>
@@ -193,7 +211,7 @@ export default function ConsultantDashboard() {
 
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/enterprise/workspace">
-              <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
+              <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">
                 <div className="h-12 w-12 rounded-full bg-ai-cyan/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Calendar className="h-6 w-6 text-ai-cyan" />
                 </div>
@@ -205,7 +223,7 @@ export default function ConsultantDashboard() {
 
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/consultants">
-              <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center">
+              <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">
                 <div className="h-12 w-12 rounded-full bg-alert-opportunity/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Users className="h-6 w-6 text-alert-opportunity" />
                 </div>

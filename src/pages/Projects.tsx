@@ -48,7 +48,7 @@ const PROJECTS = [
 
 export default function Projects() {
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-12 pb-12">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-heading font-bold text-text-main">Active Projects</h1>
@@ -74,7 +74,7 @@ export default function Projects() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="space-y-6">
         {PROJECTS.map((project, i) => (
           <motion.div
             key={project.id}
@@ -83,7 +83,7 @@ export default function Projects() {
             transition={{ delay: i * 0.1 }}
           >
             <Card className="bg-white border-border-light shadow-sm hover:shadow-md transition-all">
-              <CardContent className="p-6">
+              <CardContent className="p-5">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                   <div className="flex items-center gap-4 flex-1">
                     <div className="h-12 w-12 rounded-xl bg-secondary-bg flex items-center justify-center border border-border-light">

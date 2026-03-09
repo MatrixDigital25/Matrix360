@@ -4,8 +4,7 @@
  */
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { MainLayout } from './layouts/MainLayout';
-import { DashboardLayout } from './layouts/DashboardLayout';
+import { AppLayout } from './layouts/AppLayout';
 
 import Home from './pages/Home';
 import Platform from './pages/Platform';
@@ -28,18 +27,34 @@ import Architecture from './pages/Architecture';
 import StrategyRoom from './pages/StrategyRoom';
 import Services from './pages/Services';
 import Automation from './pages/Automation';
+import AIAgents from './pages/AIAgents';
+import Projects from './pages/Projects';
+
+import KnowledgeGraph from './pages/KnowledgeGraph';
+import Settings from './pages/Settings';
 import Admin from './pages/Admin';
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Public Routes */}
-        <Route element={<MainLayout />}>
+        <Route element={<AppLayout />}>
+          {/* Main Platform Routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/platform" element={<Platform />} />
+          <Route path="/feed" element={<Insights />} />
           <Route path="/consultants" element={<ConsultantGallery />} />
           <Route path="/consultants/:id" element={<ConsultantProfile />} />
+          <Route path="/challenges" element={<ChallengeSubmission />} />
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/ai-agents" element={<AIAgents />} />
+          <Route path="/automation" element={<Automation />} />
+          <Route path="/strategy-room" element={<StrategyRoom />} />
+          <Route path="/knowledge-graph" element={<KnowledgeGraph />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/admin" element={<Admin />} />
+
+          {/* Legacy/Secondary Routes */}
+          <Route path="/platform" element={<Platform />} />
           <Route path="/apply" element={<Apply />} />
           <Route path="/industries" element={<Industries />} />
           <Route path="/insights" element={<Insights />} />
@@ -49,25 +64,14 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/architecture" element={<Architecture />} />
-          <Route path="/strategy-room" element={<StrategyRoom />} />
           <Route path="/services" element={<Services />} />
-          <Route path="/automation" element={<Automation />} />
-          <Route path="/admin" element={<Admin />} />
-        </Route>
 
-        {/* Consultant Portal */}
-        <Route element={<DashboardLayout type="consultant" />}>
+          {/* Dashboards */}
           <Route path="/consultant" element={<ConsultantDashboard />} />
-          {/* Add other consultant sub-routes here as needed */}
-        </Route>
-
-        {/* Enterprise Portal */}
-        <Route element={<DashboardLayout type="enterprise" />}>
           <Route path="/enterprise" element={<EnterpriseDashboard />} />
           <Route path="/enterprise/challenge" element={<ChallengeSubmission />} />
           <Route path="/enterprise/match" element={<MatchResults />} />
           <Route path="/enterprise/workspace" element={<Workspace />} />
-          {/* Add other enterprise sub-routes here as needed */}
         </Route>
       </Routes>
     </Router>

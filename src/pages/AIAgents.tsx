@@ -13,10 +13,8 @@ import {
   Shield, 
   Cpu,
   Zap,
-  CheckCircle2,
-  Workflow
+  CheckCircle2
 } from 'lucide-react';
-import { SystemDiagram } from '@/src/components/ui/SystemDiagram';
 
 const AGENTS = [
   {
@@ -128,54 +126,6 @@ export default function AIAgents() {
           </motion.div>
         ))}
       </div>
-
-      {/* Automation Pipeline Visualization */}
-      <Card className="bg-white border-border-light shadow-sm overflow-hidden">
-        <CardHeader className="border-b border-border-light bg-gray-50/50 p-5">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Workflow className="h-5 w-5 text-interaction-primary" />
-            Automation Pipeline Visualization
-          </CardTitle>
-          <CardDescription>Real-time data flow through the Matrix360 automation engine.</CardDescription>
-        </CardHeader>
-        <CardContent className="p-0">
-          <SystemDiagram type="automation-pipeline" className="border-none rounded-none aspect-video md:aspect-[21/9]" />
-        </CardContent>
-      </Card>
-
-      {/* System Health Section */}
-      <Card className="bg-white border-border-light shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Cpu className="h-5 w-5 text-interaction-primary" />
-            Agent System Health
-          </CardTitle>
-          <CardDescription>Real-time performance metrics for the Matrix360 AI infrastructure.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-4 bg-secondary-bg rounded-xl border border-border-light">
-              <p className="text-xs text-text-muted mb-1">Total Agents</p>
-              <p className="text-2xl font-bold text-text-main">24</p>
-            </div>
-            <div className="p-4 bg-secondary-bg rounded-xl border border-border-light">
-              <p className="text-xs text-text-muted mb-1">Active Tasks</p>
-              <p className="text-2xl font-bold text-interaction-primary">18</p>
-            </div>
-            <div className="p-4 bg-secondary-bg rounded-xl border border-border-light">
-              <p className="text-xs text-text-muted mb-1">System Load</p>
-              <p className="text-2xl font-bold text-text-main">42%</p>
-            </div>
-            <div className="p-4 bg-secondary-bg rounded-xl border border-border-light">
-              <p className="text-xs text-text-muted mb-1">Security Status</p>
-              <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-alert-opportunity" />
-                <p className="text-lg font-bold text-alert-opportunity">Optimal</p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

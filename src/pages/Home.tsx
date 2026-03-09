@@ -2,350 +2,214 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { 
-  ArrowRight, BrainCircuit, Users, Target, 
-  Activity, Shield, Globe, Zap, CheckCircle2,
-  Briefcase, MessageSquare, Layers, Search,
-  Lock, Building, LineChart, Network, AlertTriangle,
-  Cpu, Workflow, Video, Database, Server
+  BrainCircuit, Users, Target, 
+  Activity, Zap, Briefcase, 
+  Layers, LineChart, Network, 
+  Cpu, Workflow, Video, Database,
+  ArrowUpRight, MessageSquare, FileText,
+  Sparkles, Clock, TrendingUp
 } from 'lucide-react';
 import { Button } from '@/src/components/ui/Button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src/components/ui/Card';
+import { Badge } from '@/src/components/ui/Badge';
+import { cn } from '@/src/utils/cn';
+import { SystemDiagram } from '@/src/components/ui/SystemDiagram';
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      {/* 1. Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white border-b border-border-light">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[var(--color-interaction-primary)]/15 via-[var(--color-ai-cyan)]/5 to-white"></div>
-        <div className="container mx-auto px-4 relative z-10 text-center">
+    <div className="space-y-12 pb-12">
+      {/* Hero Section - OS Style */}
+      <section className="relative overflow-hidden rounded-3xl bg-brand-primary text-white p-10 md:p-12 shadow-2xl">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_var(--color-ai-cyan)_0%,_transparent_50%)]"></div>
+          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0 50 Q 25 25 50 50 T 100 50" fill="none" stroke="currentColor" strokeWidth="0.1" />
+            <path d="M0 30 Q 25 55 50 30 T 100 30" fill="none" stroke="currentColor" strokeWidth="0.1" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 max-w-3xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
+            transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-text-main mb-6 leading-tight">
-              Where Expertise <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-interaction-primary)] to-[var(--color-ai-cyan)]">Meets AI</span>
+            <Badge className="mb-6 bg-white/10 text-ai-cyan border-white/20 px-3 py-1">
+              v2.5 Strategic Intelligence OS
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-heading font-bold tracking-tight mb-6 leading-tight">
+              AI Strategy <br />
+              <span className="text-ai-cyan">Operating System</span>
             </h1>
-            <p className="text-xl md:text-2xl font-medium text-text-main mb-6">
-              Matrix360 is an AI-powered consulting and automation platform that helps organizations design intelligent systems, automate strategic workflows, and collaborate with expert advisors.
+            <p className="text-lg md:text-xl text-white/80 mb-8 leading-relaxed">
+              Matrix360 combines AI agents, automation systems, and expert consultants to help enterprises design intelligent strategies.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-10">
-              <Link to="/enterprise/challenge">
-                <Button variant="primary" className="h-14 px-8 text-lg w-full sm:w-auto shadow-sm">
-                  Book Strategy Consultation
+            <div className="flex flex-wrap gap-4">
+              <Link to="/challenges">
+                <Button className="bg-interaction-primary hover:bg-interaction-primary/90 text-white border-none h-12 px-6">
+                  Launch New Challenge
                 </Button>
               </Link>
-              <Link to="/platform">
-                <Button variant="secondary" className="h-14 px-8 text-lg w-full sm:w-auto bg-white shadow-sm border-border-light hover:bg-gray-50">
-                  Explore Platform
+              <Link to="/ai-agents">
+                <Button variant="secondary" className="bg-white/10 hover:bg-white/20 text-white border-white/20 h-12 px-6 backdrop-blur-sm">
+                  Configure Agents
                 </Button>
               </Link>
             </div>
           </motion.div>
         </div>
-      </section>
 
-      {/* 2. Platform Overview */}
-      <section className="py-24 bg-secondary-bg border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-text-main mb-6">The Matrix360 Ecosystem</h2>
-            <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-              A unified platform integrating AI agents, automation systems, consulting strategy, and enterprise workflows.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { title: 'AI Agents', desc: 'Deploy specialized AI models for research, analysis, and execution.', icon: Cpu },
-              { title: 'Automation Systems', desc: 'Streamline complex enterprise workflows and data pipelines.', icon: Workflow },
-              { title: 'Consulting Strategy', desc: 'Access elite human expertise to guide AI implementation.', icon: Briefcase },
-              { title: 'Enterprise Workflows', desc: 'Integrate intelligence directly into your operational systems.', icon: Layers },
-            ].map((item, i) => (
-              <Card key={i} className="bg-white border-border-light hover:shadow-md transition-all duration-300 rounded-2xl text-center p-6">
-                <div className="h-16 w-16 rounded-2xl bg-interaction-primary/5 flex items-center justify-center mx-auto mb-6 border border-interaction-primary/10">
-                  <item.icon className="h-8 w-8 text-interaction-primary" />
-                </div>
-                <CardTitle className="text-xl mb-3 text-text-main">{item.title}</CardTitle>
-                <CardDescription className="text-base text-text-muted">{item.desc}</CardDescription>
-              </Card>
-            ))}
-          </div>
+        {/* Animated System Diagram */}
+        <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:flex items-center justify-center pointer-events-none p-12">
+          <SystemDiagram 
+            type="agent-network" 
+            className="w-full h-full bg-transparent border-none shadow-none opacity-60" 
+          />
         </div>
       </section>
 
-      {/* 3. AI Automation Layer */}
-      <section className="py-24 bg-white border-b border-border-light relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--color-interaction-primary)] via-[var(--color-ai-cyan)] to-[var(--color-ai-violet)]"></div>
-        <div className="container mx-auto px-4 max-w-7xl relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-text-main mb-6">AI Automation Infrastructure</h2>
-            <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-              Matrix360 deploys specialized AI agents that support research automation, data analysis, workflow orchestration, and decision intelligence.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              { title: 'Research Agent', desc: 'Automates deep market research, regulatory scanning, and competitor analysis.', icon: Search },
-              { title: 'Data Intelligence Agent', desc: 'Processes complex datasets to extract actionable strategic insights.', icon: Database },
-              { title: 'Workflow Automation Agent', desc: 'Orchestrates multi-step enterprise processes across integrated systems.', icon: Workflow },
-              { title: 'Strategic Insight Agent', desc: 'Synthesizes information to generate strategic frameworks and recommendations.', icon: BrainCircuit },
-            ].map((agent, i) => (
-              <Card key={i} className="bg-secondary-bg border-border-light hover:border-ai-cyan/50 transition-all duration-300 rounded-2xl flex flex-row items-center p-6 shadow-sm">
-                <div className="h-14 w-14 rounded-xl bg-white flex items-center justify-center mr-6 border border-border-light shadow-sm flex-shrink-0">
-                  <agent.icon className="h-7 w-7 text-interaction-primary" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-text-main mb-2">{agent.title}</h3>
-                  <p className="text-text-muted">{agent.desc}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Client Workflow */}
-      <section className="py-24 bg-secondary-bg border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-text-main mb-6">Start Your AI Strategy Engagement</h2>
-            <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-              How enterprises begin working with Matrix360 to design and deploy intelligent systems.
-            </p>
-          </div>
-
-          <div className="flex flex-col lg:flex-row items-start justify-between gap-6 relative mb-16">
-            <div className="hidden lg:block absolute top-12 left-0 w-full h-0.5 bg-gray-200 z-0"></div>
-            {[
-              { step: 'Step 1', title: 'Submit Strategic Challenge', desc: 'Organizations describe their strategic challenge and objectives.', icon: MessageSquare },
-              { step: 'Step 2', title: 'Strategy Consultation', desc: 'Matrix360 consultants analyze the challenge and define the strategic approach.', icon: Users },
-              { step: 'Step 3', title: 'Video Strategy Room', desc: 'Consultants and clients collaborate in a structured strategy session to design AI systems and automation workflows.', icon: Video },
-              { step: 'Step 4', title: 'AI System Deployment', desc: 'Matrix360 deploys AI agents and automation systems and provides continuous intelligence.', icon: Zap },
-            ].map((step, i) => (
-              <div key={i} className="relative z-10 flex flex-col items-start w-full lg:w-1/4 bg-white p-8 rounded-2xl border border-border-light shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-10 w-10 rounded-lg bg-interaction-primary/10 text-interaction-primary flex items-center justify-center mb-6 border border-interaction-primary/20">
-                  <step.icon className="h-5 w-5" />
-                </div>
-                <div className="text-sm font-bold text-interaction-primary mb-2 uppercase tracking-wider">{step.step}</div>
-                <h3 className="text-xl font-bold text-text-main mb-3">{step.title}</h3>
-                <p className="text-text-muted leading-relaxed text-sm">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/enterprise/challenge">
-              <Button variant="primary" className="h-14 px-8 text-lg w-full sm:w-auto shadow-sm">
-                Book Strategy Consultation
-              </Button>
-            </Link>
-            <Link to="/enterprise/challenge">
-              <Button variant="secondary" className="h-14 px-8 text-lg w-full sm:w-auto bg-white shadow-sm border-border-light hover:bg-gray-50">
-                Submit Strategic Challenge
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Video Strategy Room */}
-      <section className="py-24 bg-white border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl font-heading font-bold text-text-main mb-6">Video Strategy Room</h2>
-              <p className="text-xl text-text-muted leading-relaxed mb-6">
-                The core collaboration environment where consulting discussions occur and strategic planning sessions take place.
-              </p>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-interaction-primary mr-3 flex-shrink-0" />
-                  <span className="text-lg text-text-main">Secure, high-definition video conferencing.</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-interaction-primary mr-3 flex-shrink-0" />
-                  <span className="text-lg text-text-main">AI systems capture insights and generate real-time transcripts.</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-6 w-6 text-interaction-primary mr-3 flex-shrink-0" />
-                  <span className="text-lg text-text-main">Integrated whiteboarding and strategy document sharing.</span>
-                </li>
-              </ul>
-              <Link to="/strategy-room">
-                <Button variant="secondary" className="bg-white shadow-sm border-border-light">
-                  Explore the Strategy Room <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+      {/* Workspace Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Strategic Intelligence Feed Module */}
+        <Card className="lg:col-span-2 border-border-light shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border-light bg-gray-50/50 py-4">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-interaction-primary" />
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-text-muted">Strategic Intelligence Feed</CardTitle>
             </div>
-            <div className="relative">
-              <div className="aspect-video bg-gray-100 rounded-2xl border border-border-light shadow-xl overflow-hidden flex items-center justify-center relative">
-                <img src="https://picsum.photos/seed/videoroom/800/450" alt="Video Strategy Room Interface" className="w-full h-full object-cover opacity-80" referrerPolicy="no-referrer" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="h-20 w-20 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg border border-border-light">
-                    <Video className="h-8 w-8 text-interaction-primary" />
+            <Link to="/feed" className="text-xs font-bold text-interaction-primary hover:underline flex items-center">
+              View All <ArrowUpRight className="ml-1 h-3 w-3" />
+            </Link>
+          </CardHeader>
+          <CardContent className="p-0 flex-1">
+            <div className="divide-y divide-border-light">
+              {[
+                { title: 'APAC Market Entry Signal', time: '2h ago', type: 'Insight', author: 'AI Agent Alpha' },
+                { title: 'Supply Chain Volatility Alert', time: '5h ago', type: 'Risk', author: 'Dr. Sarah Chen' },
+                { title: 'New Automation Framework', time: '1d ago', type: 'System', author: 'Matrix Core' }
+              ].map((item, i) => (
+                <div key={i} className="p-5 hover:bg-gray-50 transition-colors cursor-pointer group">
+                  <div className="flex justify-between items-start mb-1">
+                    <h4 className="text-sm font-bold text-text-main group-hover:text-interaction-primary transition-colors">{item.title}</h4>
+                    <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-4">{item.type}</Badge>
+                  </div>
+                  <div className="flex items-center gap-3 text-[10px] text-text-muted">
+                    <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {item.time}</span>
+                    <span className="flex items-center gap-1"><Users className="h-3 w-3" /> {item.author}</span>
                   </div>
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* AI Reports Module */}
+        <Card className="border-border-light shadow-sm hover:shadow-md transition-all flex flex-col">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border-light bg-gray-50/50 py-4">
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-ai-violet" />
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-text-muted">AI Reports</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="p-5 space-y-4">
+            {[
+              { name: 'Q1 Strategic Outlook', date: 'Mar 08', size: '2.4 MB' },
+              { name: 'Competitor AI Audit', date: 'Mar 05', size: '1.8 MB' },
+              { name: 'Workflow Efficiency', date: 'Feb 28', size: '4.1 MB' }
+            ].map((doc, i) => (
+              <div key={i} className="flex items-center gap-3 p-2 rounded-lg hover:bg-secondary-bg transition-all cursor-pointer group">
+                <div className="h-10 w-10 rounded bg-ai-violet/5 flex items-center justify-center group-hover:bg-ai-violet/10 transition-colors">
+                  <Database className="h-5 w-5 text-ai-violet" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold text-text-main truncate">{doc.name}</p>
+                  <p className="text-[10px] text-text-muted">{doc.date} • {doc.size}</p>
+                </div>
+                <ArrowUpRight className="h-4 w-4 text-text-muted group-hover:text-interaction-primary transition-all" />
+              </div>
+            ))}
+            <Button variant="secondary" className="w-full text-xs py-2 h-auto border-border-light">Generate New Report</Button>
+          </CardContent>
+        </Card>
+
+        {/* Client Challenges Module */}
+        <Card className="border-border-light shadow-sm hover:shadow-md transition-all">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border-light bg-gray-50/50 py-4">
+            <div className="flex items-center gap-2">
+              <Target className="h-4 w-4 text-alert-risk" />
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-text-muted">Active Challenges</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="p-5 space-y-4">
+            {[
+              { title: 'Global Logistics Optimization', status: 'Matching', experts: 3 },
+              { title: 'Sustainability AI Integration', status: 'Consulting', experts: 5 }
+            ].map((challenge, i) => (
+              <div key={i} className="p-3 rounded-xl border border-border-light hover:border-interaction-primary/30 transition-all cursor-pointer">
+                <p className="text-xs font-bold text-text-main mb-2">{challenge.title}</p>
+                <div className="flex justify-between items-center">
+                  <Badge className={cn(
+                    "text-[10px] px-2 py-0",
+                    challenge.status === 'Matching' ? "bg-amber-100 text-amber-700" : "bg-emerald-100 text-emerald-700"
+                  )}>
+                    {challenge.status}
+                  </Badge>
+                  <span className="text-[10px] text-text-muted">{challenge.experts} Experts Assigned</span>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Consultant Insights Module */}
+        <Card className="border-border-light shadow-sm hover:shadow-md transition-all">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border-light bg-gray-50/50 py-4">
+            <div className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4 text-ai-cyan" />
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-text-muted">Consultant Insights</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="p-5">
+            <div className="flex -space-x-2 mb-4">
+              {[1, 2, 3, 4].map(i => (
+                <img key={i} src={`https://picsum.photos/seed/user${i}/100/100`} className="h-8 w-8 rounded-full border-2 border-white object-cover" referrerPolicy="no-referrer" />
+              ))}
+              <div className="h-8 w-8 rounded-full border-2 border-white bg-secondary-bg flex items-center justify-center text-[10px] font-bold text-text-muted">+12</div>
+            </div>
+            <p className="text-xs text-text-secondary leading-relaxed mb-4 italic">
+              "The shift towards decentralized AI agents is accelerating. Enterprises should focus on governance frameworks now."
+            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-[10px] font-bold text-text-main">Marcus Thorne</p>
+              <span className="text-[10px] text-text-muted">Strategy Architect</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Project Updates Module */}
+        <Card className="border-border-light shadow-sm hover:shadow-md transition-all">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border-light bg-gray-50/50 py-4">
+            <div className="flex items-center gap-2">
+              <Activity className="h-4 w-4 text-interaction-primary" />
+              <CardTitle className="text-sm font-bold uppercase tracking-wider text-text-muted">Project Updates</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="p-5">
+            <div className="space-y-4">
+              <div className="relative pl-4 border-l-2 border-interaction-primary/20">
+                <div className="absolute -left-[5px] top-0 h-2 w-2 rounded-full bg-interaction-primary"></div>
+                <p className="text-[10px] font-bold text-text-main">Milestone Achieved</p>
+                <p className="text-[10px] text-text-muted">Project Alpha: Phase 1 complete.</p>
+              </div>
+              <div className="relative pl-4 border-l-2 border-interaction-primary/20">
+                <div className="absolute -left-[5px] top-0 h-2 w-2 rounded-full bg-gray-300"></div>
+                <p className="text-[10px] font-bold text-text-main">System Update</p>
+                <p className="text-[10px] text-text-muted">Automation pipeline v2 deployed.</p>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Services */}
-      <section className="py-24 bg-secondary-bg border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-text-main mb-6">Consulting & Automation Services</h2>
-            <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-              Comprehensive capabilities to transform your enterprise.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              { title: 'AI Strategy Consulting', desc: 'Expert guidance on integrating AI into your core business model and operations.' },
-              { title: 'AI Agent Development', desc: 'Custom design and deployment of specialized AI agents for your unique workflows.' },
-              { title: 'Business Process Automation', desc: 'End-to-end automation of complex, multi-step enterprise processes.' },
-              { title: 'Digital Transformation Systems', desc: 'Architecting scalable, intelligent platforms to modernize legacy infrastructure.' },
-            ].map((service, i) => (
-              <Card key={i} className="bg-white border-border-light hover:shadow-md transition-shadow rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-text-main mb-4">{service.title}</h3>
-                <p className="text-lg text-text-muted">{service.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Technology Platform */}
-      <section className="py-24 bg-white border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl text-center">
-          <h2 className="text-4xl font-heading font-bold text-text-main mb-6">Enterprise Architecture</h2>
-          <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed mb-12">
-            Matrix360 integrates AI agents, automation pipelines, consulting workflows, and enterprise collaboration systems into a single, secure backend architecture.
-          </p>
-          <div className="flex justify-center mb-12">
-            <div className="p-8 bg-gray-50 rounded-3xl border border-border-light inline-flex items-center gap-8">
-              <Server className="h-12 w-12 text-ai-cyan" />
-              <ArrowRight className="h-6 w-6 text-interaction-primary" />
-              <BrainCircuit className="h-16 w-16 text-ai-violet" />
-              <ArrowRight className="h-6 w-6 text-interaction-primary" />
-              <Workflow className="h-12 w-12 text-ai-cyan" />
-            </div>
-          </div>
-          <Link to="/architecture">
-            <Button variant="secondary" className="bg-white shadow-sm border-border-light">
-              View Architecture Details
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* 8. Strategic Advisory Domains */}
-      <section className="py-24 bg-secondary-bg border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-text-main mb-6">Strategic Advisory Domains</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {[
-              { title: 'Regulatory Strategy', icon: Shield },
-              { title: 'Market Expansion', icon: Globe },
-              { title: 'Digital Transformation', icon: Cpu },
-              { title: 'Crisis Strategy', icon: AlertTriangle },
-              { title: 'Stakeholder Engagement', icon: Network },
-            ].map((domain, i) => (
-              <Link key={i} to="/consultants">
-                <Card className="bg-white border-border-light hover:border-interaction-primary/50 hover:shadow-md transition-all rounded-2xl h-full flex flex-col items-center justify-center p-6 text-center group">
-                  <domain.icon className="h-10 w-10 text-text-main group-hover:text-interaction-primary transition-colors mb-4" />
-                  <h3 className="text-sm font-bold text-text-main">{domain.title}</h3>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 9. Curated Expert Network */}
-      <section className="py-24 bg-white border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-text-main mb-6">A Curated Network of Strategic Experts</h2>
-            <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-              Collaborate with former executives, policy advisors, industry specialists, and strategy consultants.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {[
-              { name: 'Dr. Michael Reynolds', title: 'Policy Advisor', img: 'https://picsum.photos/seed/michael/400/400' },
-              { name: 'Anna Delgado', title: 'Strategy Consultant', img: 'https://picsum.photos/seed/anna/400/400' },
-              { name: 'Marcus Chen', title: 'Former Executive', img: 'https://picsum.photos/seed/marcus/400/400' },
-            ].map((expert, i) => (
-              <Card key={i} className="bg-white border-border-light rounded-2xl overflow-hidden">
-                <img src={expert.img} alt={expert.name} className="w-full h-64 object-cover" referrerPolicy="no-referrer" />
-                <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-bold text-text-main mb-1">{expert.name}</h3>
-                  <p className="text-interaction-primary font-medium">{expert.title}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <div className="text-center">
-            <Link to="/consultants">
-              <Button variant="secondary" className="bg-white shadow-sm border-border-light">
-                View Full Network
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 10. Use Cases */}
-      <section className="py-24 bg-secondary-bg border-b border-border-light">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-heading font-bold text-text-main mb-6">Transformation Scenarios</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { title: 'AI-Enabled Regulatory Strategy', desc: 'Automated scanning of global policy changes combined with expert interpretation to proactively adjust compliance frameworks.' },
-              { title: 'AI-Supported Digital Transformation', desc: 'Architecting intelligent systems to replace legacy processes, guided by specialized technology consultants.' },
-              { title: 'Automation of Enterprise Workflows', desc: 'Deploying AI agents to orchestrate data flow between disparate enterprise systems, reducing manual overhead.' },
-            ].map((usecase, i) => (
-              <Card key={i} className="bg-white border-border-light rounded-2xl p-8">
-                <CheckCircle2 className="h-8 w-8 text-ai-cyan mb-6" />
-                <h3 className="text-xl font-bold text-text-main mb-4">{usecase.title}</h3>
-                <p className="text-text-muted leading-relaxed">{usecase.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 11. Call to Action */}
-      <section className="py-32 bg-gradient-to-br from-[var(--color-interaction-secondary)] to-[var(--color-ai-violet)] text-center text-white">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-5xl font-heading font-bold mb-8 text-white">Design Your AI Strategy</h2>
-          <p className="text-xl mb-12 leading-relaxed max-w-2xl mx-auto text-white/90">
-            Partner with Matrix360 to build intelligent systems and automate your enterprise workflows.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/enterprise/challenge">
-              <Button variant="secondary" className="h-14 px-8 text-lg w-full sm:w-auto bg-white text-[var(--color-interaction-secondary)] border-white hover:bg-gray-50 shadow-lg">
-                Book Strategy Consultation
-              </Button>
-            </Link>
-            <Link to="/platform">
-              <Button variant="secondary" className="h-14 px-8 text-lg w-full sm:w-auto bg-transparent text-white border-white/30 hover:bg-white/10 shadow-sm">
-                Explore the Platform
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

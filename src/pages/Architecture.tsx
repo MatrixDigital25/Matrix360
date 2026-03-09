@@ -4,6 +4,7 @@ import { Server, BrainCircuit, Workflow, Database, Shield, Activity, ArrowRight 
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/Card';
 import { Button } from '@/src/components/ui/Button';
 import { Link } from 'react-router-dom';
+import { SystemDiagram } from '@/src/components/ui/SystemDiagram';
 
 export default function Architecture() {
   return (
@@ -38,24 +39,14 @@ export default function Architecture() {
           ))}
         </div>
 
-        <div className="bg-white border border-border-light rounded-3xl p-12 shadow-sm text-center mb-16">
-          <h2 className="text-3xl font-heading font-bold text-text-main mb-8">System Diagram</h2>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
-            <div className="p-6 bg-ai-cyan/10 rounded-2xl border border-ai-cyan/20 w-full md:w-48">
-              <Database className="h-8 w-8 text-ai-cyan mx-auto mb-3" />
-              <div className="font-bold text-sm text-ai-cyan">Enterprise Data</div>
-            </div>
-            <ArrowRight className="h-6 w-6 text-interaction-primary rotate-90 md:rotate-0" />
-            <div className="p-6 bg-ai-violet/10 rounded-2xl border border-ai-violet/20 w-full md:w-64">
-              <BrainCircuit className="h-10 w-10 text-ai-violet mx-auto mb-3" />
-              <div className="font-bold text-base text-ai-violet">Matrix360 AI Engine</div>
-            </div>
-            <ArrowRight className="h-6 w-6 text-interaction-primary rotate-90 md:rotate-0" />
-            <div className="p-6 bg-ai-cyan/10 rounded-2xl border border-ai-cyan/20 w-full md:w-48">
-              <Workflow className="h-8 w-8 text-ai-cyan mx-auto mb-3" />
-              <div className="font-bold text-sm text-ai-cyan">Automated Workflows</div>
-            </div>
+        <div className="bg-white border border-border-light rounded-3xl overflow-hidden shadow-sm text-center mb-16">
+          <div className="p-8 border-b border-border-light bg-gray-50/50">
+            <h2 className="text-3xl font-heading font-bold text-text-main">System Architecture</h2>
+            <p className="text-text-muted mt-2">Visualizing the Matrix360 strategic intelligence network.</p>
           </div>
+          <CardContent className="p-0">
+            <SystemDiagram type="agent-network" className="border-none rounded-none aspect-video" />
+          </CardContent>
         </div>
 
         <div className="text-center">

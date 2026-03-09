@@ -1,136 +1,271 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { BrainCircuit, Target, Shield, Zap, ArrowRight, BarChart3, Users, Globe, Search, CheckCircle2, Calendar, Clock, ChevronRight } from 'lucide-react';
+import { Card, CardContent } from '@/src/components/ui/Card';
+import { Badge } from '@/src/components/ui/Badge';
 import { Button } from '@/src/components/ui/Button';
-import { Link } from 'react-router-dom';
+import { 
+  MessageSquare, 
+  Share2, 
+  ThumbsUp, 
+  MoreHorizontal, 
+  Globe, 
+  Lock, 
+  TrendingUp, 
+  AlertCircle,
+  BrainCircuit,
+  ArrowUpRight,
+  Search,
+  User,
+  Target,
+  Users
+} from 'lucide-react';
 
-export default function Insights() {
-  const insights = [
-    {
-      id: 1,
-      category: 'Market Analysis',
-      date: 'Oct 2023',
-      title: 'Navigating the New EU AI Act: Strategic Implications for Global Tech',
-      description: 'An in-depth analysis of how upcoming regulatory frameworks will impact product development cycles and market entry strategies.',
-      image: 'https://picsum.photos/seed/insight1/800/600',
-      readTime: '12 min read'
+const FEED_POSTS = [
+  {
+    id: 1,
+    author: {
+      name: 'Dr. Sarah Jenkins',
+      role: 'Regulatory Strategist',
+      avatar: 'https://picsum.photos/seed/sarah/100/100'
     },
-    {
-      id: 2,
-      category: 'Supply Chain',
-      date: 'Sep 2023',
-      title: 'Resilience Beyond Efficiency: The Shift in Global Manufacturing',
-      description: 'Why leading manufacturers are prioritizing supply chain diversification and local sourcing in an era of geopolitical uncertainty.',
-      image: 'https://picsum.photos/seed/insight2/800/600',
-      readTime: '10 min read'
+    type: 'Strategic Insight',
+    timestamp: '2h ago',
+    title: 'EU AI Act: Strategic Compliance Framework',
+    content: 'The new EU AI Act implementation guidelines have just been released. Key takeaway for enterprise: focus on high-risk system classification and data governance audit trails. We are seeing a 40% increase in compliance overhead for non-prepared firms.',
+    tags: ['AI Regulation', 'Compliance', 'EU Policy'],
+    stats: { likes: 24, comments: 8, shares: 12 },
+    isAI: false,
+    actionType: 'discuss'
+  },
+  {
+    id: 2,
+    author: {
+      name: 'Matrix AI',
+      role: 'Intelligence System',
+      avatar: null
     },
-    {
-      id: 3,
-      category: 'Digital Transformation',
-      date: 'Aug 2023',
-      title: 'The Generative AI Roadmap for the Enterprise',
-      description: 'A practical framework for integrating generative AI into enterprise workflows while maintaining security and compliance.',
-      image: 'https://picsum.photos/seed/insight3/800/600',
-      readTime: '15 min read'
+    type: 'AI Research Report',
+    timestamp: '4h ago',
+    title: 'APAC Semiconductor Supply Chain Volatility',
+    content: 'Market Signal Detected: Significant shift in APAC semiconductor supply chain routes. Predictive models suggest a 15% increase in lead times for high-end GPUs over the next quarter. Recommended Action: Diversify supplier base or front-load inventory.',
+    tags: ['Supply Chain', 'Semiconductors', 'APAC'],
+    stats: { likes: 45, comments: 15, shares: 30 },
+    isAI: true,
+    actionType: 'save'
+  },
+  {
+    id: 3,
+    author: {
+      name: 'Global Logistics Corp',
+      role: 'Enterprise Client',
+      avatar: 'https://picsum.photos/seed/corp/100/100'
     },
-    {
-      id: 4,
-      category: 'ESG Strategy',
-      date: 'Jul 2023',
-      title: 'Carbon Accounting: From Compliance to Competitive Advantage',
-      description: 'How organizations are leveraging sustainability metrics to drive operational efficiency and brand value.',
-      image: 'https://picsum.photos/seed/insight4/800/600',
-      readTime: '8 min read'
-    }
-  ];
+    type: 'Strategic Challenge',
+    timestamp: '6h ago',
+    title: 'Sustainable Last-Mile Delivery Optimization',
+    content: 'We are seeking experts to help us integrate AI-driven route optimization with our new electric vehicle fleet. Goal: Reduce carbon footprint by 30% while maintaining delivery windows in dense urban environments.',
+    tags: ['Sustainability', 'Logistics', 'EV'],
+    stats: { likes: 12, comments: 5, shares: 2 },
+    isAI: false,
+    actionType: 'join'
+  },
+  {
+    id: 4,
+    author: {
+      name: 'Marcus Chen',
+      role: 'APAC Expansion Lead',
+      avatar: 'https://picsum.photos/seed/marcus/100/100'
+    },
+    type: 'Project Update',
+    timestamp: '1d ago',
+    title: 'Vietnam Market Entry: Phase 1 Complete',
+    content: 'Successfully completed the market entry strategy for a major fintech client in Vietnam. The local regulatory landscape is rapidly evolving, favoring decentralized finance solutions. Great collaboration with the local policy team.',
+    tags: ['Market Entry', 'Fintech', 'Vietnam'],
+    stats: { likes: 18, comments: 4, shares: 5 },
+    isAI: false,
+    actionType: 'expert'
+  },
+  {
+    id: 5,
+    author: {
+      name: 'Automation Core',
+      role: 'System Monitor',
+      avatar: null
+    },
+    type: 'Automation Alert',
+    timestamp: '2d ago',
+    title: 'Workflow Efficiency Peak Detected',
+    content: 'The new automated procurement pipeline has reached 95% efficiency, reducing manual intervention by 60 hours per week. System suggests expanding this model to the inventory management module.',
+    tags: ['Automation', 'Efficiency', 'Procurement'],
+    stats: { likes: 32, comments: 2, shares: 8 },
+    isAI: true,
+    actionType: 'discuss'
+  }
+];
 
+export default function Feed() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 bg-primary-bg relative overflow-hidden border-b border-border-light">
-        <div className="container mx-auto max-w-6xl relative z-10 text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl mx-auto"
-          >
-            <h1 className="text-5xl md:text-6xl font-heading font-bold text-text-main leading-tight mb-6">
-              Strategic Insights
-            </h1>
-            <p className="text-xl text-text-muted mb-10 leading-relaxed">
-              Latest intelligence, market analysis, and thought leadership from the Matrix360 network of experts.
-            </p>
-          </motion.div>
+    <div className="max-w-4xl mx-auto space-y-12 pb-12">
+      {/* Feed Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-heading font-bold text-text-main">Strategic Intelligence Feed</h1>
+          <p className="text-text-muted mt-1">Live ecosystem of consultants, enterprises, and AI systems.</p>
         </div>
-      </section>
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" className="h-10 px-4 text-xs bg-white border-border-light shadow-sm">
+            All Intelligence
+          </Button>
+          <Button variant="secondary" className="h-10 px-4 text-xs bg-white border-border-light shadow-sm">
+            My Network
+          </Button>
+        </div>
+      </div>
 
-      {/* Insights Grid */}
-      <section className="py-24 px-4 bg-secondary-bg">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {insights.map((insight, i) => (
-              <motion.div 
-                key={insight.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white rounded-xl border border-border-light shadow-sm hover:shadow-md transition-all overflow-hidden group flex flex-col"
-              >
-                <div className="aspect-video overflow-hidden">
-                  <img 
-                    src={insight.image} 
-                    alt={insight.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-                <div className="p-8 flex-1 flex flex-col">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs font-semibold text-interaction-primary uppercase tracking-wider">{insight.category}</span>
-                    <div className="flex items-center text-xs text-text-muted">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      {insight.date}
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold text-text-main mb-4 group-hover:text-interaction-primary transition-colors">{insight.title}</h3>
-                  <p className="text-text-muted leading-relaxed mb-6 flex-1">{insight.description}</p>
-                  <div className="flex items-center justify-between pt-6 border-t border-border-light">
-                    <div className="flex items-center text-xs text-text-muted">
-                      <Clock className="h-3 w-3 mr-1" />
-                      {insight.readTime}
-                    </div>
-                    <a href="#" className="text-interaction-primary font-semibold text-sm inline-flex items-center group/link">
-                      Read Full Report
-                      <ChevronRight className="ml-1 h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+      {/* Post Creator */}
+      <Card className="bg-white border-border-light shadow-sm">
+        <CardContent className="p-5">
+          <div className="flex gap-4">
+            <div className="w-12 h-12 rounded-xl bg-secondary-bg flex items-center justify-center border border-border-light">
+              <User className="h-6 w-6 text-text-muted" />
+            </div>
+            <div className="flex-1">
+              <button className="w-full text-left px-5 py-3 rounded-xl bg-secondary-bg text-text-muted text-sm border border-border-light hover:bg-gray-100 transition-colors">
+                Share a strategic insight, challenge, or intelligence alert...
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="py-24 px-4 bg-primary-bg border-t border-border-light text-center">
-        <div className="container mx-auto max-w-3xl">
-          <h2 className="text-3xl font-heading font-bold text-text-main mb-6">Stay Informed</h2>
-          <p className="text-lg text-text-muted mb-10">
-            Subscribe to our weekly briefing for the latest strategic intelligence and expert analysis.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <input 
-              type="email" 
-              placeholder="Enter your email" 
-              className="flex-1 h-12 px-4 rounded-md border border-border-light bg-white focus:outline-none focus:ring-2 focus:ring-interaction-primary"
-            />
-            <Button variant="primary" className="h-12 px-8">
-              Subscribe
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-border-light">
+            <div className="flex gap-6">
+              <button className="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-interaction-primary transition-colors">
+                <BrainCircuit className="h-4 w-4 text-interaction-primary" />
+                AI Analysis
+              </button>
+              <button className="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-interaction-primary transition-colors">
+                <Globe className="h-4 w-4 text-ai-cyan" />
+                Market Signal
+              </button>
+              <button className="flex items-center gap-2 text-xs font-bold text-text-muted hover:text-interaction-primary transition-colors">
+                <Target className="h-4 w-4 text-alert-risk" />
+                Challenge
+              </button>
+            </div>
+            <Button className="h-9 px-6 text-xs bg-interaction-primary text-white border-none shadow-sm">
+              Post
             </Button>
           </div>
-        </div>
-      </section>
+        </CardContent>
+      </Card>
+
+      {/* Posts List */}
+      <div className="space-y-6">
+        {FEED_POSTS.map((post) => (
+          <motion.div
+            key={post.id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Card className="bg-white border-border-light shadow-sm hover:shadow-md transition-all duration-300">
+              <CardContent className="p-6">
+                {/* Post Header */}
+                <div className="flex items-start justify-between mb-5">
+                  <div className="flex gap-4">
+                    {post.author.avatar ? (
+                      <img 
+                        src={post.author.avatar} 
+                        alt={post.author.name} 
+                        className="w-12 h-12 rounded-xl object-cover border border-border-light shadow-sm"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl bg-interaction-primary/10 flex items-center justify-center border border-interaction-primary/20 shadow-sm">
+                        <BrainCircuit className="h-6 w-6 text-interaction-primary" />
+                      </div>
+                    )}
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold text-text-main text-sm">{post.author.name}</h3>
+                        {post.isAI && (
+                          <Badge className="bg-interaction-primary/10 text-interaction-primary border-none text-[10px] px-1.5 py-0 font-bold uppercase tracking-wider">AI System</Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-text-muted font-medium">{post.author.role}</p>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span className="text-[10px] text-text-muted font-bold uppercase tracking-tighter">{post.timestamp}</span>
+                        <span className="text-[10px] text-text-muted">•</span>
+                        <Globe className="h-3 w-3 text-text-muted" />
+                      </div>
+                    </div>
+                  </div>
+                  <button className="p-2 hover:bg-secondary-bg rounded-xl transition-colors">
+                    <MoreHorizontal className="h-5 w-5 text-text-muted" />
+                  </button>
+                </div>
+
+                {/* Post Content */}
+                <div className="mb-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Badge variant="secondary" className="bg-secondary-bg text-text-muted border-border-light text-[10px] px-2 py-0.5 font-bold uppercase tracking-wider">
+                      {post.type}
+                    </Badge>
+                  </div>
+                  <h2 className="text-lg font-bold text-text-main mb-2 leading-tight">{post.title}</h2>
+                  <p className="text-sm text-text-main leading-relaxed">
+                    {post.content}
+                  </p>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {post.tags.map(tag => (
+                    <span key={tag} className="text-xs font-bold text-interaction-primary hover:underline cursor-pointer bg-interaction-primary/5 px-2 py-0.5 rounded-md">
+                      #{tag.replace(/\s+/g, '')}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Interaction Buttons */}
+                <div className="flex items-center justify-between pt-4 border-t border-border-light">
+                  <div className="flex gap-2">
+                    <Button variant="secondary" className="h-9 px-4 text-xs bg-white border-border-light hover:bg-secondary-bg">
+                      <MessageSquare className="mr-2 h-4 w-4" />
+                      Discuss
+                    </Button>
+                    {post.actionType === 'join' && (
+                      <Button className="h-9 px-4 text-xs bg-interaction-primary text-white border-none shadow-sm">
+                        <Target className="mr-2 h-4 w-4" />
+                        Join Project
+                      </Button>
+                    )}
+                    {post.actionType === 'expert' && (
+                      <Button className="h-9 px-4 text-xs bg-ai-violet text-white border-none shadow-sm">
+                        <Users className="mr-2 h-4 w-4" />
+                        Request Expert
+                      </Button>
+                    )}
+                    {post.actionType === 'save' && (
+                      <Button variant="secondary" className="h-9 px-4 text-xs bg-white border-border-light hover:bg-secondary-bg">
+                        <ArrowUpRight className="mr-2 h-4 w-4" />
+                        Save Insight
+                      </Button>
+                    )}
+                  </div>
+                  <div className="flex gap-4">
+                    <button className="flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-interaction-primary transition-colors">
+                      <ThumbsUp className="h-4 w-4" />
+                      {post.stats.likes}
+                    </button>
+                    <button className="flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-interaction-primary transition-colors">
+                      <Share2 className="h-4 w-4" />
+                      {post.stats.shares}
+                    </button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
