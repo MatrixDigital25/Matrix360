@@ -225,42 +225,105 @@ async function startServer() {
     if (!linkedinPattern.test(url.trim())) {
       return res.status(400).json({ error: "Please enter a valid LinkedIn profile URL" });
     }
-    try {
-      const response = await fetch(url.trim(), {
-        headers: {
-          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-          "Accept": "text/html,application/xhtml+xml",
-          "Accept-Language": "en-US,en;q=0.9",
-        },
-        redirect: "follow",
-      });
-      if (!response.ok) return res.status(422).json({ error: "Could not fetch LinkedIn profile." });
-      const html = await response.text();
-      const getMeta = (property: string): string => {
-        const r1 = new RegExp(`<meta[^>]+(?:property|name)=["']${property}["'][^>]+content=["']([^"']*?)["']`, "i");
-        const m1 = html.match(r1);
-        if (m1) return m1[1];
-        const r2 = new RegExp(`<meta[^>]+content=["']([^"']*?)["'][^>]+(?:property|name)=["']${property}["']`, "i");
-        const m2 = html.match(r2);
-        return m2 ? m2[1] : "";
-      };
-      const ogTitle = getMeta("og:title");
-      const ogDescription = getMeta("og:description");
-      const titleTag = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] || "";
-      const cleanTitle = (ogTitle || titleTag).replace(/\s*\|\s*LinkedIn\s*$/i, "").trim();
-      const parts = cleanTitle.split(/\s*[-–—]\s*/);
-      const full_name = parts[0]?.trim() || "";
-      const professional_title = parts[1]?.trim() || "";
-      const organization = parts[2]?.trim() || "";
-      let bio = (ogDescription || "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'").replace(/&quot;/g, '"').trim();
-      if (bio.toLowerCase().startsWith(full_name.toLowerCase())) {
-        bio = bio.slice(full_name.length).replace(/^\s*[-–—·:]\s*/, "").trim();
-      }
-      return res.json({ success: true, data: { full_name, professional_title, organization, bio, linkedin_url: url.trim() } });
-    } catch (error: any) {
-      console.error("LinkedIn extraction error:", error);
-      return res.status(500).json({ error: "Failed to extract profile data." });
+
+    const strategies = [
+      { headers: { "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)", "Accept": "text/html", "Accept-Language": "en-US,en;q=0.9" } },
+      { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36", "Accept": "text/html,application/xhtml+xml", "Accept-Language": "en-US,en;q=0.9", "Referer": "https://www.google.com/" } },
+      { headers: { "User-Agent": "LinkedInBot/1.0 (compatible; Mozilla/5.0; Apache-HttpClient +http://www.linkedin.com)", "Accept": "text/html" } },
+    ];
+
+    const getMeta = (html: string, property: string): string => {
+      const r1 = new RegExp(`<meta[^>]+(?:property|name)=["']${property}["'][^>]+content=["']([^"']*?)["']`, "i");
+      const m1 = html.match(r1);
+      if (m1) return m1[1];
+      const r2 = new RegExp(`<meta[^>]+content=["']([^"']*?)["'][^>]+(?:property|name)=["']${property}["']`, "i");
+      const m2 = html.match(r2);
+      return m2 ? m2[1] : "";
+    };
+
+    const isLoginWall = (html: string, ogTitle: string): boolean => {
+      if (html.includes("/authwall") || html.includes("auth_wall")) return true;
+      if (html.includes("Sign in") && html.includes("Join now") && !ogTitle) return true;
+      if (ogTitle.toLowerCase().includes("log in") || ogTitle.toLowerCase().includes("sign in")) return true;
+      const t = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] || "";
+      if (t.includes("LinkedIn Login") || t.includes("Sign Up")) return true;
+      return false;
+    };
+
+    const extractUsername = (u: string): string => {
+      const m = u.match(/linkedin\.com\/in\/([^/?#]+)/i);
+      return m ? m[1].replace(/-/g, " ") : "";
+    };
+
+    const titleCase = (s: string): string => s.replace(/\b\w/g, (c) => c.toUpperCase());
+
+    const cleanUrl = url.trim().split("?")[0].replace(/\/+$/, "");
+
+    // Strategy 1: Direct LinkedIn fetch
+    for (const strategy of strategies) {
+      try {
+        const response = await fetch(cleanUrl, { headers: strategy.headers, redirect: "follow" });
+        if (!response.ok) continue;
+        const html = await response.text();
+        const ogTitle = getMeta(html, "og:title");
+        const ogDescription = getMeta(html, "og:description");
+        if (isLoginWall(html, ogTitle)) continue;
+        const titleTag = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] || "";
+        const titleSource = ogTitle || titleTag;
+        if (!titleSource || titleSource.toLowerCase() === "linkedin") continue;
+        const cleanTitle = titleSource.replace(/\s*\|\s*LinkedIn\s*$/i, "").trim();
+        const parts = cleanTitle.split(/\s*[-–—]\s*/);
+        const full_name = parts[0]?.trim() || "";
+        if (!full_name) continue;
+        const professional_title = parts[1]?.trim() || "";
+        const organization = parts[2]?.trim() || "";
+        let bio = (ogDescription || "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'").replace(/&quot;/g, '"').trim();
+        if (bio.toLowerCase().startsWith(full_name.toLowerCase())) {
+          bio = bio.slice(full_name.length).replace(/^\s*[-–—·:]\s*/, "").trim();
+        }
+        return res.json({ success: true, data: { full_name, professional_title, organization, bio, linkedin_url: url.trim() } });
+      } catch { continue; }
     }
+
+    // Strategy 2: Try Google search for the profile
+    try {
+      const username = cleanUrl.split("/in/")[1];
+      const googleUrl = `https://www.google.com/search?q=site:linkedin.com/in/${encodeURIComponent(username)}`;
+      const gResp = await fetch(googleUrl, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          "Accept": "text/html", "Accept-Language": "en-US,en;q=0.9",
+        },
+      });
+      if (gResp.ok) {
+        const gHtml = await gResp.text();
+        const snippetMatch = gHtml.match(new RegExp(`<h3[^>]*>([^<]*${username.replace(/-/g, '.')}[^<]*)<\\/h3>`, "i"))
+          || gHtml.match(/<h3[^>]*>([^<]*linkedin[^<]*)<\/h3>/i);
+        if (snippetMatch) {
+          const snippetText = snippetMatch[1]
+            .replace(/&amp;/g, "&").replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+            .replace(/\s*[-–—]\s*LinkedIn\s*$/i, "").trim();
+          const parts = snippetText.split(/\s*[-–—]\s*/);
+          if (parts[0] && parts[0].length > 1) {
+            const descMatch = gHtml.match(/<div[^>]*class="[^"]*VwiC3b[^"]*"[^>]*>([^<]+)/i);
+            const bio = descMatch ? descMatch[1].replace(/&amp;/g, "&").replace(/&#39;/g, "'").trim() : "";
+            return res.json({ success: true, source: "google", data: { full_name: parts[0].trim(), professional_title: parts[1]?.trim() || "", organization: parts[2]?.trim() || "", bio, linkedin_url: url.trim() } });
+          }
+        }
+      }
+    } catch { /* continue */ }
+
+    // Strategy 3: Extract name from URL username
+    const username = extractUsername(url.trim());
+    if (username) {
+      return res.json({
+        success: true,
+        partial: true,
+        data: { full_name: titleCase(username), professional_title: "", organization: "", bio: "", linkedin_url: url.trim() },
+      });
+    }
+
+    return res.status(422).json({ error: "Could not extract this profile. Please fill the form manually." });
   });
 
   // --- Consultant Application APIs (Neon PostgreSQL) ---

@@ -51,7 +51,13 @@ export default function Apply() {
         bio: d.bio || prev.bio,
         linkedin_url: d.linkedin_url || prev.linkedin_url,
       }));
-      setExtractMsg('Profile details extracted! Please review and complete any remaining fields.');
+      if (data.partial) {
+        setExtractMsg('We extracted your name from the URL. LinkedIn blocked full access — please fill the remaining fields manually.');
+      } else if (data.source === 'google') {
+        setExtractMsg('Profile found via search cache! Please review and complete any remaining fields.');
+      } else {
+        setExtractMsg('Profile details extracted! Please review and complete any remaining fields.');
+      }
     } catch (err: any) {
       setError(err.message || 'Could not extract profile. Please fill manually.');
     } finally {
