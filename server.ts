@@ -221,7 +221,7 @@ async function startServer() {
     if (!url || typeof url !== "string") {
       return res.status(400).json({ error: "LinkedIn URL is required" });
     }
-    const linkedinPattern = /^https?:\/\/(www\.)?linkedin\.com\/in\/[\w-]+\/?$/i;
+    const linkedinPattern = /^https?:\/\/(\w+\.)?linkedin\.com\/in\//i;
     if (!linkedinPattern.test(url.trim())) {
       return res.status(400).json({ error: "Please enter a valid LinkedIn profile URL" });
     }

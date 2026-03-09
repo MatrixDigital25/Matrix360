@@ -12,7 +12,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // Validate it's a LinkedIn URL
-  const linkedinPattern = /^https?:\/\/(www\.)?linkedin\.com\/in\/[\w-]+\/?$/i;
+  const linkedinPattern = /^https?:\/\/(\w+\.)?linkedin\.com\/in\//i;
   if (!linkedinPattern.test(url.trim())) {
     return res.status(400).json({ error: "Please enter a valid LinkedIn profile URL (e.g. https://linkedin.com/in/username)" });
   }
