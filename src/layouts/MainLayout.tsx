@@ -14,7 +14,7 @@ export function MainLayout() {
       <header className="sticky top-0 z-50 w-full bg-brand-primary text-white shadow-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2 text-white">
-            <img src={LOGO_URL} alt="Matrix360 Consulting" className="h-10 md:h-12 w-auto brightness-0 invert" />
+            <img src={LOGO_URL} alt="Matrix360 Consulting" className="h-10 md:h-12 w-auto" />
           </Link>
           
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium text-white/90">
