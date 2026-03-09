@@ -1,8 +1,10 @@
 import { neon } from "@neondatabase/serverless";
 
 export function getDb() {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL environment variable is not set");
+  const raw = process.env.DATABASE_URL;
+  if (!raw) throw new Error("DATABASE_URL environment variable is not set");
+  // Strip channel_binding param — not supported by the HTTP-based serverless driver
+  const url = raw.replace(/[&?]channel_binding=[^&]*/g, '');
   return neon(url);
 }
 
