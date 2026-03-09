@@ -128,10 +128,17 @@ export default function StrategyRoom() {
                 startWithAudioMuted: true,
                 disableModeratorIndicator: true,
                 startScreenSharing: false,
-                enableEmailInStats: false
+                enableEmailInStats: false,
+                prejoinPageEnabled: false,
               }}
               interfaceConfigOverwrite={{
-                DISABLE_JOIN_LEAVE_NOTIFICATIONS: true
+                DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                SHOW_JITSI_WATERMARK: false,
+                SHOW_WATERMARK_FOR_GUESTS: false,
+                SHOW_CHROME_EXTENSION_BANNER: false,
+                APP_NAME: 'Matrix 360 Consulting',
+                NATIVE_APP_NAME: 'Matrix 360 Consulting',
+                PROVIDER_NAME: 'Matrix 360 Consulting'
               }}
               userInfo={{
                 displayName: 'Matrix Advisor',
@@ -142,6 +149,19 @@ export default function StrategyRoom() {
                 iframeRef.style.width = '100%';
               }}
             />
+
+            {/* Matrix 360 Custom Branding Overlay */}
+            <div className="absolute top-4 left-4 z-10 pointer-events-none flex items-center gap-3">
+              <div className="bg-black/50 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10 flex items-center gap-2">
+                <BrainCircuit className="h-5 w-5 text-interaction-primary" />
+                <span className="text-sm font-heading font-bold text-white tracking-widest uppercase">
+                  Matrix 360 Consulting
+                </span>
+                <span className="text-xs text-text-muted border-l border-white/20 pl-2 ml-1">
+                  Secure video room
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Bottom Toolbar */}
