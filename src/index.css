@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary-bg: #F4F9FF;
+  --color-secondary-bg: #EEF5FF;
+  --color-card-bg: #FFFFFF;
+  
+  --color-brand-primary: #0F4C5C;
+  --color-interaction-primary: #2F80ED;
+  --color-interaction-secondary: #0077FF;
+  
+  --color-ai-cyan: #56CCF2;
+  --color-ai-violet: #7C3AED;
+  
+  --color-text-main: #1A2B3C;
+  --color-text-secondary: #4A657D;
+  --color-text-muted: #7C8FA3;
+  
+  --color-border-light: #E3F0FF;
+  --color-panel-bg: #F0F7FF;
+  --color-panel-border: #DCEBFF;
+  
+  --color-alert-risk: #e5484d;
+  --color-alert-opportunity: #10b981;
+}
+
+body {
+  @apply bg-primary-bg text-text-main font-sans antialiased selection:bg-interaction-primary/20;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading tracking-tight text-text-main;
+}
+
+/* Custom Scrollbar for a premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border-light rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-interaction-primary/50;
+}
