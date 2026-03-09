@@ -3,12 +3,14 @@ import { motion } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/Card';
 import { Button } from '@/src/components/ui/Button';
 import { Input, Textarea } from '@/src/components/ui/Input';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Linkedin, Loader2 } from 'lucide-react';
 
 export default function Apply() {
   const [submitted, setSubmitted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [extracting, setExtracting] = React.useState(false);
   const [error, setError] = React.useState('');
+  const [extractMsg, setExtractMsg] = React.useState('');
 
   const [form, setForm] = React.useState({
     full_name: '',
@@ -23,6 +25,38 @@ export default function Apply() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleExtractLinkedIn = async () => {
+    if (!form.linkedin_url) return;
+    setExtracting(true);
+    setExtractMsg('');
+    setError('');
+
+    try {
+      const res = await fetch('/api/linkedin-extract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: form.linkedin_url }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Extraction failed');
+
+      const d = data.data;
+      setForm(prev => ({
+        ...prev,
+        full_name: d.full_name || prev.full_name,
+        professional_title: d.professional_title || prev.professional_title,
+        organization: d.organization || prev.organization,
+        bio: d.bio || prev.bio,
+        linkedin_url: d.linkedin_url || prev.linkedin_url,
+      }));
+      setExtractMsg('Profile details extracted! Please review and complete any remaining fields.');
+    } catch (err: any) {
+      setError(err.message || 'Could not extract profile. Please fill manually.');
+    } finally {
+      setExtracting(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,6 +123,40 @@ export default function Apply() {
             </div>
           )}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* LinkedIn Auto-fill Section */}
+            <div className="rounded-lg border border-blue-200 bg-blue-50/50 p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Linkedin className="h-5 w-5 text-[#0A66C2]" />
+                <h3 className="text-sm font-semibold text-text-main">Quick Fill from LinkedIn</h3>
+              </div>
+              <p className="text-xs text-text-muted mb-3">Paste your LinkedIn profile URL and we'll auto-fill your details.</p>
+              <div className="flex gap-2">
+                <Input
+                  name="linkedin_url"
+                  value={form.linkedin_url}
+                  onChange={handleChange}
+                  type="url"
+                  placeholder="https://linkedin.com/in/your-profile"
+                  className="flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="secondary"
+                  onClick={handleExtractLinkedIn}
+                  disabled={extracting || !form.linkedin_url}
+                  className="shrink-0 bg-white border-blue-200 hover:bg-blue-50"
+                >
+                  {extracting ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Extracting...</> : 'Extract Profile'}
+                </Button>
+              </div>
+              {extractMsg && (
+                <div className="mt-3 flex items-center gap-2 text-xs text-green-700 bg-green-50 border border-green-200 rounded-md p-2">
+                  <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0" />
+                  {extractMsg}
+                </div>
+              )}
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-text-main">Full Name</label>
@@ -131,11 +199,6 @@ export default function Apply() {
             <div className="space-y-2">
               <label className="text-sm font-medium text-text-main">Specialization Tags (Comma separated)</label>
               <Input required name="specializations" value={form.specializations} onChange={handleChange} placeholder="e.g. Compliance, Policy, EU Markets" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-text-main">LinkedIn Profile URL</label>
-              <Input required name="linkedin_url" value={form.linkedin_url} onChange={handleChange} type="url" placeholder="https://linkedin.com/in/..." />
             </div>
 
             <div className="space-y-2">

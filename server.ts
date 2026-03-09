@@ -215,6 +215,54 @@ async function startServer() {
     res.json({ ...engagement, consultants });
   });
 
+  // --- LinkedIn Profile Extraction ---
+  app.post("/api/linkedin-extract", async (req, res) => {
+    const { url } = req.body;
+    if (!url || typeof url !== "string") {
+      return res.status(400).json({ error: "LinkedIn URL is required" });
+    }
+    const linkedinPattern = /^https?:\/\/(www\.)?linkedin\.com\/in\/[\w-]+\/?$/i;
+    if (!linkedinPattern.test(url.trim())) {
+      return res.status(400).json({ error: "Please enter a valid LinkedIn profile URL" });
+    }
+    try {
+      const response = await fetch(url.trim(), {
+        headers: {
+          "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          "Accept": "text/html,application/xhtml+xml",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+        redirect: "follow",
+      });
+      if (!response.ok) return res.status(422).json({ error: "Could not fetch LinkedIn profile." });
+      const html = await response.text();
+      const getMeta = (property: string): string => {
+        const r1 = new RegExp(`<meta[^>]+(?:property|name)=["']${property}["'][^>]+content=["']([^"']*?)["']`, "i");
+        const m1 = html.match(r1);
+        if (m1) return m1[1];
+        const r2 = new RegExp(`<meta[^>]+content=["']([^"']*?)["'][^>]+(?:property|name)=["']${property}["']`, "i");
+        const m2 = html.match(r2);
+        return m2 ? m2[1] : "";
+      };
+      const ogTitle = getMeta("og:title");
+      const ogDescription = getMeta("og:description");
+      const titleTag = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1] || "";
+      const cleanTitle = (ogTitle || titleTag).replace(/\s*\|\s*LinkedIn\s*$/i, "").trim();
+      const parts = cleanTitle.split(/\s*[-–—]\s*/);
+      const full_name = parts[0]?.trim() || "";
+      const professional_title = parts[1]?.trim() || "";
+      const organization = parts[2]?.trim() || "";
+      let bio = (ogDescription || "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'").replace(/&quot;/g, '"').trim();
+      if (bio.toLowerCase().startsWith(full_name.toLowerCase())) {
+        bio = bio.slice(full_name.length).replace(/^\s*[-–—·:]\s*/, "").trim();
+      }
+      return res.json({ success: true, data: { full_name, professional_title, organization, bio, linkedin_url: url.trim() } });
+    } catch (error: any) {
+      console.error("LinkedIn extraction error:", error);
+      return res.status(500).json({ error: "Failed to extract profile data." });
+    }
+  });
+
   // --- Consultant Application APIs (Neon PostgreSQL) ---
   function getNeonDb() {
     const raw = process.env.DATABASE_URL;
