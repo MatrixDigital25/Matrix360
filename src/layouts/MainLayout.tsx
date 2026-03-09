@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Search, Bell, User } from 'lucide-react';
 import { cn } from '@/src/utils/cn';
 
-const LOGO_URL = "/Matrix360.png";
+const LOGO_URL = "/M360_logo.png";
 
 export function MainLayout() {
   const location = useLocation();

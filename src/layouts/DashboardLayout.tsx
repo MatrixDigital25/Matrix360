@@ -27,7 +27,7 @@ const sidebarNav: NavItem[] = [
   { title: 'Platform', href: '/enterprise/platform', icon: Layers },
 ];
 
-const LOGO_URL = "/Matrix360.png";
+const LOGO_URL = "/M360_logo.png";
 
 export function DashboardLayout({ type }: { type: 'consultant' | 'enterprise' }) {
   const location = useLocation();
