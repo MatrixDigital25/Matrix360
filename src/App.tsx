@@ -28,6 +28,7 @@ import Architecture from './pages/Architecture';
 import StrategyRoom from './pages/StrategyRoom';
 import Services from './pages/Services';
 import Automation from './pages/Automation';
+import Admin from './pages/Admin';
 
 export default function App() {
   return (
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="/strategy-room" element={<StrategyRoom />} />
           <Route path="/services" element={<Services />} />
           <Route path="/automation" element={<Automation />} />
+          <Route path="/admin" element={<Admin />} />
         </Route>
 
         {/* Consultant Portal */}
