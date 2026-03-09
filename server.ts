@@ -1,6 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
+dotenv.config(); // also load .env if present
+
 import express from "express";
 import { createServer as createViteServer } from "vite";
 import Database from "better-sqlite3";
+import { neon } from "@neondatabase/serverless";
 
 // Initialize SQLite database (in-memory for this example, but structured like Postgres)
 const db = new Database(':memory:');
@@ -208,6 +213,74 @@ async function startServer() {
     `).all(req.params.id);
 
     res.json({ ...engagement, consultants });
+  });
+
+  // --- Consultant Application APIs (Neon PostgreSQL) ---
+  function getNeonDb() {
+    const raw = process.env.DATABASE_URL;
+    if (!raw) throw new Error("DATABASE_URL environment variable is not set");
+    const url = raw.replace(/[&?]channel_binding=[^&]*/g, '');
+    return neon(url);
+  }
+
+  app.post("/api/applications", async (req, res) => {
+    try {
+      const sql = getNeonDb();
+      await sql`
+        CREATE TABLE IF NOT EXISTS consultant_applications (
+          id SERIAL PRIMARY KEY,
+          full_name TEXT NOT NULL,
+          professional_title TEXT NOT NULL,
+          organization TEXT NOT NULL,
+          years_experience INTEGER NOT NULL,
+          industry TEXT NOT NULL,
+          specializations TEXT NOT NULL,
+          linkedin_url TEXT NOT NULL,
+          bio TEXT NOT NULL,
+          status TEXT NOT NULL DEFAULT 'pending',
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        )
+      `;
+      const { full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio } = req.body;
+      if (!full_name || !professional_title || !organization || !years_experience || !industry || !specializations || !linkedin_url || !bio) {
+        return res.status(400).json({ error: "All fields are required" });
+      }
+      const result = await sql`
+        INSERT INTO consultant_applications (full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio)
+        VALUES (${full_name}, ${professional_title}, ${organization}, ${Number(years_experience)}, ${industry}, ${specializations}, ${linkedin_url}, ${bio})
+        RETURNING id
+      `;
+      return res.json({ success: true, id: result[0].id });
+    } catch (error: any) {
+      console.error("Application submission error:", error);
+      return res.status(500).json({ error: "Failed to submit application" });
+    }
+  });
+
+  app.get("/api/admin/applications", async (req, res) => {
+    try {
+      const sql = getNeonDb();
+      await sql`
+        CREATE TABLE IF NOT EXISTS consultant_applications (
+          id SERIAL PRIMARY KEY,
+          full_name TEXT NOT NULL,
+          professional_title TEXT NOT NULL,
+          organization TEXT NOT NULL,
+          years_experience INTEGER NOT NULL,
+          industry TEXT NOT NULL,
+          specializations TEXT NOT NULL,
+          linkedin_url TEXT NOT NULL,
+          bio TEXT NOT NULL,
+          status TEXT NOT NULL DEFAULT 'pending',
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        )
+      `;
+      const applications = await sql`SELECT * FROM consultant_applications ORDER BY created_at DESC`;
+      return res.json(applications);
+    } catch (error: any) {
+      console.error("Fetch applications error:", error);
+      return res.status(500).json({ error: "Failed to fetch applications" });
+    }
   });
 
   // Vite middleware for development
