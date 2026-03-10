@@ -54,7 +54,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: string }> = (
 
   if (loading) return (
     <div className="min-h-screen bg-zinc-50 flex flex-col items-center justify-center text-zinc-900 font-serif">
-      <div className="h-12 w-12 bg-zinc-900 rounded-lg flex items-center justify-center text-white font-bold text-xl mb-4 animate-pulse">M</div>
+      <img src="/Matrix360.png" alt="Matrix360 Logo" className="h-12 w-auto object-contain mb-4 animate-pulse" />
       <p className="italic">Initializing Matrix360 Strategic Intelligence OS...</p>
     </div>
   );

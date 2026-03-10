@@ -30,7 +30,7 @@ import {
 import { cn } from '@/src/utils/cn';
 import { motion, AnimatePresence } from 'motion/react';
 
-const LOGO_URL = "/Matrix360 (23).png";
+const LOGO_URL = "/Matrix360.png";
 
 interface NavItem {
   title: string;
@@ -123,7 +123,7 @@ export function AppLayout() {
       >
         <div className="p-6 flex items-center justify-between shrink-0">
           <Link to="/" className={cn("flex items-center gap-2 overflow-hidden transition-all", !isSidebarOpen && "opacity-0 w-0")}>
-            <div className="h-8 w-8 bg-zinc-900 rounded flex items-center justify-center text-white font-bold text-lg">M</div>
+            <img src={LOGO_URL} alt="Matrix360 Logo" className="h-8 w-auto object-contain" />
             <span className="font-serif font-bold text-xl tracking-tight whitespace-nowrap text-zinc-900">Matrix360</span>
           </Link>
           <button 
