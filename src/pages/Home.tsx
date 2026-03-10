@@ -54,14 +54,14 @@ export default function Home() {
           >
             <div className="flex items-center gap-3 mb-8">
               <Badge className="bg-white/10 text-white border-white/20 px-4 py-1.5 backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em]">
-                Matrix360 Strategic Intelligence Operating System
+                Worlds first
               </Badge>
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-serif tracking-tight mb-8 leading-[1.1]">
-              Enterprise <br />
-              <span className="italic text-zinc-400">Strategic Intelligence</span>
+              Human AI platform <br />
+              <span className="italic text-zinc-400">for business transformation</span>
             </h1>
             
             <p className="text-lg text-zinc-400 mb-10 leading-relaxed max-w-xl font-light">

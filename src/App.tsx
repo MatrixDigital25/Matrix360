@@ -74,6 +74,10 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           
+          {/* Standalone Full-Page Routes */}
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/apply" element={<Apply />} />
+
           <Route element={<AppLayout />}>
             {/* Main Platform Routes */}
             <Route path="/" element={<Home />} />
@@ -100,12 +104,10 @@ export default function App() {
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/billing" element={<Billing />} />
             <Route path="/audit-logs" element={<ProtectedRoute role="ADMIN"><AuditLogs /></ProtectedRoute>} />
-            <Route path="/admin" element={<Admin />} />
             <Route path="/challenges" element={<ChallengeSubmission />} />
             
             {/* Legacy/Secondary Routes */}
             <Route path="/platform" element={<Platform />} />
-            <Route path="/apply" element={<Apply />} />
             <Route path="/industries" element={<Industries />} />
             <Route path="/insights" element={<Insights />} />
             <Route path="/method" element={<Method />} />
