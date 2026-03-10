@@ -19,13 +19,6 @@ interface Application {
   created_at: string;
 }
 
-// Helper to get applications from localStorage  
-function getStoredApplications(): Application[] {
-  try {
-    return JSON.parse(localStorage.getItem('matrix360_applications') || '[]');
-  } catch { return []; }
-}
-
 export default function Admin() {
   const [applications, setApplications] = React.useState<Application[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -34,29 +27,21 @@ export default function Admin() {
   const fetchApplications = async () => {
     setLoading(true);
     setError('');
-
-    // Try server API first (works in local dev with Express)
     try {
       const res = await fetch('/api/admin/applications');
-      if (res.ok) {
-        const contentType = res.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const serverApps = await res.json();
-          if (serverApps.length > 0) {
-            setApplications(serverApps);
-            setLoading(false);
-            return;
-          }
-        }
+      if (!res.ok) throw new Error('Failed to fetch applications');
+      const contentType = res.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        setApplications(Array.isArray(data) ? data : []);
+      } else {
+        throw new Error('Invalid response from server');
       }
-    } catch {
-      // Server not available (Vercel static deploy)
+    } catch (err: any) {
+      setError(err.message || 'Failed to load applications');
+    } finally {
+      setLoading(false);
     }
-
-    // Fallback: show only real submissions from localStorage
-    const localApps = getStoredApplications();
-    setApplications(localApps);
-    setLoading(false);
   };
 
   React.useEffect(() => {
