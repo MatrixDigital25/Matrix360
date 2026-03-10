@@ -59,7 +59,7 @@ ${workflow.document_text}
           { role: "system", content: systemPrompt },
           { role: "user", content: message }
         ],
-        model: "llama3-70b-8192",
+        model: "llama-3.3-70b-versatile",
       });
       responseText = response.choices[0]?.message?.content || "";
     } else {
