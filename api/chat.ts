@@ -69,7 +69,7 @@ ${workflow.document_text}
     return res.status(200).json({ response: responseText });
   } catch (err: any) {
     console.error("Chat API Error:", err);
-    return res.status(500).json({ error: "AI Processing Error", details: err.message });
+    return res.status(500).json({ error: `AI Processing Error: ${err.message}` });
   }
 }
 
