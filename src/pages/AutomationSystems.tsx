@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
 import { Button } from '@/src/components/ui/Button';
@@ -577,12 +579,18 @@ export default function AutomationSystems() {
                         {msg.role === 'user' ? 'U' : 'AI'}
                       </div>
                       <div className={cn(
-                        "p-3 rounded-2xl max-w-[80%] text-sm",
+                        "p-3 rounded-2xl text-sm overflow-hidden",
                         msg.role === 'user' 
-                          ? "bg-interaction-primary text-white rounded-tr-sm" 
-                          : "bg-white border border-border-light text-text-main rounded-tl-sm shadow-sm"
+                          ? "bg-interaction-primary text-white rounded-tr-sm max-w-[80%]" 
+                          : "bg-white border border-border-light text-text-main rounded-tl-sm shadow-sm prose prose-sm prose-zinc max-w-[90%] break-words w-full"
                       )}>
-                        {msg.content}
+                        {msg.role === 'user' ? (
+                          msg.content
+                        ) : (
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                            {msg.content}
+                          </ReactMarkdown>
+                        )}
                       </div>
                     </div>
                   ))
