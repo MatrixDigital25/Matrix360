@@ -21,24 +21,30 @@ export default async function handler(req: any, res: any) {
     `;
 
     if (req.method === "GET") {
-      const keys = await sql`SELECT id, provider FROM api_keys WHERE provider = 'gemini' LIMIT 1`;
-      return res.status(200).json({ success: true, hasKey: keys.length > 0 });
+      const keys = await sql`SELECT provider FROM api_keys`;
+      const hasKeys = {
+        gemini: keys.some((k: any) => k.provider === 'gemini'),
+        groq: keys.some((k: any) => k.provider === 'groq')
+      };
+      // For backward compatibility, keep `hasKey` as true if any key exists
+      return res.status(200).json({ success: true, hasKey: hasKeys.gemini || hasKeys.groq, hasKeys });
     }
 
     if (req.method === "POST") {
-      const { apiKey } = req.body;
+      const { provider, apiKey } = req.body;
       if (!apiKey) {
         return res.status(400).json({ error: "API key is required" });
       }
+      const safeProvider = provider === "groq" ? "groq" : "gemini";
 
       await sql`
         INSERT INTO api_keys (provider, key_value) 
-        VALUES ('gemini', ${apiKey})
+        VALUES (${safeProvider}, ${apiKey})
         ON CONFLICT (provider) 
         DO UPDATE SET key_value = EXCLUDED.key_value, created_at = NOW()
       `;
 
-      return res.status(200).json({ success: true, message: "API key saved" });
+      return res.status(200).json({ success: true, message: `API key saved for ${safeProvider}` });
     }
 
     return res.status(405).json({ error: "Method not allowed" });

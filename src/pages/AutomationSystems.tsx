@@ -58,8 +58,9 @@ export default function AutomationSystems() {
 
   // Config State
   const [apiKey, setApiKey] = useState('');
+  const [provider, setProvider] = useState<'groq' | 'gemini'>('groq');
   const [savingKey, setSavingKey] = useState(false);
-  const [hasKey, setHasKey] = useState(false);
+  const [hasKeys, setHasKeys] = useState<{gemini: boolean, groq: boolean}>({gemini: false, groq: false});
 
   // New Workflow State
   const [newWfName, setNewWfName] = useState('');
@@ -82,7 +83,7 @@ export default function AutomationSystems() {
       const res = await fetch('/api/settings/apikey');
       if (res.ok) {
         const data = await res.json();
-        setHasKey(data.hasKey);
+        if (data.hasKeys) setHasKeys(data.hasKeys);
       }
     } catch (e) { console.error(e); }
   };
@@ -107,10 +108,10 @@ export default function AutomationSystems() {
       const res = await fetch('/api/settings/apikey', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ apiKey })
+        body: JSON.stringify({ apiKey, provider })
       });
       if (res.ok) {
-        setHasKey(true);
+        setHasKeys(prev => ({ ...prev, [provider]: true }));
         setIsConfigOpen(false);
         setApiKey(''); // clear it from memory
       } else {
@@ -164,7 +165,7 @@ export default function AutomationSystems() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ workflowId: activeWorkflowId, message: msg })
+        body: JSON.stringify({ workflowId: activeWorkflowId, message: msg, provider })
       });
       const data = await res.json();
       
@@ -202,10 +203,10 @@ export default function AutomationSystems() {
           <Button 
             variant="secondary" 
             onClick={() => setIsConfigOpen(true)}
-            className={cn("h-11 px-6 rounded-xl shadow-sm border", hasKey ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-white border-border-light text-text-main")}
+            className={cn("h-11 px-6 rounded-xl shadow-sm border", (hasKeys.gemini || hasKeys.groq) ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-white border-border-light text-text-main")}
           >
             <Settings className="h-4 w-4 mr-2" />
-            {hasKey ? "Key Configured" : "System Config"}
+            {(hasKeys.gemini || hasKeys.groq) ? "Key Configured" : "System Config"}
           </Button>
           <Button 
             onClick={() => setIsNewWorkflowOpen(true)}
@@ -432,12 +433,24 @@ export default function AutomationSystems() {
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Gemini API Key</label>
+                  <div className="flex bg-secondary-bg p-1 rounded-xl mb-4">
+                    <button 
+                      onClick={() => setProvider('groq')}
+                      className={cn("flex-1 py-1.5 text-xs font-bold rounded-lg transition-all", provider === 'groq' ? "bg-white shadow-sm text-interaction-primary" : "text-text-muted hover:text-text-main")}
+                    >Groq (Fast Inference)</button>
+                    <button 
+                      onClick={() => setProvider('gemini')}
+                      className={cn("flex-1 py-1.5 text-xs font-bold rounded-lg transition-all", provider === 'gemini' ? "bg-white shadow-sm text-interaction-primary" : "text-text-muted hover:text-text-main")}
+                    >Google Gemini</button>
+                  </div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">
+                    {provider === 'groq' ? 'Groq' : 'Gemini'} API Key
+                  </label>
                   <input 
                     type="password" 
                     value={apiKey}
                     onChange={(e) => setApiKey(e.target.value)}
-                    placeholder="AIzaSy..."
+                    placeholder={provider === 'groq' ? "gsk_..." : "AIzaSy..."}
                     className="w-full px-4 py-3 rounded-xl border border-border-light bg-secondary-bg text-sm focus:outline-none focus:ring-2 focus:ring-interaction-primary/50 font-mono"
                   />
                   <p className="text-[10px] text-text-muted mt-2">Your key is stored securely in your private Neon database.</p>
