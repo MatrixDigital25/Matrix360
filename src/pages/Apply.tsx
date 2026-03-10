@@ -3,15 +3,45 @@ import { motion } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/Card';
 import { Button } from '@/src/components/ui/Button';
 import { Input, Textarea } from '@/src/components/ui/Input';
-import { UploadCloud, CheckCircle2 } from 'lucide-react';
+import { UploadCloud, CheckCircle2, Loader2 } from 'lucide-react';
 
 export default function Apply() {
   const [submitted, setSubmitted] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simulate API call
-    setTimeout(() => setSubmitted(true), 1000);
+    setLoading(true);
+    setError('');
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const payload = {
+      full_name: formData.get('full_name') as string,
+      professional_title: formData.get('professional_title') as string,
+      organization: formData.get('organization') as string,
+      years_experience: parseInt(formData.get('years_experience') as string),
+      industry: formData.get('industry') as string,
+      specializations: formData.get('specializations') as string,
+      linkedin_url: formData.get('linkedin_url') as string,
+      bio: formData.get('bio') as string,
+    };
+
+    try {
+      const res = await fetch('/api/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err.message || 'Failed to submit application');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -50,53 +80,56 @@ export default function Apply() {
           <CardDescription>All fields are required unless marked optional.</CardDescription>
         </CardHeader>
         <CardContent>
+          {error && (
+            <div className="rounded-md bg-red-50 border border-red-200 p-4 text-sm text-red-700 mb-6">{error}</div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-text-main">Full Name</label>
-                <Input required placeholder="Dr. Sarah Jenkins" />
+                <Input name="full_name" required placeholder="Dr. Sarah Jenkins" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-text-main">Professional Title</label>
-                <Input required placeholder="Regulatory Strategist" />
+                <Input name="professional_title" required placeholder="Regulatory Strategist" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-text-main">Current Organization</label>
-                <Input required placeholder="Independent / Firm Name" />
+                <Input name="organization" required placeholder="Independent / Firm Name" />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-text-main">Years of Experience</label>
-                <Input required type="number" min="1" placeholder="15" />
+                <Input name="years_experience" required type="number" min="1" placeholder="15" />
               </div>
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-text-main">Primary Industry Expertise</label>
-              <select className="flex h-10 w-full rounded-md border border-border-light bg-white px-3 py-2 text-sm text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-interaction-primary">
+              <select name="industry" required className="flex h-10 w-full rounded-md border border-border-light bg-white px-3 py-2 text-sm text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-interaction-primary">
                 <option value="">Select Industry...</option>
-                <option value="technology">Technology</option>
-                <option value="healthcare">Healthcare</option>
-                <option value="finance">Finance</option>
-                <option value="manufacturing">Manufacturing</option>
-                <option value="energy">Energy</option>
-                <option value="retail">Retail</option>
-                <option value="government">Government</option>
+                <option value="Technology">Technology</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Finance">Finance</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Energy">Energy</option>
+                <option value="Retail">Retail</option>
+                <option value="Government">Government</option>
               </select>
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-text-main">Specialization Tags (Comma separated)</label>
-              <Input required placeholder="e.g. Compliance, Policy, EU Markets" />
+              <Input name="specializations" required placeholder="e.g. Compliance, Policy, EU Markets" />
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-text-main">LinkedIn Profile URL</label>
-              <Input required type="url" placeholder="https://linkedin.com/in/..." />
+              <Input name="linkedin_url" required type="url" placeholder="https://linkedin.com/in/..." />
             </div>
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-text-main">Professional Bio</label>
-              <Textarea required placeholder="Briefly describe your background, key achievements, and consulting approach..." className="min-h-[120px]" />
+              <Textarea name="bio" required placeholder="Briefly describe your background, key achievements, and consulting approach..." className="min-h-[120px]" />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -119,7 +152,9 @@ export default function Apply() {
             </div>
 
             <div className="pt-6 border-t border-border-light">
-              <Button type="submit" className="w-full h-12 text-lg">Submit Application</Button>
+              <Button type="submit" className="w-full h-12 text-lg" disabled={loading}>
+                {loading ? <><Loader2 className="h-5 w-5 animate-spin mr-2" /> Submitting...</> : 'Submit Application'}
+              </Button>
             </div>
           </form>
         </CardContent>

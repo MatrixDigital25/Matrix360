@@ -208,6 +208,20 @@ db.exec(`
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (org_id) REFERENCES organizations(org_id)
   );
+
+  CREATE TABLE applications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    full_name TEXT NOT NULL,
+    professional_title TEXT NOT NULL,
+    organization TEXT NOT NULL,
+    years_experience INTEGER NOT NULL,
+    industry TEXT NOT NULL,
+    specializations TEXT NOT NULL,
+    linkedin_url TEXT NOT NULL,
+    bio TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
 `);
 
 // Insert some mock data with organization isolation
@@ -338,6 +352,12 @@ db.exec(`
 
   INSERT INTO strategic_signals (org_id, title, category, source, content, recommendation, severity)
   VALUES (1, 'Emerging Market Tech Boom', 'Opportunity Signals', 'market news', 'Venture capital flow into Southeast Asian deep tech startups has increased by 40% year-over-year.', 'Explore strategic partnerships or acquisitions in the Jakarta and Ho Chi Minh City tech hubs.', 'Medium');
+
+  INSERT INTO applications (full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio)
+  VALUES ('Dr. Sarah Jenkins', 'Senior Regulatory Strategist', 'Global Compliance Corp', 15, 'Healthcare', 'Compliance, Policy, EU Markets', 'https://linkedin.com/in/sarah-jenkins', 'Expert in global healthcare regulation and compliance with 15 years of experience across EMEA regions.');
+
+  INSERT INTO applications (full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio)
+  VALUES ('Marcus Chen', 'APAC Expansion Lead', 'Asia Pacific Ventures', 12, 'Technology', 'Market Entry, Supply Chain, M&A', 'https://linkedin.com/in/marcus-chen', 'Specialist in APAC market entry strategies with deep expertise in regulatory compliance and supply chain optimization.');
 `);
 
 // --- Middleware ---
@@ -863,6 +883,26 @@ async function startServer() {
     stmt.run(req.params.id, req.user!.org_id);
     logAudit(req.user!.user_id, req.user!.org_id, "SYNC_INTEGRATION", `Synced integration ${req.params.id}`, req.ip);
     res.json({ success: true });
+  });
+
+  // --- Application APIs (Public, no auth required) ---
+  app.post("/api/apply", (req: any, res: any) => {
+    const { full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio } = req.body;
+    try {
+      const stmt = db.prepare(`
+        INSERT INTO applications (full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      const info = stmt.run(full_name, professional_title, organization, years_experience, industry, specializations, linkedin_url, bio);
+      res.json({ success: true, id: info.lastInsertRowid });
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  app.get("/api/admin/applications", (req: any, res: any) => {
+    const applications = db.prepare("SELECT * FROM applications ORDER BY created_at DESC").all();
+    res.json(applications);
   });
 
   // Vite middleware for development
