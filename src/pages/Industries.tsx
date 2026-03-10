@@ -58,7 +58,7 @@ export default function Industries() {
               Industries We Serve
             </h1>
             <p className="text-xl text-text-muted mb-10 leading-relaxed">
-              Matrix360 provides strategic intelligence and elite expertise across the world's most critical and complex sectors.
+              The Matrix360 Strategic Intelligence Operating System provides elite expertise across the world's most critical and complex sectors.
             </p>
           </motion.div>
         </div>

@@ -38,6 +38,16 @@ const DOCUMENTS = [
   { id: 3, name: 'Regulatory_Compliance_Checklist.docx', type: 'DOCX', size: '850 KB', updated: '1d ago' },
 ];
 
+const THREADS = [
+  { id: 1, title: 'Regulatory classification for AI systems', author: 'Dr. Sarah Jenkins', replies: 12, lastActive: '10m ago' },
+  { id: 2, title: 'Logistics partnership options in Vietnam', author: 'Marcus Chen', replies: 5, lastActive: '2h ago' },
+];
+
+const TRANSCRIPTS = [
+  { id: 1, title: 'Strategy Sync: Project Alpha', date: 'Oct 12, 2023', duration: '45m', summary: 'Discussed regulatory hurdles and supply chain mapping.' },
+  { id: 2, title: 'AI Integration Workshop', date: 'Oct 10, 2023', duration: '60m', summary: 'Explored efficiency gains through automated procurement.' },
+];
+
 export default function Workspace() {
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -75,7 +85,7 @@ export default function Workspace() {
 
       {/* Tabs */}
       <div className="flex items-center gap-6 border-b border-panel-border">
-        {['Overview', 'Tasks', 'Documents', 'Intelligence', 'Team'].map((tab) => (
+        {['Overview', 'Tasks', 'Documents', 'Discussions', 'Transcripts', 'Intelligence', 'Team'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab.toLowerCase())}
@@ -95,74 +105,130 @@ export default function Workspace() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content Area */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Project Summary Card */}
-          <Card className="border-panel-border bg-panel-bg shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-bold flex items-center">
-                <Sparkles className="h-4 w-4 mr-2 text-ai-violet" />
-                AI Executive Summary
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-text-main leading-relaxed">
-                The APAC market entry strategy is currently in the <strong>Regulatory Analysis phase</strong>. We have identified three key compliance hurdles in the Singapore market. The supply chain mapping is complete, showing a 15% potential efficiency gain through local partnerships. Next milestone: Competitor Benchmarking (Due in 4 days).
-              </p>
-              <div className="mt-4 flex items-center gap-4">
-                <div className="flex-1">
-                  <div className="flex justify-between text-[10px] font-bold text-text-muted mb-1 uppercase">
-                    <span>Overall Progress</span>
-                    <span>75%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-secondary-bg rounded-full overflow-hidden border border-panel-border">
-                    <div className="h-full bg-interaction-primary" style={{ width: '75%' }} />
-                  </div>
-                </div>
-                <Button variant="secondary" size="sm" className="h-8 text-[10px]">View Roadmap</Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Tasks Section */}
-          <section className="space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-text-main flex items-center">
-                <CheckSquare className="h-4 w-4 mr-2 text-interaction-primary" />
-                Active Tasks
-              </h3>
-              <Button variant="secondary" size="sm" className="h-8 text-[10px]">View All</Button>
-            </div>
-            <div className="grid grid-cols-1 gap-3">
-              {TASKS.map((task) => (
-                <div key={task.id} className="p-3 bg-panel-bg border border-panel-border rounded-xl hover:border-interaction-primary/30 transition-all group flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={cn(
-                      "h-2 w-2 rounded-full",
-                      task.status === 'Completed' ? "bg-alert-opportunity" : task.status === 'In Progress' ? "bg-interaction-primary" : "bg-text-muted"
-                    )} />
-                    <div>
-                      <p className="text-xs font-bold text-text-main group-hover:text-interaction-primary transition-colors">{task.title}</p>
-                      <div className="flex items-center gap-3 mt-1">
-                        <span className="text-[10px] text-text-muted flex items-center">
-                          <Users className="h-3 w-3 mr-1" />
-                          {task.assignee}
-                        </span>
-                        <span className="text-[10px] text-text-muted flex items-center">
-                          <Calendar className="h-3 w-3 mr-1" />
-                          {task.deadline}
-                        </span>
+          {activeTab === 'overview' && (
+            <>
+              {/* Project Summary Card */}
+              <Card className="border-panel-border bg-panel-bg shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold flex items-center">
+                    <Sparkles className="h-4 w-4 mr-2 text-ai-violet" />
+                    AI Executive Summary
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-text-main leading-relaxed">
+                    The APAC market entry strategy is currently in the <strong>Regulatory Analysis phase</strong>. We have identified three key compliance hurdles in the Singapore market. The supply chain mapping is complete, showing a 15% potential efficiency gain through local partnerships. Next milestone: Competitor Benchmarking (Due in 4 days).
+                  </p>
+                  <div className="mt-4 flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="flex justify-between text-[10px] font-bold text-text-muted mb-1 uppercase">
+                        <span>Overall Progress</span>
+                        <span>75%</span>
+                      </div>
+                      <div className="h-1.5 w-full bg-secondary-bg rounded-full overflow-hidden border border-panel-border">
+                        <div className="h-full bg-interaction-primary" style={{ width: '75%' }} />
                       </div>
                     </div>
+                    <Button variant="secondary" size="sm" className="h-8 text-[10px]">View Roadmap</Button>
                   </div>
-                  <Badge variant="secondary" className={cn(
-                    "text-[8px] uppercase tracking-wider",
-                    task.priority === 'High' ? "bg-alert-risk/10 text-alert-risk" : "bg-secondary-bg text-text-muted"
-                  )}>
-                    {task.priority}
-                  </Badge>
+                </CardContent>
+              </Card>
+
+              {/* Tasks Section */}
+              <section className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-text-main flex items-center">
+                    <CheckSquare className="h-4 w-4 mr-2 text-interaction-primary" />
+                    Active Tasks
+                  </h3>
+                  <Button variant="secondary" size="sm" className="h-8 text-[10px]">View All</Button>
                 </div>
-              ))}
-            </div>
-          </section>
+                <div className="grid grid-cols-1 gap-3">
+                  {TASKS.map((task) => (
+                    <div key={task.id} className="p-3 bg-panel-bg border border-panel-border rounded-xl hover:border-interaction-primary/30 transition-all group flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className={cn(
+                          "h-2 w-2 rounded-full",
+                          task.status === 'Completed' ? "bg-alert-opportunity" : task.status === 'In Progress' ? "bg-interaction-primary" : "bg-text-muted"
+                        )} />
+                        <div>
+                          <p className="text-xs font-bold text-text-main group-hover:text-interaction-primary transition-colors">{task.title}</p>
+                          <div className="flex items-center gap-3 mt-1">
+                            <span className="text-[10px] text-text-muted flex items-center">
+                              <Users className="h-3 w-3 mr-1" />
+                              {task.assignee}
+                            </span>
+                            <span className="text-[10px] text-text-muted flex items-center">
+                              <Calendar className="h-3 w-3 mr-1" />
+                              {task.deadline}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <Badge variant="secondary" className={cn(
+                        "text-[8px] uppercase tracking-wider",
+                        task.priority === 'High' ? "bg-alert-risk/10 text-alert-risk" : "bg-secondary-bg text-text-muted"
+                      )}>
+                        {task.priority}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
+
+          {activeTab === 'discussions' && (
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-text-main flex items-center">
+                  <MessageSquare className="h-4 w-4 mr-2 text-interaction-primary" />
+                  Discussion Threads
+                </h3>
+                <Button variant="primary" size="sm" className="h-8 text-[10px]">New Thread</Button>
+              </div>
+              <div className="space-y-3">
+                {THREADS.map((thread) => (
+                  <div key={thread.id} className="p-4 bg-white border border-border-light rounded-xl hover:shadow-sm transition-all cursor-pointer group">
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="text-sm font-bold text-text-main group-hover:text-interaction-primary transition-colors">{thread.title}</h4>
+                      <span className="text-[10px] text-text-muted">{thread.lastActive}</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-[10px] text-text-muted">
+                      <span className="font-bold text-interaction-primary uppercase tracking-wider">{thread.author}</span>
+                      <span className="flex items-center"><MessageSquare className="h-3 w-3 mr-1" /> {thread.replies} replies</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {activeTab === 'transcripts' && (
+            <section className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold text-text-main flex items-center">
+                  <FileText className="h-4 w-4 mr-2 text-interaction-primary" />
+                  Meeting Transcripts
+                </h3>
+              </div>
+              <div className="space-y-3">
+                {TRANSCRIPTS.map((transcript) => (
+                  <div key={transcript.id} className="p-4 bg-white border border-border-light rounded-xl hover:shadow-sm transition-all cursor-pointer">
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="text-sm font-bold text-text-main">{transcript.title}</h4>
+                      <Badge variant="secondary" className="bg-secondary-bg text-text-muted text-[9px]">{transcript.duration}</Badge>
+                    </div>
+                    <p className="text-xs text-text-muted mb-3 leading-relaxed">{transcript.summary}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider">{transcript.date}</span>
+                      <Button variant="text" className="h-7 px-2 text-[10px] text-interaction-primary">View Transcript</Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         {/* Right Sidebar Area */}

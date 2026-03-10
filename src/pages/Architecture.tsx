@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Server, BrainCircuit, Workflow, Database, Shield, Activity, ArrowRight } from 'lucide-react';
+import { Server, BrainCircuit, Workflow, Database, Shield, Activity, ArrowRight, Target, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/Card';
 import { Button } from '@/src/components/ui/Button';
 import { Link } from 'react-router-dom';
@@ -17,23 +17,24 @@ export default function Architecture() {
         >
           <h1 className="text-5xl font-heading font-bold text-text-main mb-6">AI Automation Architecture</h1>
           <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-            Matrix360 is built on a scalable, secure foundation designed to orchestrate complex AI agents and enterprise workflows.
+            The Matrix360 Strategic Intelligence Operating System is built on a scalable, secure foundation designed to orchestrate complex AI agents and enterprise workflows.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-16">
           {[
-            { title: 'Data Ingestion Layer', desc: 'Securely connects to enterprise data sources, APIs, and unstructured documents.', icon: Database },
-            { title: 'AI Agent Orchestration', desc: 'Manages specialized LLMs and agents for specific strategic tasks.', icon: BrainCircuit },
-            { title: 'Execution Engine', desc: 'Triggers workflows, updates systems, and delivers insights to stakeholders.', icon: Workflow },
+            { title: 'Intelligence Layer', desc: 'Global signals, AI analysis, and strategic insights powered by decentralized intelligence agents.', icon: BrainCircuit },
+            { title: 'Strategy Layer', desc: 'High-fidelity collaboration environments where human expertise meets AI-driven strategy design.', icon: Target },
+            { title: 'Execution Layer', desc: 'Orchestration of transformation programs through advanced automation and project management systems.', icon: Workflow },
+            { title: 'Network Layer', desc: 'A global ecosystem of elite consultants and specialized advisory organizations.', icon: Users },
           ].map((layer, i) => (
             <Card key={i} className="bg-gray-50/50 border-border-light rounded-2xl">
               <CardHeader>
                 <layer.icon className="h-10 w-10 text-interaction-primary mb-4" />
-                <CardTitle className="text-2xl text-text-main">{layer.title}</CardTitle>
+                <CardTitle className="text-xl text-text-main">{layer.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-text-muted leading-relaxed">{layer.desc}</p>
+                <p className="text-sm text-text-muted leading-relaxed">{layer.desc}</p>
               </CardContent>
             </Card>
           ))}

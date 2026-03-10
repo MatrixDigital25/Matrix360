@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/src/utils/cn';
 import { BarChart } from '@/src/components/ui/Charts';
 import { SystemDiagram } from '@/src/components/ui/SystemDiagram';
+import { IntelligenceFeed } from '@/src/components/IntelligenceFeed';
 
 export default function EnterpriseDashboard() {
   return (
@@ -17,14 +18,18 @@ export default function EnterpriseDashboard() {
       className="space-y-12 max-w-7xl mx-auto"
     >
       {/* 1. Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-panel-border">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-panel-border">
         <div>
-          <h1 className="text-3xl font-heading font-bold text-text-main">Strategic Intelligence Dashboard</h1>
-          <p className="text-text-muted mt-2 text-base">Monitor strategic signals, gather insights, and execute initiatives.</p>
+          <h1 className="text-2xl md:text-3xl font-heading font-bold text-text-main">Strategic Intelligence Dashboard</h1>
+          <p className="text-text-muted mt-2 text-sm md:text-base">Monitor strategic signals, gather insights, and execute initiatives.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Link to="/enterprise/challenge">
-            <Button variant="primary" className="h-10 px-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge variant="secondary" className="bg-interaction-primary/10 text-interaction-primary border-none px-3 py-1 font-bold flex items-center gap-1.5">
+            <Zap className="h-3.5 w-3.5" />
+            Professional Tier
+          </Badge>
+          <Link to="/enterprise/challenge" className="w-full sm:w-auto">
+            <Button variant="primary" className="h-10 px-6 w-full sm:w-auto">
               <PlusCircle className="mr-2 h-4 w-4" />
               Submit New Strategic Challenge
             </Button>
@@ -38,7 +43,7 @@ export default function EnterpriseDashboard() {
           <Activity className="h-5 w-5 mr-2 text-interaction-primary" />
           Signals
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg">
             <CardContent className="p-5">
               <div className="flex items-start space-x-4">
@@ -90,103 +95,79 @@ export default function EnterpriseDashboard() {
       <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <BrainCircuit className="h-5 w-5 mr-2 text-interaction-primary" />
-          Insights
+          Strategic Intelligence
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border p-5">
-              <CardTitle className="text-lg flex items-center">
-                <Globe className="mr-2 h-5 w-5 text-interaction-primary" />
-                Industry Radar
-              </CardTitle>
-              <CardDescription>Real-time signals and competitor movements.</CardDescription>
-            </CardHeader>
-            <CardContent className="p-5 space-y-4">
-              <div className="p-4 rounded-lg bg-gray-50 border border-panel-border">
-                <h4 className="text-sm font-bold text-text-main mb-2 flex items-center">
-                  <AlertTriangle className="h-4 w-4 mr-2 text-amber-600" />
-                  Regulatory Shift Detected
-                </h4>
-                <p className="text-sm text-text-muted leading-relaxed">
-                  Recent policy drafts in the EU suggest stricter compliance requirements for cross-border data transfers by Q3.
-                </p>
-              </div>
-              <div className="p-4 rounded-lg bg-gray-50 border border-panel-border">
-                <h4 className="text-sm font-bold text-text-main mb-2 flex items-center">
-                  <Activity className="h-4 w-4 mr-2 text-interaction-primary" />
-                  Competitor Activity
-                </h4>
-                <p className="text-sm text-text-muted leading-relaxed">
-                  Competitor activity in Singapore has increased by 15% this quarter.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="lg:col-span-2">
+            <IntelligenceFeed />
+          </div>
 
-          <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border p-5">
-              <CardTitle className="text-lg flex items-center">
-                <Network className="mr-2 h-5 w-5 text-interaction-primary" />
-                Stakeholder Intelligence Map
-              </CardTitle>
-              <CardDescription>Key influencers and decision-makers.</CardDescription>
-            </CardHeader>
-            <CardContent className="p-5 space-y-4">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-panel-border">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-interaction-primary/10 flex items-center justify-center text-xs font-bold text-interaction-primary">
-                    CEO
+          <div className="lg:col-span-1 space-y-6">
+            <Card className="border-panel-border shadow-sm bg-panel-bg">
+              <CardHeader className="pb-4 border-b border-panel-border p-5">
+                <CardTitle className="text-lg flex items-center">
+                  <Network className="mr-2 h-5 w-5 text-interaction-primary" />
+                  Stakeholder Intelligence Map
+                </CardTitle>
+                <CardDescription>Key influencers and decision-makers.</CardDescription>
+              </CardHeader>
+              <CardContent className="p-5 space-y-4">
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-panel-border">
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-full bg-interaction-primary/10 flex items-center justify-center text-xs font-bold text-interaction-primary">
+                      CEO
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-text-main">High Influence</p>
+                      <p className="text-xs text-text-muted">Requires weekly updates</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-text-main">High Influence</p>
-                    <p className="text-xs text-text-muted">Requires weekly updates</p>
-                  </div>
+                  <Badge variant="green">Aligned</Badge>
                 </div>
-                <Badge variant="green">Aligned</Badge>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-panel-border">
-                <div className="flex items-center gap-3">
-                  <div className="h-8 w-8 rounded-full bg-alert-risk/10 flex items-center justify-center text-xs font-bold text-alert-risk">
-                    REG
+                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-panel-border">
+                  <div className="flex items-center gap-3">
+                    <div className="h-8 w-8 rounded-full bg-alert-risk/10 flex items-center justify-center text-xs font-bold text-alert-risk">
+                      REG
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-text-main">Regulators</p>
+                      <p className="text-xs text-text-muted">Critical blocker</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-text-main">Regulators</p>
-                    <p className="text-xs text-text-muted">Critical blocker</p>
-                  </div>
+                  <Badge variant="amber">Monitoring</Badge>
                 </div>
-                <Badge variant="amber">Monitoring</Badge>
-              </div>
-              <Link to="/enterprise/workspace">
-                <Button variant="secondary" className="w-full bg-panel-bg border-panel-border shadow-sm mt-2">
-                  View Full Map
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+                <Link to="/enterprise/workspace">
+                  <Button variant="secondary" className="w-full bg-panel-bg border-panel-border shadow-sm mt-2">
+                    View Full Map
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
 
-          <Card className="border-panel-border shadow-sm bg-panel-bg lg:col-span-1">
-            <CardHeader className="pb-4 border-b border-panel-border p-5">
-              <CardTitle className="text-lg flex items-center">
-                <BrainCircuit className="mr-2 h-5 w-5 text-interaction-primary" />
-                AI Strategy Insights
-              </CardTitle>
-              <CardDescription>Automated intelligence briefings.</CardDescription>
-            </CardHeader>
-            <CardContent className="p-5 space-y-4">
-              <div className="p-4 rounded-lg bg-interaction-primary/5 border border-interaction-primary/20">
-                <h4 className="text-sm font-bold text-text-main mb-2 flex items-center">
-                  <Zap className="h-4 w-4 mr-2 text-interaction-primary" />
-                  Strategic Recommendation
-                </h4>
-                <p className="text-sm text-text-muted leading-relaxed">
-                  Based on the APAC Market Entry challenge, consider accelerating the timeline for the initial market assessment deliverable to preempt competitor moves.
-                </p>
-              </div>
-              <Button variant="secondary" className="w-full bg-panel-bg border-panel-border shadow-sm">
-                Generate Full Brief
-              </Button>
-            </CardContent>
-          </Card>
+            <Card className="border-panel-border shadow-sm bg-panel-bg">
+              <CardHeader className="pb-4 border-b border-panel-border p-5">
+                <CardTitle className="text-lg flex items-center">
+                  <Shield className="mr-2 h-5 w-5 text-interaction-primary" />
+                  Security & Compliance
+                </CardTitle>
+                <CardDescription>Enterprise-grade monitoring.</CardDescription>
+              </CardHeader>
+              <CardContent className="p-5 space-y-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-text-muted">Data Sovereignty</span>
+                  <Badge variant="green">Compliant</Badge>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-text-muted">AI Ethics Guardrails</span>
+                  <Badge variant="green">Active</Badge>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-text-muted">Audit Logging</span>
+                  <Badge variant="green">Enabled</Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 
@@ -213,7 +194,7 @@ export default function EnterpriseDashboard() {
           <Zap className="h-5 w-5 mr-2 text-interaction-primary" />
           Actions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/enterprise/challenge">
               <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">

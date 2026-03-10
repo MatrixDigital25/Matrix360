@@ -12,16 +12,16 @@ export default function About() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl font-heading font-bold text-text-main mb-6">About Matrix360</h1>
+          <h1 className="text-5xl font-heading font-bold text-text-main mb-6">Matrix360 Strategic Intelligence</h1>
           <p className="text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
-            We are building the operating system for enterprise strategy, combining elite human expertise with advanced artificial intelligence.
+            Matrix360 is the Strategic Intelligence Operating System for enterprise strategy, combining elite human expertise with advanced artificial intelligence.
           </p>
         </motion.div>
 
         <div className="max-w-4xl mx-auto mb-24">
           <h2 className="text-3xl font-heading font-bold text-text-main mb-6">Our Vision</h2>
           <p className="text-lg text-text-muted leading-relaxed mb-8">
-            The complexity of the modern enterprise environment—driven by rapid technological shifts, intricate regulatory landscapes, and globalized markets—requires a new approach to strategic decision-making. Matrix360 was founded on the belief that the most effective strategies emerge from the synthesis of deep human experience and the analytical power of AI.
+            The complexity of the modern enterprise environment—driven by rapid technological shifts, intricate regulatory landscapes, and globalized markets—requires a new approach to strategic decision-making. The Matrix360 Strategic Intelligence Operating System was founded on the belief that the most effective strategies emerge from the synthesis of deep human experience and the analytical power of AI.
           </p>
           <p className="text-lg text-text-muted leading-relaxed mb-12">
             We provide a unified platform where organizations can define their most critical challenges, connect with world-class advisors, and deploy intelligent systems to automate execution.

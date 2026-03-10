@@ -1,45 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-heading: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  --color-primary-bg: #F4F9FF;
-  --color-secondary-bg: #EEF5FF;
+  --color-primary-bg: #FAFAFA;
+  --color-secondary-bg: #F4F4F5;
   --color-card-bg: #FFFFFF;
   
-  --color-brand-primary: #0F4C5C;
-  --color-interaction-primary: #2F80ED;
-  --color-interaction-secondary: #0077FF;
+  --color-brand-primary: #09090B;
+  --color-interaction-primary: #18181B;
+  --color-interaction-secondary: #27272A;
   
-  --color-ai-cyan: #56CCF2;
-  --color-ai-violet: #7C3AED;
+  --color-ai-cyan: #06B6D4;
+  --color-ai-violet: #6366F1;
   
-  --color-text-main: #1A2B3C;
-  --color-text-secondary: #4A657D;
-  --color-text-muted: #7C8FA3;
+  --color-text-main: #09090B;
+  --color-text-secondary: #3F3F46;
+  --color-text-muted: #71717A;
   
-  --color-border-light: #E3F0FF;
-  --color-panel-bg: #F0F7FF;
-  --color-panel-border: #DCEBFF;
+  --color-border-light: #E4E4E7;
+  --color-panel-bg: #F8F8F8;
+  --color-panel-border: #E4E4E7;
   
-  --color-alert-risk: #e5484d;
-  --color-alert-opportunity: #10b981;
+  --color-alert-risk: #EF4444;
+  --color-alert-opportunity: #10B981;
 }
 
 body {
-  @apply bg-primary-bg text-text-main font-sans antialiased selection:bg-interaction-primary/20;
+  @apply bg-primary-bg text-text-main font-sans antialiased selection:bg-zinc-900 selection:text-white;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-heading tracking-tight text-text-main;
+  @apply font-sans tracking-tight text-text-main font-semibold;
+}
+
+.serif {
+  @apply font-serif;
 }
 
 /* Custom Scrollbar for a premium feel */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -47,9 +52,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-border-light rounded-full;
+  @apply bg-zinc-200 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-interaction-primary/50;
+  @apply bg-zinc-300;
+}
+
+/* Enterprise Card Style */
+.enterprise-card {
+  @apply bg-white border border-zinc-200 rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] transition-all duration-200;
+}
+
+.enterprise-card:hover {
+  @apply shadow-[0_4px_12px_rgba(0,0,0,0.05)] border-zinc-300;
 }

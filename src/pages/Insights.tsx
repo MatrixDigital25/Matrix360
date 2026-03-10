@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { cn } from '@/src/utils/cn';
 import { Card, CardContent } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
 import { Button } from '@/src/components/ui/Button';
@@ -17,7 +18,9 @@ import {
   Search,
   User,
   Target,
-  Users
+  Users,
+  Activity,
+  Filter
 } from 'lucide-react';
 
 const FEED_POSTS = [
@@ -118,6 +121,33 @@ export default function Feed() {
           </Button>
           <Button variant="secondary" className="h-10 px-4 text-xs bg-white border-border-light shadow-sm">
             My Network
+          </Button>
+        </div>
+      </div>
+
+      {/* Strategic Pulse & Filters */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="flex items-center gap-6 overflow-x-auto pb-2 md:pb-0 no-scrollbar">
+          {['All Intelligence', 'Strategic Insights', 'AI Reports', 'Challenges', 'Updates'].map((filter, i) => (
+            <button 
+              key={filter} 
+              className={cn(
+                "text-xs font-bold uppercase tracking-widest whitespace-nowrap transition-all",
+                i === 0 ? "text-interaction-primary border-b-2 border-interaction-primary pb-1" : "text-text-muted hover:text-text-main"
+              )}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-ai-cyan/5 border border-ai-cyan/20 rounded-lg">
+            <Activity className="h-3 w-3 text-ai-cyan animate-pulse" />
+            <span className="text-[10px] font-bold text-ai-cyan uppercase tracking-wider">Strategic Pulse: High</span>
+          </div>
+          <Button variant="secondary" className="h-8 px-3 text-[10px] font-bold uppercase tracking-wider bg-white border-border-light">
+            <Filter className="mr-2 h-3 w-3" />
+            Filter
           </Button>
         </div>
       </div>

@@ -4,7 +4,27 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
 import { Button } from '@/src/components/ui/Button';
-import { Briefcase, CheckCircle, Clock, Calendar, FileText, BrainCircuit, Users, ChevronRight, MessageSquare, Activity, Target, Zap, Upload, Network, AlertTriangle } from 'lucide-react';
+import { 
+  Briefcase, 
+  CheckCircle, 
+  Clock, 
+  Calendar, 
+  FileText, 
+  BrainCircuit, 
+  Users, 
+  ChevronRight, 
+  MessageSquare, 
+  Activity, 
+  Target, 
+  Zap, 
+  Upload, 
+  Network, 
+  AlertTriangle,
+  Wallet,
+  ArrowUpRight,
+  TrendingUp,
+  History
+} from 'lucide-react';
 import { cn } from '@/src/utils/cn';
 import { SystemDiagram } from '@/src/components/ui/SystemDiagram';
 
@@ -16,26 +36,78 @@ export default function ConsultantDashboard() {
       className="space-y-12 max-w-7xl mx-auto"
     >
       {/* 1. Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-panel-border">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-panel-border">
         <div>
-          <h1 className="text-3xl font-heading font-bold text-text-main">Consultant Workspace</h1>
-          <p className="text-text-muted mt-2 text-base max-w-2xl">Manage engagements, analyze industry intelligence, and collaborate with clients.</p>
+          <h1 className="text-2xl md:text-3xl font-heading font-bold text-text-main">Consultant Workspace</h1>
+          <p className="text-text-muted mt-2 text-sm md:text-base max-w-2xl">Manage engagements, analyze industry intelligence, and collaborate with clients.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Button variant="primary" className="h-10 px-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="secondary" className="h-10 px-6 bg-white border-border-light text-text-main flex-1 sm:flex-none">
+            <Wallet className="mr-2 h-4 w-4" />
+            Payout Settings
+          </Button>
+          <Button variant="primary" className="h-10 px-6 flex-1 sm:flex-none">
             <BrainCircuit className="mr-2 h-4 w-4" />
             AI Strategy Assistant
           </Button>
         </div>
       </div>
 
-      {/* 2. Signals Section */}
+      {/* 2. Earnings Overview */}
+      <section className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
+            <Wallet className="h-5 w-5 mr-2 text-interaction-primary" />
+            Earnings & Revenue
+          </h2>
+          <Badge className="bg-interaction-primary/10 text-interaction-primary border-none text-[10px] font-bold w-fit">
+            85/15 Revenue Share Active
+          </Badge>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <Card className="border-panel-border shadow-sm bg-panel-bg">
+            <CardContent className="p-6">
+              <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Total Earnings</p>
+              <div className="flex items-baseline gap-2">
+                <h3 className="text-2xl font-bold text-text-main">$12,450</h3>
+                <span className="text-[10px] text-alert-opportunity font-bold flex items-center">
+                  <TrendingUp className="h-3 w-3 mr-0.5" /> +12%
+                </span>
+              </div>
+              <p className="text-[10px] text-text-muted mt-1">Lifetime platform revenue</p>
+            </CardContent>
+          </Card>
+          <Card className="border-panel-border shadow-sm bg-panel-bg">
+            <CardContent className="p-6">
+              <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Pending Payout</p>
+              <h3 className="text-2xl font-bold text-text-main">$3,200</h3>
+              <p className="text-[10px] text-text-muted mt-1">Next payout: March 15th</p>
+            </CardContent>
+          </Card>
+          <Card className="border-panel-border shadow-sm bg-panel-bg">
+            <CardContent className="p-6">
+              <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Active Engagements</p>
+              <h3 className="text-2xl font-bold text-text-main">4</h3>
+              <p className="text-[10px] text-text-muted mt-1">Current billable projects</p>
+            </CardContent>
+          </Card>
+          <Card className="border-panel-border shadow-sm bg-panel-bg">
+            <CardContent className="p-6">
+              <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-1">Avg. Hourly Rate</p>
+              <h3 className="text-2xl font-bold text-text-main">$285</h3>
+              <p className="text-[10px] text-text-muted mt-1">Across all strategic domains</p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* 3. Signals Section */}
       <section className="space-y-6">
         <h2 className="text-xl font-heading font-semibold text-text-main flex items-center">
           <Activity className="h-5 w-5 mr-2 text-interaction-primary" />
           Signals
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg">
             <CardContent className="p-5 flex items-start space-x-4">
               <div className="h-10 w-10 rounded-lg bg-interaction-primary/10 flex items-center justify-center flex-shrink-0">
@@ -196,7 +268,7 @@ export default function ConsultantDashboard() {
           <Zap className="h-5 w-5 mr-2 text-interaction-primary" />
           Actions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card className="border-panel-border shadow-sm hover:shadow-md transition-shadow bg-panel-bg cursor-pointer group">
             <Link to="/enterprise/workspace">
               <CardContent className="p-5 flex flex-col items-center text-center h-full justify-center">

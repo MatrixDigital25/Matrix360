@@ -16,7 +16,7 @@ export default function Method() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-5xl md:text-6xl font-heading font-bold text-text-main leading-tight mb-6">
-              The Matrix360 Method
+              The Matrix360 Strategic Intelligence Method
             </h1>
             <p className="text-xl text-text-muted mb-10 leading-relaxed">
               A structured approach to strategic intelligence, expert matching, and collaborative execution.
@@ -72,7 +72,7 @@ export default function Method() {
         <div className="container mx-auto max-w-3xl">
           <h2 className="text-3xl font-heading font-bold text-text-main mb-6">Ready to experience the method?</h2>
           <p className="text-lg text-text-muted mb-10">
-            Join leading enterprises using Matrix360 to navigate complex strategic landscapes.
+            Join leading enterprises using the Matrix360 Strategic Intelligence Operating System to navigate complex strategic landscapes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/enterprise/challenge">
