@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
@@ -7,8 +7,6 @@ import {
   Workflow, 
   Zap, 
   Settings, 
-  Play, 
-  Pause, 
   Plus, 
   Activity, 
   Clock, 
@@ -18,68 +16,29 @@ import {
   GitBranch,
   Layers,
   CheckCircle2,
-  AlertCircle,
   BrainCircuit,
   ShieldCheck,
   ArrowRight,
   Search,
-  TrendingUp,
-  ShieldAlert,
-  Target,
-  BarChart3
+  MessageSquare,
+  X,
+  Send,
+  Loader2
 } from 'lucide-react';
 import { cn } from '@/src/utils/cn';
 
-const WORKFLOWS = [
-  {
-    id: 1,
-    name: 'Global Market Monitoring',
-    type: 'Market monitoring',
-    status: 'Active',
-    trigger: 'Real-time Bloomberg/Reuters Feed',
-    actions: 8,
-    lastRun: '2m ago',
-    successRate: '99.9%',
-    description: 'Autonomous monitoring of global market shifts, currency volatility, and commodity price changes with automated impact reporting.',
-    pipeline: ['Ingestion', 'AI Analysis', 'Validation', 'Execution']
-  },
-  {
-    id: 2,
-    name: 'Competitive Intelligence Tracker',
-    type: 'Competitive tracking',
-    status: 'Active',
-    trigger: 'Webhooks / Social Signals',
-    actions: 5,
-    lastRun: '15m ago',
-    successRate: '98.7%',
-    description: 'Tracks competitor product launches, patent filings, and leadership changes across 12 key industry domains.',
-    pipeline: ['Ingestion', 'AI Analysis', 'Validation', 'Execution']
-  },
-  {
-    id: 3,
-    name: 'Supply Chain Optimization',
-    type: 'Operational optimization',
-    status: 'Active',
-    trigger: 'ERP Inventory Thresholds',
-    actions: 12,
-    lastRun: '1h ago',
-    successRate: '100%',
-    description: 'Dynamic re-routing of logistics and inventory rebalancing based on predictive demand modeling and disruption signals.',
-    pipeline: ['Ingestion', 'AI Analysis', 'Validation', 'Execution']
-  },
-  {
-    id: 4,
-    name: 'Regulatory Risk Sentinel',
-    type: 'Risk monitoring',
-    status: 'Paused',
-    trigger: 'Government Portal Updates',
-    actions: 6,
-    lastRun: '2d ago',
-    successRate: '99.5%',
-    description: 'Monitors global regulatory bodies for policy changes affecting enterprise compliance and ESG commitments.',
-    pipeline: ['Ingestion', 'AI Analysis', 'Validation', 'Execution']
-  }
-];
+interface WorkflowData {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  created_at: string;
+}
+
+interface ChatMessage {
+  role: 'user' | 'ai';
+  content: string;
+}
 
 const PIPELINE_STAGES = [
   { id: 'ingestion', label: 'Data Ingestion', icon: Database, color: 'text-blue-500', bg: 'bg-blue-500/10' },
@@ -89,12 +48,150 @@ const PIPELINE_STAGES = [
 ];
 
 export default function AutomationSystems() {
-  const [activeWorkflowId, setActiveWorkflowId] = useState<number | null>(1);
+  const [workflows, setWorkflows] = useState<WorkflowData[]>([]);
+  const [activeWorkflowId, setActiveWorkflowId] = useState<number | null>(null);
+  
+  // Modals state
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [isNewWorkflowOpen, setIsNewWorkflowOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
-  const activeWorkflow = WORKFLOWS.find(w => w.id === activeWorkflowId);
+  // Config State
+  const [apiKey, setApiKey] = useState('');
+  const [savingKey, setSavingKey] = useState(false);
+  const [hasKey, setHasKey] = useState(false);
+
+  // New Workflow State
+  const [newWfName, setNewWfName] = useState('');
+  const [newWfDesc, setNewWfDesc] = useState('');
+  const [newWfText, setNewWfText] = useState('');
+  const [creatingWf, setCreatingWf] = useState(false);
+
+  // Chat State
+  const [chatMessage, setChatMessage] = useState('');
+  const [chatHistory, setChatHistory] = useState<Record<number, ChatMessage[]>>({});
+  const [sendingChat, setSendingChat] = useState(false);
+
+  useEffect(() => {
+    fetchApiKeyStatus();
+    fetchWorkflows();
+  }, []);
+
+  const fetchApiKeyStatus = async () => {
+    try {
+      const res = await fetch('/api/settings/apikey');
+      if (res.ok) {
+        const data = await res.json();
+        setHasKey(data.hasKey);
+      }
+    } catch (e) { console.error(e); }
+  };
+
+  const fetchWorkflows = async () => {
+    try {
+      const res = await fetch('/api/workflows');
+      if (res.ok) {
+        const data = await res.json();
+        setWorkflows(data);
+        if (data.length > 0 && !activeWorkflowId) {
+          setActiveWorkflowId(data[0].id);
+        }
+      }
+    } catch (e) { console.error(e); }
+  };
+
+  const saveApiKey = async () => {
+    if (!apiKey) return;
+    setSavingKey(true);
+    try {
+      const res = await fetch('/api/settings/apikey', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey })
+      });
+      if (res.ok) {
+        setHasKey(true);
+        setIsConfigOpen(false);
+        setApiKey(''); // clear it from memory
+      } else {
+        alert("Failed to save API Key");
+      }
+    } catch (e) { console.error(e); }
+    setSavingKey(false);
+  };
+
+  const createWorkflow = async () => {
+    if (!newWfName || !newWfText) return;
+    setCreatingWf(true);
+    try {
+      const res = await fetch('/api/workflows', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: newWfName, description: newWfDesc, document_text: newWfText })
+      });
+      if (res.ok) {
+        await fetchWorkflows();
+        setIsNewWorkflowOpen(false);
+        setNewWfName('');
+        setNewWfDesc('');
+        setNewWfText('');
+      } else {
+        alert("Failed to create workflow");
+      }
+    } catch (e) { console.error(e); }
+    setCreatingWf(false);
+  };
+
+  const openChat = (id: number) => {
+    setActiveWorkflowId(id);
+    setIsChatOpen(true);
+  };
+
+  const sendChatMessage = async () => {
+    if (!chatMessage.trim() || !activeWorkflowId) return;
+    
+    const msg = chatMessage;
+    setChatMessage('');
+    
+    // Optimistic UI
+    setChatHistory(prev => ({
+      ...prev,
+      [activeWorkflowId]: [...(prev[activeWorkflowId] || []), { role: 'user', content: msg }]
+    }));
+    
+    setSendingChat(true);
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ workflowId: activeWorkflowId, message: msg })
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        setChatHistory(prev => ({
+          ...prev,
+          [activeWorkflowId]: [...prev[activeWorkflowId], { role: 'ai', content: data.response }]
+        }));
+      } else {
+        alert(data.error || "Failed to talk to AI");
+        // Revert on error
+        setChatHistory(prev => ({
+          ...prev,
+          [activeWorkflowId]: prev[activeWorkflowId].slice(0, -1)
+        }));
+      }
+    } catch (e) { 
+      console.error(e); 
+    }
+    setSendingChat(false);
+  };
+
+  const activeWorkflow = workflows.find(w => w.id === activeWorkflowId);
+  const currentChat = activeWorkflowId ? (chatHistory[activeWorkflowId] || []) : [];
 
   return (
-    <div className="space-y-8 pb-12">
+    <div className="space-y-8 pb-12 relative">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -102,11 +199,18 @@ export default function AutomationSystems() {
           <p className="text-text-muted text-sm">Orchestrate enterprise-grade strategic workflows and autonomous data pipelines.</p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="secondary" className="bg-white border-border-light text-text-main h-11 px-6 rounded-xl shadow-sm">
+          <Button 
+            variant="secondary" 
+            onClick={() => setIsConfigOpen(true)}
+            className={cn("h-11 px-6 rounded-xl shadow-sm border", hasKey ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-white border-border-light text-text-main")}
+          >
             <Settings className="h-4 w-4 mr-2" />
-            System Config
+            {hasKey ? "Key Configured" : "System Config"}
           </Button>
-          <Button className="bg-interaction-primary text-white rounded-xl shadow-lg font-bold h-11 px-6 hover:shadow-interaction-primary/20 transition-all">
+          <Button 
+            onClick={() => setIsNewWorkflowOpen(true)}
+            className="bg-interaction-primary text-white rounded-xl shadow-lg font-bold h-11 px-6 hover:shadow-interaction-primary/20 transition-all"
+          >
             <Plus className="h-4 w-4 mr-2" />
             New Workflow
           </Button>
@@ -128,9 +232,7 @@ export default function AutomationSystems() {
         </CardHeader>
         <CardContent className="p-8">
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4">
-            {/* Connecting Lines (Desktop) */}
             <div className="absolute top-1/2 left-0 w-full h-px bg-border-light -translate-y-1/2 hidden md:block z-0" />
-            
             {PIPELINE_STAGES.map((stage, idx) => (
               <div key={stage.id} className="relative z-10 flex flex-col items-center gap-4 group">
                 <motion.div 
@@ -144,8 +246,6 @@ export default function AutomationSystems() {
                   )}
                 >
                   <stage.icon className={cn("h-10 w-10", stage.color)} />
-                  
-                  {/* Pulse Effect for Active Stage */}
                   {idx === 1 && (
                     <div className="absolute inset-0 rounded-2xl border-2 border-ai-violet animate-ping opacity-20" />
                   )}
@@ -153,14 +253,12 @@ export default function AutomationSystems() {
                 <div className="text-center">
                   <p className="text-xs font-bold text-text-main mb-1">{stage.label}</p>
                   <p className="text-[10px] text-text-muted font-medium">
-                    {idx === 0 ? "1.2GB/s Inflow" : 
-                     idx === 1 ? "Gemini 3.1 Pro" : 
-                     idx === 2 ? "99.9% Confidence" : 
-                     "Webhook Triggered"}
+                    {idx === 0 ? "Dynamic Inflow" : 
+                     idx === 1 ? "Custom GenAI Node" : 
+                     idx === 2 ? "Context Validation" : 
+                     "Chat Execution"}
                   </p>
                 </div>
-                
-                {/* Arrow for Mobile */}
                 {idx < PIPELINE_STAGES.length - 1 && (
                   <ArrowRight className="h-6 w-6 text-border-light md:hidden" />
                 )}
@@ -177,22 +275,27 @@ export default function AutomationSystems() {
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-sm font-bold text-text-main uppercase tracking-widest flex items-center gap-2">
               <GitBranch className="h-4 w-4 text-interaction-primary" />
-              Strategic Workflows
+              Strategic Workflows ({workflows.length})
             </h2>
-            <div className="flex items-center gap-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
-                <input 
-                  type="text" 
-                  placeholder="Filter workflows..." 
-                  className="bg-white border border-border-light rounded-lg pl-9 pr-3 py-1.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-interaction-primary/20 w-48"
-                />
-              </div>
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-muted" />
+              <input 
+                type="text" 
+                placeholder="Filter workflows..." 
+                className="bg-white border border-border-light rounded-lg pl-9 pr-3 py-1.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-interaction-primary/20 w-48"
+              />
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4">
-            {WORKFLOWS.map((workflow) => (
+            {workflows.length === 0 ? (
+              <div className="text-center p-12 border border-dashed border-border-light rounded-2xl bg-white flex flex-col items-center">
+                <BrainCircuit className="h-12 w-12 text-border-light mb-4" />
+                <h3 className="text-text-main font-bold mb-2">No Workflows Activated</h3>
+                <p className="text-text-muted text-sm mb-4">Click New Workflow to create a custom AI automation pipeline.</p>
+                <Button onClick={() => setIsNewWorkflowOpen(true)} className="bg-interaction-primary">Create Now</Button>
+              </div>
+            ) : workflows.map((workflow) => (
               <motion.div
                 key={workflow.id}
                 onClick={() => setActiveWorkflowId(workflow.id)}
@@ -208,57 +311,51 @@ export default function AutomationSystems() {
                         <div className="flex items-center gap-3 mb-3">
                           <div className={cn(
                             "h-10 w-10 rounded-xl flex items-center justify-center border shadow-sm",
-                            workflow.status === 'Active' ? "bg-alert-opportunity/10 border-alert-opportunity/20" : "bg-secondary-bg border-border-light"
+                            "bg-alert-opportunity/10 border-alert-opportunity/20"
                           )}>
-                            {workflow.type === 'Market monitoring' && <TrendingUp className="h-5 w-5 text-interaction-primary" />}
-                            {workflow.type === 'Competitive tracking' && <Target className="h-5 w-5 text-interaction-primary" />}
-                            {workflow.type === 'Operational optimization' && <BarChart3 className="h-5 w-5 text-interaction-primary" />}
-                            {workflow.type === 'Risk monitoring' && <ShieldAlert className="h-5 w-5 text-alert-risk" />}
+                            <Workflow className="h-5 w-5 text-interaction-primary" />
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
                               <h3 className="text-sm font-bold text-text-main group-hover:text-interaction-primary transition-colors">{workflow.name}</h3>
-                              <Badge className="bg-secondary-bg text-text-muted border-none text-[8px] font-bold uppercase py-0 px-1.5">
-                                {workflow.type}
+                              <Badge className="bg-emerald-50 text-emerald-700 border-none text-[8px] font-bold uppercase py-0 px-1.5">
+                                GenAI Node
                               </Badge>
                             </div>
                             <p className="text-[10px] text-text-muted flex items-center gap-2 mt-0.5">
-                              <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> {workflow.trigger}</span>
+                              <span className="flex items-center gap-1"><Zap className="h-3 w-3" /> Custom Ingestion</span>
                               <span className="h-1 w-1 rounded-full bg-border-light"></span>
-                              <span className="flex items-center gap-1"><Layers className="h-3 w-3" /> {workflow.actions} Actions</span>
+                              <span className="flex items-center gap-1"><Layers className="h-3 w-3" /> GenAI Action</span>
                             </p>
                           </div>
                         </div>
-                        <p className="text-xs text-text-muted leading-relaxed mb-4">
-                          {workflow.description}
+                        <p className="text-xs text-text-muted leading-relaxed mb-4 line-clamp-2">
+                          {workflow.description || "Custom AI automation workflow ingesting private document context."}
                         </p>
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1.5">
                             <CheckCircle2 className="h-3 w-3 text-alert-opportunity" />
-                            <span className="text-[10px] font-bold text-text-main">{workflow.successRate} Success</span>
+                            <span className="text-[10px] font-bold text-text-main">100% Ready</span>
                           </div>
                           <div className="flex items-center gap-1.5">
                             <Clock className="h-3 w-3 text-text-muted" />
-                            <span className="text-[10px] text-text-muted">Last run: {workflow.lastRun}</span>
+                            <span className="text-[10px] text-text-muted">Created: {new Date(workflow.created_at).toLocaleDateString()}</span>
                           </div>
                         </div>
                       </div>
                       <div className="w-full md:w-40 shrink-0 bg-secondary-bg/30 border-t md:border-t-0 md:border-l border-border-light p-6 flex flex-col justify-center gap-3">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider">Status</span>
-                          <Badge className={cn(
-                            "text-[9px] font-bold h-5",
-                            workflow.status === 'Active' ? "bg-alert-opportunity/10 text-alert-opportunity border-alert-opportunity/20" : "bg-secondary-bg text-text-muted border-border-light"
-                          )}>
+                          <Badge className="text-[9px] font-bold h-5 bg-alert-opportunity/10 text-alert-opportunity border-alert-opportunity/20">
                             {workflow.status}
                           </Badge>
                         </div>
                         <div className="flex gap-2">
-                          <Button variant="secondary" size="sm" className="flex-1 h-9 rounded-xl bg-white border-border-light shadow-sm hover:bg-secondary-bg">
-                            {workflow.status === 'Active' ? <Pause className="h-3 w-3" /> : <Play className="h-3 w-3" />}
-                          </Button>
-                          <Button variant="secondary" size="sm" className="flex-1 h-9 rounded-xl bg-white border-border-light shadow-sm hover:bg-secondary-bg">
-                            <Settings className="h-3 w-3" />
+                          <Button 
+                            onClick={(e) => { e.stopPropagation(); openChat(workflow.id); }}
+                            className="w-full h-9 rounded-xl bg-interaction-primary text-white shadow-sm hover:shadow-md hover:bg-interaction-secondary transition-all"
+                          >
+                            <MessageSquare className="h-3 w-3 mr-2" /> Chat
                           </Button>
                         </div>
                       </div>
@@ -282,58 +379,243 @@ export default function AutomationSystems() {
             <CardContent className="p-6 space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-text-muted">Throughput</span>
-                  <span className="text-xs font-bold text-text-main">1.2k req/min</span>
+                  <span className="text-xs font-medium text-text-muted">GenAI Tokens</span>
+                  <span className="text-xs font-bold text-text-main">Stable</span>
                 </div>
                 <div className="h-1.5 w-full bg-secondary-bg rounded-full overflow-hidden">
-                  <div className="h-full bg-interaction-primary w-[75%]" />
+                  <div className="h-full bg-interaction-primary w-[35%]" />
                 </div>
               </div>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-text-muted">AI Latency</span>
-                  <span className="text-xs font-bold text-text-main">240ms</span>
+                  <span className="text-xs font-medium text-text-muted">DB Latency</span>
+                  <span className="text-xs font-bold text-text-main">Neon Fast</span>
                 </div>
                 <div className="h-1.5 w-full bg-secondary-bg rounded-full overflow-hidden">
-                  <div className="h-full bg-ai-violet w-[40%]" />
+                  <div className="h-full bg-emerald-500 w-[90%]" />
                 </div>
               </div>
               <div className="pt-2">
                 <div className="p-4 rounded-xl bg-alert-opportunity/5 border border-alert-opportunity/20 flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 text-alert-opportunity" />
                   <div>
-                    <p className="text-[11px] font-bold text-alert-opportunity uppercase">All Nodes Healthy</p>
-                    <p className="text-[10px] text-text-muted">Last check: 1m ago</p>
+                    <p className="text-[11px] font-bold text-alert-opportunity uppercase">Connected</p>
+                    <p className="text-[10px] text-text-muted">PostgreSQL cluster active</p>
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
-
-          <Card className="border-border-light bg-white shadow-sm overflow-hidden">
-            <CardHeader className="py-4 border-b border-border-light bg-secondary-bg/30">
-              <CardTitle className="text-[10px] font-bold uppercase tracking-widest flex items-center text-text-muted">
-                <Link2 className="h-4 w-4 mr-2 text-interaction-primary" />
-                Integration Nodes
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4">
-              <div className="grid grid-cols-3 gap-2">
-                {['Salesforce', 'Slack', 'Jira', 'AWS', 'GCP', 'Azure'].map((node) => (
-                  <div key={node} className="p-2 rounded-lg border border-border-light bg-secondary-bg/20 flex flex-col items-center gap-1 hover:border-interaction-primary/30 transition-all cursor-pointer">
-                    <Database className="h-4 w-4 text-text-muted" />
-                    <span className="text-[8px] font-bold text-text-secondary">{node}</span>
-                  </div>
-                ))}
-              </div>
-              <Button variant="text" className="w-full mt-4 h-8 text-[10px] font-bold text-interaction-primary hover:bg-interaction-primary/5">
-                Manage Integrations
-                <ChevronRight className="h-3 w-3 ml-1" />
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </div>
+
+      {/* --- MODALS --- */}
+
+      {/* 1. Config Modal */}
+      <AnimatePresence>
+        {isConfigOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-border-light"
+            >
+              <div className="p-5 border-b border-border-light flex justify-between items-center bg-secondary-bg/50">
+                <h3 className="font-bold flex items-center gap-2"><Settings className="h-4 w-4 text-interaction-primary" /> System Configuration</h3>
+                <button onClick={() => setIsConfigOpen(false)} className="text-text-muted hover:text-text-main"><X className="h-4 w-4" /></button>
+              </div>
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Gemini API Key</label>
+                  <input 
+                    type="password" 
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    placeholder="AIzaSy..."
+                    className="w-full px-4 py-3 rounded-xl border border-border-light bg-secondary-bg text-sm focus:outline-none focus:ring-2 focus:ring-interaction-primary/50 font-mono"
+                  />
+                  <p className="text-[10px] text-text-muted mt-2">Your key is stored securely in your private Neon database.</p>
+                </div>
+                <Button onClick={saveApiKey} disabled={savingKey || !apiKey} className="w-full bg-interaction-primary h-11 rounded-xl">
+                  {savingKey ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save Configuration"}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 2. New Workflow Modal */}
+      <AnimatePresence>
+        {isNewWorkflowOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-border-light flex flex-col max-h-[90vh]"
+            >
+              <div className="p-5 border-b border-border-light flex justify-between items-center bg-secondary-bg/50 shrink-0">
+                <h3 className="font-bold flex items-center gap-2"><Workflow className="h-4 w-4 text-interaction-primary" /> Create Automation Workflow</h3>
+                <button onClick={() => setIsNewWorkflowOpen(false)} className="text-text-muted hover:text-text-main"><X className="h-4 w-4" /></button>
+              </div>
+              <div className="p-6 space-y-5 overflow-y-auto">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2 md:col-span-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Workflow Name</label>
+                    <input 
+                      value={newWfName}
+                      onChange={(e) => setNewWfName(e.target.value)}
+                      placeholder="e.g. HR Policy Bot"
+                      className="w-full px-4 py-2 rounded-xl border border-border-light bg-white text-sm focus:outline-none focus:ring-2 focus:ring-interaction-primary/50"
+                    />
+                  </div>
+                  <div className="col-span-2 md:col-span-1">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2">Description</label>
+                    <input 
+                      value={newWfDesc}
+                      onChange={(e) => setNewWfDesc(e.target.value)}
+                      placeholder="Optional short description..."
+                      className="w-full px-4 py-2 rounded-xl border border-border-light bg-white text-sm focus:outline-none focus:ring-2 focus:ring-interaction-primary/50"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-text-muted mb-2 flex justify-between">
+                    <span>Document Context (Training Data)</span>
+                  </label>
+                  <textarea 
+                    value={newWfText}
+                    onChange={(e) => setNewWfText(e.target.value)}
+                    placeholder="Paste the document text, guidelines, or knowledge base here. The GenAI will use this to answer questions..."
+                    className="w-full px-4 py-3 rounded-xl border border-border-light bg-secondary-bg text-sm focus:outline-none focus:ring-2 focus:ring-interaction-primary/50 h-48 custom-scrollbar resize-none"
+                  />
+                </div>
+              </div>
+              <div className="p-5 border-t border-border-light shrink-0 bg-white flex justify-end">
+                <Button onClick={createWorkflow} disabled={creatingWf || !newWfName || !newWfText} className="bg-interaction-primary px-8 rounded-xl h-11">
+                  {creatingWf ? <Loader2 className="h-4 w-4 animate-spin" /> : "Deploy Workflow"}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 3. AI Chat Modal / Sliding Panel */}
+      <AnimatePresence>
+        {isChatOpen && activeWorkflowId && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsChatOpen(false)}
+              className="fixed inset-0 bg-black/20 z-40 backdrop-blur-sm"
+            />
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white border-l border-border-light shadow-2xl z-50 flex flex-col"
+            >
+              <div className="p-4 border-b border-border-light flex items-center justify-between bg-zinc-900 text-white shadow-md">
+                <div className="flex items-center space-x-3">
+                  <div className="h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center">
+                    <BrainCircuit className="h-4 w-4 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h2 className="font-heading font-bold text-sm">{workflows.find(w=>w.id === activeWorkflowId)?.name}</h2>
+                    <div className="flex items-center gap-1">
+                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                      <span className="text-[9px] text-zinc-400 uppercase tracking-widest font-bold">GenAI Core Active</span>
+                    </div>
+                  </div>
+                </div>
+                <button onClick={() => setIsChatOpen(false)} className="p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors">
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-secondary-bg/50">
+                {currentChat.length === 0 ? (
+                  <div className="text-center mt-10 p-6 opacity-60">
+                    <MessageSquare className="h-10 w-10 mx-auto text-text-muted mb-4" />
+                    <p className="text-sm text-text-muted">Chat with this workflow.<br/>It knows all the context you provided!</p>
+                  </div>
+                ) : (
+                  currentChat.map((msg, idx) => (
+                    <div key={idx} className={cn("flex items-end gap-2", msg.role === 'user' ? "flex-row-reverse" : "flex-row")}>
+                      <div className={cn("w-6 h-6 rounded-full flex items-center justify-center shrink-0 self-start text-[10px] font-bold mt-1",
+                        msg.role === 'user' ? "bg-interaction-primary text-white" : "bg-zinc-900 text-white"
+                      )}>
+                        {msg.role === 'user' ? 'U' : 'AI'}
+                      </div>
+                      <div className={cn(
+                        "p-3 rounded-2xl max-w-[80%] text-sm",
+                        msg.role === 'user' 
+                          ? "bg-interaction-primary text-white rounded-tr-sm" 
+                          : "bg-white border border-border-light text-text-main rounded-tl-sm shadow-sm"
+                      )}>
+                        {msg.content}
+                      </div>
+                    </div>
+                  ))
+                )}
+                {sendingChat && (
+                  <div className="flex items-end gap-2">
+                    <div className="w-6 h-6 bg-zinc-900 text-white rounded-full flex items-center justify-center shrink-0 self-start mt-1">
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    </div>
+                    <div className="p-3 bg-white border border-border-light rounded-2xl rounded-tl-sm w-16 flex justify-center shadow-sm">
+                      <span className="flex space-x-1">
+                        <span className="h-1.5 w-1.5 bg-text-muted rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                        <span className="h-1.5 w-1.5 bg-text-muted rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                        <span className="h-1.5 w-1.5 bg-text-muted rounded-full animate-bounce"></span>
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 border-t border-border-light bg-white shrink-0">
+                <div className="relative flex items-center">
+                  <input 
+                    type="text" 
+                    value={chatMessage}
+                    onChange={(e) => setChatMessage(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && sendChatMessage()}
+                    placeholder="Ask a question..." 
+                    className="w-full bg-secondary-bg border border-border-light rounded-2xl pl-4 pr-12 py-3.5 text-sm text-text-main focus:outline-none focus:border-interaction-primary focus:ring-1 focus:ring-interaction-primary"
+                  />
+                  <button 
+                    onClick={sendChatMessage}
+                    disabled={sendingChat || !chatMessage.trim()}
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 p-2 bg-interaction-primary text-white rounded-xl hover:bg-interaction-secondary transition-colors disabled:opacity-50"
+                  >
+                    <Send className="h-4 w-4 ml-0.5" />
+                  </button>
+                </div>
+                <p className="text-center text-[9px] text-text-muted mt-3 font-medium uppercase tracking-wider">
+                  Powered by Matrix360 GenAI Engine
+                </p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
