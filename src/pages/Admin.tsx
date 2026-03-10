@@ -19,49 +19,6 @@ interface Application {
   created_at: string;
 }
 
-// Default seed data — always shown so the page is never empty
-const SEED_APPLICATIONS: Application[] = [
-  {
-    id: 1,
-    full_name: 'Dr. Sarah Jenkins',
-    professional_title: 'Senior Regulatory Strategist',
-    organization: 'Global Compliance Corp',
-    years_experience: 15,
-    industry: 'Healthcare',
-    specializations: 'Compliance, Policy, EU Markets',
-    linkedin_url: 'https://linkedin.com/in/sarah-jenkins',
-    bio: 'Expert in global healthcare regulation and compliance with 15 years of experience across EMEA regions.',
-    status: 'pending',
-    created_at: '2026-03-08T10:30:00Z',
-  },
-  {
-    id: 2,
-    full_name: 'Marcus Chen',
-    professional_title: 'APAC Expansion Lead',
-    organization: 'Asia Pacific Ventures',
-    years_experience: 12,
-    industry: 'Technology',
-    specializations: 'Market Entry, Supply Chain, M&A',
-    linkedin_url: 'https://linkedin.com/in/marcus-chen',
-    bio: 'Specialist in APAC market entry strategies with deep expertise in regulatory compliance and supply chain optimization.',
-    status: 'pending',
-    created_at: '2026-03-09T14:20:00Z',
-  },
-  {
-    id: 3,
-    full_name: 'Elena Rostova',
-    professional_title: 'Supply Chain Risk Specialist',
-    organization: 'Deloitte Consulting',
-    years_experience: 10,
-    industry: 'Manufacturing',
-    specializations: 'Logistics, Risk Mitigation, Sustainability',
-    linkedin_url: 'https://linkedin.com/in/elena-rostova',
-    bio: 'Specialist in supply chain resilience and risk management with a focus on sustainable operations.',
-    status: 'approved',
-    created_at: '2026-03-07T09:15:00Z',
-  },
-];
-
 // Helper to get applications from localStorage  
 function getStoredApplications(): Application[] {
   try {
@@ -78,31 +35,27 @@ export default function Admin() {
     setLoading(true);
     setError('');
 
-    let serverApps: Application[] = [];
-    let usedServer = false;
-
     // Try server API first (works in local dev with Express)
     try {
       const res = await fetch('/api/admin/applications');
       if (res.ok) {
         const contentType = res.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
-          serverApps = await res.json();
-          usedServer = true;
+          const serverApps = await res.json();
+          if (serverApps.length > 0) {
+            setApplications(serverApps);
+            setLoading(false);
+            return;
+          }
         }
       }
     } catch {
       // Server not available (Vercel static deploy)
     }
 
-    if (usedServer && serverApps.length > 0) {
-      setApplications(serverApps);
-    } else {
-      // Combine seed data + localStorage submissions
-      const localApps = getStoredApplications();
-      setApplications([...localApps, ...SEED_APPLICATIONS]);
-    }
-
+    // Fallback: show only real submissions from localStorage
+    const localApps = getStoredApplications();
+    setApplications(localApps);
     setLoading(false);
   };
 
@@ -145,7 +98,8 @@ export default function Admin() {
       {!loading && !error && applications.length === 0 && (
         <div className="text-center py-20 text-text-muted">
           <Users className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-          <p className="text-lg">No applications yet.</p>
+          <p className="text-lg font-medium">No applications yet.</p>
+          <p className="text-sm mt-2">Applications submitted through the <a href="/apply" className="text-interaction-primary hover:underline">Apply page</a> will appear here.</p>
         </div>
       )}
 
