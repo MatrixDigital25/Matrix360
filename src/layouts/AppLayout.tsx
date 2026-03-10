@@ -124,7 +124,6 @@ export function AppLayout() {
         <div className="p-6 flex items-center justify-between shrink-0">
           <Link to="/" className={cn("flex items-center gap-2 overflow-hidden transition-all", !isSidebarOpen && "opacity-0 w-0")}>
             <img src={LOGO_URL} alt="Matrix360 Logo" className="h-8 w-auto object-contain" />
-            <span className="font-serif font-bold text-xl tracking-tight whitespace-nowrap text-zinc-900">Matrix360</span>
           </Link>
           <button 
             onClick={() => {
