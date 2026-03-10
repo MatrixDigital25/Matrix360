@@ -41,16 +41,17 @@ export default function Home() {
   return (
     <div className="space-y-12 pb-12">
       {/* 1. HERO PANEL - Strategic Command Center Style */}
-      <section className="relative overflow-hidden rounded-3xl bg-zinc-900 text-white p-8 md:p-16 shadow-2xl border border-white/10">
+      <section className="relative overflow-hidden rounded-3xl bg-zinc-900 text-white p-8 md:p-20 shadow-2xl border border-white/10 flex flex-col items-center justify-center min-h-[500px]">
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#ffffff_0%,_transparent_70%)]"></div>
         </div>
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="flex flex-col items-center"
           >
             <div className="flex items-center gap-3 mb-8">
               <Badge className="bg-white/10 text-white border-white/20 px-4 py-1.5 backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em]">
@@ -59,16 +60,16 @@ export default function Home() {
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-serif tracking-tight mb-8 leading-[1.1] text-white">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tight mb-8 leading-[1.1] text-zinc-300">
               Transform your business with <br />
-              <span className="italic font-bold">HYBRID INTELLIGENCE</span>
+              <span className="italic font-bold text-zinc-300">HYBRID INTELLIGENCE</span>
             </h1>
             
-            <p className="text-lg text-zinc-400 mb-10 leading-relaxed max-w-xl font-light">
+            <p className="text-lg text-zinc-400 mb-10 leading-relaxed max-w-2xl font-light">
               The Matrix360 Strategic Intelligence Operating System orchestrates global intelligence, expert networks, and AI agents to accelerate enterprise transformation and strategic execution.
             </p>
             
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <Link to="/enterprise/challenge">
                 <Button className="bg-white text-zinc-900 hover:bg-zinc-200 border-none h-12 px-8 font-bold rounded-lg transition-all">
                   Launch Challenge
@@ -81,14 +82,6 @@ export default function Home() {
               </Link>
             </div>
           </motion.div>
-
-          <div className="hidden lg:block relative">
-            <div className="absolute -inset-10 bg-white/5 blur-3xl rounded-full"></div>
-            <SystemDiagram 
-              type="agent-network" 
-              className="w-full h-80 bg-transparent border-none shadow-none opacity-40 relative z-10 grayscale invert" 
-            />
-          </div>
         </div>
       </section>
 
