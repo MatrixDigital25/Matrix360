@@ -1,21 +1,27 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { neon } from "@neondatabase/serverless";
 
-function getDb() {
-  const raw = process.env.DATABASE_URL;
-  if (!raw) throw new Error("DATABASE_URL environment variable is not set");
-  const url = raw.replace(/[&?]channel_binding=[^&]*/g, '');
-  return neon(url);
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Allow CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const raw = process.env.DATABASE_URL;
+  if (!raw) {
+    return res.status(500).json({ error: "DATABASE_URL environment variable is not set on Vercel." });
+  }
+
   try {
-    const sql = getDb();
+    const url = raw.replace(/[&?]channel_binding=[^&]*/g, '');
+    const sql = neon(url);
+
     await sql`
       CREATE TABLE IF NOT EXISTS consultant_applications (
         id SERIAL PRIMARY KEY,
@@ -53,9 +59,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       RETURNING id
     `;
 
-    return res.json({ success: true, id: result[0].id });
+    return res.status(200).json({ success: true, id: result[0].id });
   } catch (error: any) {
     console.error("Application submission error:", error);
-    return res.status(500).json({ error: "Failed to submit application" });
+    return res.status(500).json({ 
+      error: "Database error: " + (error.message || "Unknown error"),
+      hint: "Check DATABASE_URL and Neon database accessibility."
+    });
   }
 }
