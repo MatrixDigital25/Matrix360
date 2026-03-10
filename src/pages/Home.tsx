@@ -60,9 +60,9 @@ export default function Home() {
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tight mb-8 leading-[1.1] text-zinc-300">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tight mb-8 leading-[1.1] text-zinc-400">
               Transform your business with <br />
-              <span className="italic font-bold text-zinc-300">HYBRID INTELLIGENCE</span>
+              <span className="italic font-bold text-white">HYBRID INTELLIGENCE</span>
             </h1>
             
             <p className="text-lg text-zinc-400 mb-10 leading-relaxed max-w-2xl font-light">
