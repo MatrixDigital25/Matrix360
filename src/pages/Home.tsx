@@ -41,7 +41,7 @@ export default function Home() {
   return (
     <div className="space-y-12 pb-12">
       {/* 1. HERO PANEL - Strategic Command Center Style */}
-      <section className="relative overflow-hidden rounded-3xl text-white p-8 md:p-20 shadow-2xl border border-white/10 flex flex-col items-center justify-center min-h-[500px]">
+      <section className="relative overflow-hidden rounded-3xl text-white p-8 md:p-14 shadow-2xl border border-white/10 flex flex-col items-center justify-center min-h-[360px]">
         <img src="/banner.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
 
@@ -52,19 +52,18 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center"
           >
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3 mb-6">
               <Badge className="bg-white/10 text-white border-white/20 px-4 py-1.5 backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em]">
                 Worlds first
               </Badge>
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tight mb-8 leading-[1.1] text-white">
-              Transform your business with <br />
-              <span className="italic font-bold text-white">HYBRID INTELLIGENCE</span>
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif tracking-tight mb-6 leading-[1.15] text-white">
+              Transform your business with <span className="italic font-bold text-white">HYBRID INTELLIGENCE</span>
             </h1>
             
-            <p className="text-lg text-white/90 mb-10 leading-relaxed max-w-2xl font-light">
+            <p className="text-base text-white/90 mb-8 leading-relaxed max-w-2xl font-light">
               The Matrix360 Strategic Intelligence Operating System orchestrates global intelligence, expert networks, and AI agents to accelerate enterprise transformation and strategic execution.
             </p>
             
