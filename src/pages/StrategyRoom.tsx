@@ -91,9 +91,9 @@ export default function StrategyRoom() {
 
       {/* Video Area - Full Width Jitsi */}
       <div className="flex-1 rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-900 relative min-h-0">
-        {/* Matrix360 Logo Overlay */}
-        <div className="absolute top-4 left-4 z-10 pointer-events-none">
-          <img src="/Matrix360.png" alt="Matrix360" className="h-8 w-auto object-contain opacity-80 drop-shadow-lg" />
+        {/* Matrix360 Logo Overlay — covers Jitsi branding */}
+        <div className="absolute top-3 left-3 z-20 bg-zinc-900/80 backdrop-blur-sm rounded-lg px-3 py-2 pointer-events-none">
+          <img src="/Matrix360.png" alt="Matrix360" className="h-7 w-auto object-contain" />
         </div>
         <JitsiMeeting
           roomName={roomName}
@@ -102,17 +102,26 @@ export default function StrategyRoom() {
             disableModeratorIndicator: true,
             startScreenSharing: false,
             enableEmailInStats: false,
-            prejoinPageEnabled: true
+            prejoinPageEnabled: true,
+            disableThirdPartyRequests: true,
+            brandingRoomAlias: 'Matrix360 Strategy Room',
           }}
           interfaceConfigOverwrite={{
             DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
             SHOW_JITSI_WATERMARK: false,
             SHOW_WATERMARK_FOR_GUESTS: false,
+            SHOW_BRAND_WATERMARK: false,
             SHOW_CHROME_EXTENSION_BANNER: false,
             SHOW_PROMOTIONAL_CLOSE_PAGE: false,
+            SHOW_POWERED_BY: false,
+            HIDE_INVITE_MORE_HEADER: true,
             APP_NAME: 'Matrix 360 Consulting',
             NATIVE_APP_NAME: 'Matrix 360 Consulting',
             PROVIDER_NAME: 'Matrix 360 Consulting',
+            DEFAULT_LOGO_URL: '',
+            DEFAULT_WELCOME_PAGE_LOGO_URL: '',
+            JITSI_WATERMARK_LINK: '',
+            BRAND_WATERMARK_LINK: '',
             TOOLBAR_BUTTONS: [
               'microphone', 'camera', 'closedcaptions', 'desktop',
               'fullscreen', 'fodeviceselection', 'hangup', 'chat',
@@ -128,6 +137,33 @@ export default function StrategyRoom() {
             iframeRef.style.height = '100%';
             iframeRef.style.width = '100%';
             iframeRef.style.border = 'none';
+
+            // Inject CSS into Jitsi iframe to hide any remaining Jitsi branding
+            const hideJitsiLogo = () => {
+              try {
+                const iframeDoc = iframeRef.contentDocument || iframeRef.contentWindow?.document;
+                if (iframeDoc) {
+                  const style = iframeDoc.createElement('style');
+                  style.textContent = `
+                    .oJqVi, .oJqVi *, .oJqVi + div,
+                    .oJqVi ~ div,
+                    .oJqVi svg,
+                    .oJqVi img,
+                    [class*="oJqVi"],
+                    #oJqVi,
+                    svg[class*="oJqVi"],
+                    img[class*="oJqVi"],
+                    svg[id*="oJqVi"],
+                    img[id*="oJqVi"]
+
+                  `;
+                  iframeDoc.head.appendChild(style);
+                }
+              } catch (e) {
+                // Cross-origin restriction — cannot inject into Jitsi iframe
+              }
+            };
+            iframeRef.addEventListener('load', hideJitsiLogo);
           }}
         />
       </div>
