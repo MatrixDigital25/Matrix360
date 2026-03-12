@@ -292,8 +292,7 @@ export function AppLayout() {
                 <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-4">Recommended Experts</h3>
                 <div className="space-y-4">
                   {[
-                    { name: 'Dr. Sarah Chen', role: 'AI Strategy Expert', img: 'https://picsum.photos/seed/sarah/100/100' },
-                    { name: 'Marcus Thorne', role: 'Operations Architect', img: 'https://picsum.photos/seed/marcus/100/100' }
+                    { name: 'Stephen Raj', role: 'AI Strategy Expert', img: '/Stephen.jpg' }
                   ].map((expert, i) => (
                     <div key={i} className="flex items-center gap-3 group cursor-pointer">
                       <img src={expert.img} alt={expert.name} className="h-10 w-10 rounded-full object-cover border border-border-light group-hover:border-interaction-primary transition-all" referrerPolicy="no-referrer" />
@@ -314,7 +313,7 @@ export function AppLayout() {
                 <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-4">Upcoming Meetings</h3>
                 <div className="space-y-3">
                   {[
-                    { title: 'Strategy Sync: Project Alpha', time: 'Today, 2:00 PM', expert: 'Dr. Sarah Chen' },
+                    { title: 'Strategy Sync: Project Alpha', time: 'Today, 2:00 PM', expert: 'Stephen Raj' },
                     { title: 'AI Integration Workshop', time: 'Tomorrow, 10:00 AM', expert: 'Matrix AI' }
                   ].map((meeting, i) => (
                     <div key={i} className="p-3 rounded-xl bg-secondary-bg border border-border-light hover:border-interaction-primary/30 transition-all cursor-pointer group">
@@ -352,7 +351,7 @@ export function AppLayout() {
                 <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-4">Recent Activity</h3>
                 <div className="space-y-4">
                   {[
-                    { user: 'Dr. Sarah Jenkins', action: 'posted a new insight', time: '2h ago' },
+                    { user: 'Stephen Raj', action: 'posted a new insight', time: '2h ago' },
                     { user: 'Matrix AI', action: 'generated a research report', time: '4h ago' }
                   ].map((activity, i) => (
                     <div key={i} className="flex gap-3">
