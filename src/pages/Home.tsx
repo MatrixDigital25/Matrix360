@@ -41,42 +41,42 @@ export default function Home() {
   return (
     <div className="space-y-12 pb-12">
       {/* 1. HERO PANEL - Strategic Command Center Style */}
-      <section className="relative overflow-hidden rounded-3xl text-white p-8 md:p-14 shadow-2xl border border-white/10 flex flex-col items-center justify-center min-h-[360px]">
+      <section className="relative overflow-hidden rounded-3xl text-white shadow-2xl border border-white/10 flex flex-col items-center justify-center min-h-[520px]">
         <img src="/banner.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70 pointer-events-none"></div>
 
-        <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
+        <div className="relative z-10 flex flex-col items-center text-center max-w-5xl mx-auto px-8 md:px-14 py-16 md:py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <Badge className="bg-white/10 text-white border-white/20 px-4 py-1.5 backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.2em]">
+            <div className="flex items-center gap-3 mb-8">
+              <Badge className="bg-white/10 text-white border-white/20 px-5 py-2 backdrop-blur-md text-[10px] font-bold uppercase tracking-[0.25em]">
                 Worlds first
               </Badge>
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+              <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
             </div>
             
-            <h1 className="text-2xl md:text-4xl lg:text-5xl font-sans font-bold tracking-tight mb-6 leading-[1.2] text-white drop-shadow-lg" style={{ color: 'white' }}>
-              Transform your business<br />
-              <span className="text-lg md:text-2xl lg:text-3xl font-light italic">with</span><br />
-              <span className="text-2xl md:text-4xl lg:text-5xl">Hybrid Intelligence</span>
+            <h1 className="font-sans font-bold tracking-tight mb-4 leading-[1.1] text-white drop-shadow-lg" style={{ color: 'white' }}>
+              <span className="block text-4xl md:text-6xl lg:text-7xl">Transform your business</span>
+              <span className="block text-xl md:text-2xl lg:text-3xl font-light italic mt-2 text-white/80">with</span>
+              <span className="block text-2xl md:text-4xl lg:text-5xl mt-1">Hybrid Intelligence</span>
             </h1>
             
-            <p className="text-base text-white/90 mb-8 leading-relaxed max-w-2xl font-light">
+            <p className="text-sm md:text-base text-white/70 mb-10 leading-relaxed max-w-2xl font-light tracking-wide">
               The Matrix360 Strategic Intelligence Operating System orchestrates human intelligence, data science, artificial intelligence, expert networks, and AI agents to accelerate transformation and future ready growth.
             </p>
             
-            <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex flex-wrap justify-center gap-5">
               <Link to="/enterprise/challenge">
-                <Button className="bg-white text-zinc-900 hover:bg-zinc-200 border-none h-12 px-8 font-bold rounded-lg transition-all">
+                <Button className="bg-white text-zinc-900 hover:bg-zinc-100 border-none h-13 px-10 font-semibold rounded-xl transition-all shadow-lg shadow-white/10">
                   Launch Challenge
                 </Button>
               </Link>
               <Link to="/strategy-room">
-                <Button variant="secondary" className="bg-white/5 hover:bg-white/10 text-white border-white/10 h-12 px-8 rounded-lg backdrop-blur-sm">
+                <Button variant="secondary" className="bg-white/5 hover:bg-white/10 text-white border-white/15 h-13 px-10 rounded-xl backdrop-blur-sm transition-all">
                   Strategy Room
                 </Button>
               </Link>
