@@ -91,6 +91,10 @@ export default function StrategyRoom() {
 
       {/* Video Area - Full Width Jitsi */}
       <div className="flex-1 rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-900 relative min-h-0">
+        {/* Matrix360 Logo Overlay */}
+        <div className="absolute top-4 left-4 z-10 pointer-events-none">
+          <img src="/Matrix360.png" alt="Matrix360" className="h-8 w-auto object-contain opacity-80 drop-shadow-lg" />
+        </div>
         <JitsiMeeting
           roomName={roomName}
           configOverwrite={{
