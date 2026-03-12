@@ -231,14 +231,14 @@ export default function Home() {
             <div className="enterprise-card overflow-hidden">
               <div className="divide-y divide-zinc-100">
                 {[
-                  { name: 'Stephen Raj', linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/', img: '/experts/stephen.jpg' },
+                  { name: 'Stephen Raj', linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/', img: '/Stephen.jpg' },
                 ].map((item, i) => (
                   <a key={i} href={item.linkedin} target="_blank" rel="noopener noreferrer" className="p-5 hover:bg-zinc-50 transition-colors cursor-pointer group block">
                     <div className="flex items-center gap-4 mb-4">
                       <img src={item.img} className="h-12 w-12 rounded-full object-cover border border-zinc-200 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all" referrerPolicy="no-referrer" />
                       <div className="flex-1 min-w-0">
                         <p className="text-base font-bold text-zinc-900 truncate">{item.name}</p>
-                        <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">Expert</p>
+                        <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">CONSULTANT</p>
                       </div>
                     </div>
                   </a>
