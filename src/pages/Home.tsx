@@ -231,9 +231,7 @@ export default function Home() {
             <div className="enterprise-card overflow-hidden">
               <div className="divide-y divide-zinc-100">
                 {[
-                  { name: 'Amit Kachhawa', linkedin: 'https://www.linkedin.com/in/amit-kachhawa-6601564/', img: 'https://media.licdn.com/dms/image/C5603AQFQwQwQwQwQwQ/profile-displayphoto-shrink_100_100/0/1516881234567?e=2147483647&v=beta&t=placeholder' },
-                  { name: 'Stephen Raj', linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/', img: 'https://media.licdn.com/dms/image/D5603AQFQwQwQwQwQwQ/profile-displayphoto-shrink_100_100/0/1516881234567?e=2147483647&v=beta&t=placeholder' },
-                  { name: 'Dr. Debayan Sarkar', linkedin: 'https://www.linkedin.com/in/dr-debayan-sarkar/', img: 'https://media.licdn.com/dms/image/D4D03AQFQwQwQwQwQwQ/profile-displayphoto-shrink_100_100/0/1516881234567?e=2147483647&v=beta&t=placeholder' },
+                  { name: 'Stephen Raj', linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/', img: '/experts/stephen.jpg' },
                 ].map((item, i) => (
                   <a key={i} href={item.linkedin} target="_blank" rel="noopener noreferrer" className="p-5 hover:bg-zinc-50 transition-colors cursor-pointer group block">
                     <div className="flex items-center gap-4 mb-4">
