@@ -118,8 +118,8 @@ export default function StrategyRoom() {
             APP_NAME: 'Matrix 360 Consulting',
             NATIVE_APP_NAME: 'Matrix 360 Consulting',
             PROVIDER_NAME: 'Matrix 360 Consulting',
-            DEFAULT_LOGO_URL: '',
-            DEFAULT_WELCOME_PAGE_LOGO_URL: '',
+            DEFAULT_LOGO_URL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBAp1lQe8AAAAASUVORK5CYII=',
+            DEFAULT_WELCOME_PAGE_LOGO_URL: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgMBAp1lQe8AAAAASUVORK5CYII=',
             JITSI_WATERMARK_LINK: '',
             BRAND_WATERMARK_LINK: '',
             TOOLBAR_BUTTONS: [
