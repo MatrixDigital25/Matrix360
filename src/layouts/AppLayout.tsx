@@ -146,11 +146,11 @@ export function AppLayout() {
             !isSidebarOpen && "justify-center px-0 bg-transparent border-transparent"
           )}>
             <div className="h-9 w-9 rounded-full bg-zinc-900 flex items-center justify-center text-xs font-bold text-white shadow-sm flex-shrink-0 group-hover:scale-105 transition-transform">
-              JD
+              AS
             </div>
             {isSidebarOpen && (
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-zinc-900 truncate">Jane Doe</p>
+                <p className="text-xs font-bold text-zinc-900 truncate">Arjun Singh</p>
                 <p className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider truncate">Enterprise Admin</p>
               </div>
             )}

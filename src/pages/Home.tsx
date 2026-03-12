@@ -60,11 +60,11 @@ export default function Home() {
             </div>
             
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-sans font-bold tracking-tight mb-6 leading-[1.2] text-white drop-shadow-lg" style={{ color: 'white' }}>
-              Transform your business with <span className="italic font-extrabold">HYBRID INTELLIGENCE</span>
+              Transform your business <span className="text-xl md:text-2xl lg:text-3xl font-normal">with</span>{' '}<span className="italic font-extrabold text-xl md:text-3xl lg:text-4xl">HYBRID INTELLIGENCE</span>
             </h1>
             
             <p className="text-base text-white/90 mb-8 leading-relaxed max-w-2xl font-light">
-              The Matrix360 Strategic Intelligence Operating System orchestrates global intelligence, expert networks, and AI agents to accelerate enterprise transformation and strategic execution.
+              The Matrix360 Strategic Intelligence Operating System orchestrates human intelligence, data science, artificial intelligence, expert networks, and AI agents to accelerate transformation and future ready growth.
             </p>
             
             <div className="flex flex-wrap justify-center gap-4">
