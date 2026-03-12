@@ -61,8 +61,8 @@ export default function Home() {
             
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-sans font-bold tracking-tight mb-6 leading-[1.2] text-white drop-shadow-lg" style={{ color: 'white' }}>
               Transform your business<br />
-              <span className="text-xl md:text-2xl lg:text-3xl font-normal italic">with</span><br />
-              <span className="font-bold text-xl md:text-3xl lg:text-4xl">Hybrid Intelligence</span>
+              <span className="text-lg md:text-2xl lg:text-3xl font-light italic">with</span><br />
+              <span className="text-2xl md:text-4xl lg:text-5xl">Hybrid Intelligence</span>
             </h1>
             
             <p className="text-base text-white/90 mb-8 leading-relaxed max-w-2xl font-light">
