@@ -72,7 +72,7 @@ export default function Home() {
             <div className="flex flex-wrap justify-center gap-5">
               <Link to="/enterprise/challenge">
                 <Button className="bg-white text-zinc-900 hover:bg-zinc-100 border-none h-13 px-10 font-semibold rounded-xl transition-all shadow-lg shadow-white/10">
-                  Launch Challenge
+                  Enterprise Requirement
                 </Button>
               </Link>
               <Link to="/strategy-room">
