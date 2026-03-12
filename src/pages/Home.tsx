@@ -60,7 +60,7 @@ export default function Home() {
             </div>
             
             <h1 className="font-sans font-bold tracking-tight mb-4 leading-[1.1] text-white drop-shadow-lg" style={{ color: 'white' }}>
-              <span className="block text-4xl md:text-6xl lg:text-7xl whitespace-nowrap">Transform your business</span>
+              <span className="block text-3xl md:text-5xl lg:text-6xl">Transform your business</span>
               <span className="block text-xl md:text-2xl lg:text-3xl font-light italic mt-2 text-white/80">with</span>
               <span className="block text-2xl md:text-4xl lg:text-5xl mt-1">Hybrid Intelligence</span>
             </h1>
