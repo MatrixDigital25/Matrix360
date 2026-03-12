@@ -28,10 +28,11 @@ export default function ConsultantGallery() {
     geographies: ['Global'],
     projects: [],
     aiRating: '5.0',
-    img: '/experts/stephen.jpg',
+    img: '/Stephen.jpg',
     industry: 'All Industries',
     availability: 'Available',
-    exp: 15
+    exp: 15,
+    linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/'
   }]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -281,9 +282,9 @@ export default function ConsultantGallery() {
                     <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-2xl font-heading font-bold text-brand-primary group-hover:text-interaction-primary transition-colors">
+                          <a href={consultant.linkedin} target="_blank" rel="noopener noreferrer" className="text-2xl font-heading font-bold text-brand-primary group-hover:text-interaction-primary transition-colors hover:underline">
                             {consultant.name}
-                          </h3>
+                          </a>
                           <Shield className="h-4 w-4 text-interaction-primary" />
                         </div>
                         <p className="text-sm font-medium text-interaction-primary flex items-center gap-2">
