@@ -41,10 +41,9 @@ export default function Home() {
   return (
     <div className="space-y-12 pb-12">
       {/* 1. HERO PANEL - Strategic Command Center Style */}
-      <section className="relative overflow-hidden rounded-3xl bg-zinc-900 text-white p-8 md:p-20 shadow-2xl border border-white/10 flex flex-col items-center justify-center min-h-[500px]">
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#ffffff_0%,_transparent_70%)]"></div>
-        </div>
+      <section className="relative overflow-hidden rounded-3xl text-white p-8 md:p-20 shadow-2xl border border-white/10 flex flex-col items-center justify-center min-h-[500px]">
+        <img src="/banner.png" alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black/40 pointer-events-none"></div>
 
         <div className="relative z-10 flex flex-col items-center text-center max-w-4xl mx-auto">
           <motion.div
@@ -60,12 +59,12 @@ export default function Home() {
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tight mb-8 leading-[1.1] text-[#C0C0C0]">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tight mb-8 leading-[1.1] text-white">
               Transform your business with <br />
               <span className="italic font-bold text-white">HYBRID INTELLIGENCE</span>
             </h1>
             
-            <p className="text-lg text-zinc-400 mb-10 leading-relaxed max-w-2xl font-light">
+            <p className="text-lg text-white/90 mb-10 leading-relaxed max-w-2xl font-light">
               The Matrix360 Strategic Intelligence Operating System orchestrates global intelligence, expert networks, and AI agents to accelerate enterprise transformation and strategic execution.
             </p>
             
