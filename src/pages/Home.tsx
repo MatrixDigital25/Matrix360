@@ -59,8 +59,8 @@ export default function Home() {
               <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             </div>
             
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif tracking-tight mb-6 leading-[1.15] text-white">
-              Transform your business with <span className="italic font-bold text-white">HYBRID INTELLIGENCE</span>
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-sans font-bold tracking-tight mb-6 leading-[1.2] text-white drop-shadow-lg" style={{ color: 'white' }}>
+              Transform your business with <span className="italic font-extrabold">HYBRID INTELLIGENCE</span>
             </h1>
             
             <p className="text-base text-white/90 mb-8 leading-relaxed max-w-2xl font-light">
