@@ -231,21 +231,19 @@ export default function Home() {
             <div className="enterprise-card overflow-hidden">
               <div className="divide-y divide-zinc-100">
                 {[
-                  { name: 'Dr. Sarah Chen', role: 'AI Strategy Expert', insight: 'Regulatory shifts in Singapore require immediate attention for APAC entry.', time: '2h ago', img: 'https://picsum.photos/seed/sarah/100/100' },
-                  { name: 'Marcus Thorne', role: 'Operations Architect', insight: 'New logistics corridor in Vietnam offers 15% cost reduction potential.', time: '5h ago', img: 'https://picsum.photos/seed/marcus/100/100' },
-                  { name: 'Elena Rodriguez', role: 'Policy Advisor', insight: 'EU Supply Chain Directive draft includes new transparency requirements.', time: '1d ago', img: 'https://picsum.photos/seed/elena/100/100' },
+                  { name: 'Amit Kachhawa', linkedin: 'https://www.linkedin.com/in/amit-kachhawa-6601564/', img: 'https://media.licdn.com/dms/image/C5603AQFQwQwQwQwQwQ/profile-displayphoto-shrink_100_100/0/1516881234567?e=2147483647&v=beta&t=placeholder' },
+                  { name: 'Stephen Raj', linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/', img: 'https://media.licdn.com/dms/image/D5603AQFQwQwQwQwQwQ/profile-displayphoto-shrink_100_100/0/1516881234567?e=2147483647&v=beta&t=placeholder' },
+                  { name: 'Dr. Debayan Sarkar', linkedin: 'https://www.linkedin.com/in/dr-debayan-sarkar/', img: 'https://media.licdn.com/dms/image/D4D03AQFQwQwQwQwQwQ/profile-displayphoto-shrink_100_100/0/1516881234567?e=2147483647&v=beta&t=placeholder' },
                 ].map((item, i) => (
-                  <div key={i} className="p-5 hover:bg-zinc-50 transition-colors cursor-pointer group">
+                  <a key={i} href={item.linkedin} target="_blank" rel="noopener noreferrer" className="p-5 hover:bg-zinc-50 transition-colors cursor-pointer group block">
                     <div className="flex items-center gap-4 mb-4">
-                      <img src={item.img} className="h-10 w-10 rounded-full object-cover border border-zinc-200 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all" referrerPolicy="no-referrer" />
+                      <img src={item.img} className="h-12 w-12 rounded-full object-cover border border-zinc-200 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all" referrerPolicy="no-referrer" />
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-zinc-900 truncate">{item.name}</p>
-                        <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">{item.role}</p>
+                        <p className="text-base font-bold text-zinc-900 truncate">{item.name}</p>
+                        <p className="text-[10px] text-zinc-400 font-medium uppercase tracking-wider">Expert</p>
                       </div>
                     </div>
-                    <p className="text-xs text-zinc-500 leading-relaxed italic font-serif">"{item.insight}"</p>
-                    <p className="text-[9px] text-zinc-300 mt-3 font-bold uppercase tracking-widest">{item.time}</p>
-                  </div>
+                  </a>
                 ))}
               </div>
               <div className="p-5 bg-zinc-900 text-white">
