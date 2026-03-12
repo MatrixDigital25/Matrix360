@@ -31,51 +31,16 @@ import { cn } from '@/src/utils/cn';
 const CONSULTANTS = [
   {
     id: 1,
-    name: 'Dr. Sarah Jenkins',
+    name: 'Stephen Raj',
     role: 'Lead Strategic Consultant',
-    expertise: ['Regulatory Compliance', 'Fintech', 'APAC Markets'],
-    rating: 4.9,
-    projects: 42,
-    location: 'Singapore',
-    availability: 'Available',
-    avatar: 'https://picsum.photos/seed/sarah/200/200',
-    verified: true
-  },
-  {
-    id: 2,
-    name: 'Marcus Chen',
-    role: 'Supply Chain Architect',
-    expertise: ['Logistics', 'Manufacturing', 'Vietnam Entry'],
-    rating: 4.8,
-    projects: 31,
-    location: 'Ho Chi Minh City',
-    availability: 'Limited',
-    avatar: 'https://picsum.photos/seed/marcus/200/200',
-    verified: true
-  },
-  {
-    id: 3,
-    name: 'Elena Rodriguez',
-    role: 'Digital Transformation Lead',
-    expertise: ['Cloud Strategy', 'AI Integration', 'Europe'],
+    expertise: ['AI Strategy', 'Digital Transformation', 'Enterprise Solutions'],
     rating: 5.0,
-    projects: 18,
-    location: 'Madrid',
+    projects: 50,
+    location: 'Global',
     availability: 'Available',
-    avatar: 'https://picsum.photos/seed/elena/200/200',
-    verified: false
-  },
-  {
-    id: 4,
-    name: 'David Park',
-    role: 'Market Intelligence Analyst',
-    expertise: ['Consumer Trends', 'Data Analytics', 'South Korea'],
-    rating: 4.7,
-    projects: 25,
-    location: 'Seoul',
-    availability: 'Busy',
-    avatar: 'https://picsum.photos/seed/david/200/200',
-    verified: true
+    avatar: '/Stephen.jpg',
+    verified: true,
+    linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/'
   }
 ];
 
@@ -95,76 +60,25 @@ export default function NetworkExplorer() {
     const fetchConsultants = async () => {
       setIsLoading(true);
       try {
-        // Mocking elite consultant data
         await new Promise(resolve => setTimeout(resolve, 1000));
         const eliteConsultants = [
           {
             id: 1,
-            name: 'Dr. Sarah Jenkins',
+            name: 'Stephen Raj',
             title: 'Senior Strategic Advisor',
-            expertiseDomain: 'Enterprise Risk & Compliance',
-            yearsExperience: 18,
-            geographicExperience: ['Singapore', 'Hong Kong', 'London'],
-            region: 'APAC',
-            industry: 'Finance',
-            transformationCategory: 'Compliance',
-            specialties: ['Regulatory AI', 'Cross-border Fintech', 'Risk Modeling'],
-            highlights: ['Led $2B banking merger compliance', 'Architected regional ESG framework'],
-            aiStrategyRating: 4.9,
-            availabilityStatus: 'Available',
-            avatar: 'https://picsum.photos/seed/sarah/200/200',
-            verified: true
-          },
-          {
-            id: 2,
-            name: 'Marcus Thorne',
-            title: 'Operations Strategy Partner',
-            expertiseDomain: 'Supply Chain Resilience',
-            yearsExperience: 22,
-            geographicExperience: ['Vietnam', 'Germany', 'USA'],
-            region: 'Global',
-            industry: 'Manufacturing',
-            transformationCategory: 'Supply Chain',
-            specialties: ['Logistics Automation', 'Lean Manufacturing', 'Global Sourcing'],
-            highlights: ['Optimized global logistics for Fortune 500', 'Reduced supply chain costs by 30%'],
-            aiStrategyRating: 4.7,
-            availabilityStatus: 'Limited',
-            avatar: 'https://picsum.photos/seed/marcus/200/200',
-            verified: true
-          },
-          {
-            id: 3,
-            name: 'Elena Rodriguez',
-            title: 'Digital Transformation Director',
-            expertiseDomain: 'AI & Cloud Infrastructure',
+            expertiseDomain: 'AI Strategy & Digital Transformation',
             yearsExperience: 15,
-            geographicExperience: ['Spain', 'Brazil', 'UAE'],
-            region: 'EMEA',
+            geographicExperience: ['Global', 'APAC', 'EMEA'],
+            region: 'Global',
             industry: 'Technology',
             transformationCategory: 'AI Strategy',
-            specialties: ['Generative AI Integration', 'Cloud Native Strategy', 'Digital Culture'],
-            highlights: ['Implemented enterprise-wide GenAI for retail giant', 'Scaled cloud ops for unicorn startup'],
+            specialties: ['AI Integration', 'Enterprise Solutions', 'Digital Transformation'],
+            highlights: ['Led enterprise-wide AI transformation initiatives', 'Architected scalable digital platforms'],
             aiStrategyRating: 5.0,
             availabilityStatus: 'Available',
-            avatar: 'https://picsum.photos/seed/elena/200/200',
-            verified: true
-          },
-          {
-            id: 4,
-            name: 'Jonathan Vance',
-            title: 'Market Entry Strategist',
-            expertiseDomain: 'Growth & Expansion',
-            yearsExperience: 20,
-            geographicExperience: ['Japan', 'South Korea', 'Australia'],
-            region: 'APAC',
-            industry: 'Retail',
-            transformationCategory: 'Market Entry',
-            specialties: ['Consumer Intelligence', 'JV Structuring', 'Brand Localization'],
-            highlights: ['Launched 500+ stores in Asian markets', 'Secured strategic partnerships for luxury brands'],
-            aiStrategyRating: 4.5,
-            availabilityStatus: 'Busy',
-            avatar: 'https://picsum.photos/seed/jonathan/200/200',
-            verified: true
+            avatar: '/Stephen.jpg',
+            verified: true,
+            linkedin: 'https://www.linkedin.com/in/stephen-raj-9024b8306/'
           }
         ];
         setConsultants(eliteConsultants);

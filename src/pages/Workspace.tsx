@@ -26,10 +26,10 @@ import {
 import { cn } from '@/src/utils/cn';
 
 const TASKS = [
-  { id: 1, title: 'Market Regulatory Analysis', status: 'In Progress', priority: 'High', assignee: 'Sarah J.', deadline: 'Oct 15' },
-  { id: 2, title: 'Supply Chain Mapping', status: 'Completed', priority: 'Medium', assignee: 'Marcus C.', deadline: 'Oct 10' },
-  { id: 3, title: 'Competitor Benchmarking', status: 'Todo', priority: 'High', assignee: 'Wei Z.', deadline: 'Oct 20' },
-  { id: 4, title: 'Risk Assessment Framework', status: 'Todo', priority: 'Low', assignee: 'Sarah J.', deadline: 'Oct 25' },
+  { id: 1, title: 'Market Regulatory Analysis', status: 'In Progress', priority: 'High', assignee: 'Stephen R.', deadline: 'Oct 15' },
+  { id: 2, title: 'Supply Chain Mapping', status: 'Completed', priority: 'Medium', assignee: 'Stephen R.', deadline: 'Oct 10' },
+  { id: 3, title: 'Competitor Benchmarking', status: 'Todo', priority: 'High', assignee: 'Stephen R.', deadline: 'Oct 20' },
+  { id: 4, title: 'Risk Assessment Framework', status: 'Todo', priority: 'Low', assignee: 'Stephen R.', deadline: 'Oct 25' },
 ];
 
 const DOCUMENTS = [
@@ -39,8 +39,8 @@ const DOCUMENTS = [
 ];
 
 const THREADS = [
-  { id: 1, title: 'Regulatory classification for AI systems', author: 'Dr. Sarah Jenkins', replies: 12, lastActive: '10m ago' },
-  { id: 2, title: 'Logistics partnership options in Vietnam', author: 'Marcus Chen', replies: 5, lastActive: '2h ago' },
+  { id: 1, title: 'Regulatory classification for AI systems', author: 'Stephen Raj', replies: 12, lastActive: '10m ago' },
+  { id: 2, title: 'Logistics partnership options in Vietnam', author: 'Stephen Raj', replies: 5, lastActive: '2h ago' },
 ];
 
 const TRANSCRIPTS = [
@@ -271,9 +271,7 @@ export default function Workspace() {
             </CardHeader>
             <CardContent className="space-y-4">
               {[
-                { name: 'Sarah Jenkins', role: 'Lead Strategist', img: 'https://picsum.photos/seed/sarah/100/100' },
-                { name: 'Marcus Chen', role: 'APAC Expert', img: 'https://picsum.photos/seed/marcus/100/100' },
-                { name: 'Wei Zhang', role: 'Operations', img: 'https://picsum.photos/seed/wei/100/100' }
+                { name: 'Stephen Raj', role: 'Lead Strategist', img: '/Stephen.jpg' }
               ].map((member, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <img src={member.img} alt={member.name} className="h-8 w-8 rounded-full object-cover border border-panel-border" referrerPolicy="no-referrer" />

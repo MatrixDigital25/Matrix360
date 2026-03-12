@@ -72,9 +72,7 @@ export default function ChallengeSubmission() {
       // Mocking expert matching based on industry and scope
       await new Promise(resolve => setTimeout(resolve, 1500));
       const mockMatches = [
-        { consultant_id: 1, name: 'Dr. Sarah Chen', title: 'AI Strategy Lead', industry_expertise: 'Technology, Finance', profile_photo: 'https://picsum.photos/seed/sarah/100/100' },
-        { consultant_id: 2, name: 'Marcus Thorne', title: 'Operations Architect', industry_expertise: 'Manufacturing, Supply Chain', profile_photo: 'https://picsum.photos/seed/marcus/100/100' },
-        { consultant_id: 3, name: 'Elena Rodriguez', title: 'Digital Transformation Advisor', industry_expertise: 'Healthcare, Retail', profile_photo: 'https://picsum.photos/seed/elena/100/100' },
+        { consultant_id: 1, name: 'Stephen Raj', title: 'Senior Strategic Advisor', industry_expertise: 'AI Strategy, Digital Transformation', profile_photo: '/Stephen.jpg' },
       ];
       setMatches(mockMatches);
     } catch (error) {

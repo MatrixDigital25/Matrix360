@@ -74,8 +74,7 @@ const INITIAL_NODES: GraphNode[] = [
   { id: 'S2', label: 'Energy Volatility', type: 'Signal', val: 15, description: 'Fluctuating costs affecting manufacturing margins.' },
   
   // Consultants (Experts)
-  { id: 'C1', label: 'Dr. Sarah Jenkins', type: 'Consultant', val: 14, description: 'Expert in APAC regulatory frameworks.' },
-  { id: 'C2', label: 'Marcus Thorne', type: 'Consultant', val: 14, description: 'Specialist in AI ethics and governance.' },
+  { id: 'C1', label: 'Stephen Raj', type: 'Consultant', val: 14, description: 'Expert in AI Strategy & Digital Transformation.' },
   
   // AI Agents
   { id: 'A1', label: 'Market Sentinel', type: 'Agent', val: 16, description: 'Autonomous agent monitoring global trade signals.' },
@@ -96,7 +95,7 @@ const INITIAL_LINKS: GraphLink[] = [
   { source: 'I1', target: 'R2', relation: 'governed by', strength: 1 },
   { source: 'I1', target: 'IND1', relation: 'impacts', strength: 0.8 },
   
-  { source: 'I2', target: 'C2', relation: 'led by', strength: 1.5 },
+  { source: 'I2', target: 'C1', relation: 'led by', strength: 1.5 },
   { source: 'I2', target: 'A1', relation: 'monitored by', strength: 1.2 },
   { source: 'I2', target: 'R1', relation: 'constrained by', strength: 1.8 },
   
@@ -105,7 +104,7 @@ const INITIAL_LINKS: GraphLink[] = [
   { source: 'I3', target: 'IND2', relation: 'transforms', strength: 1 },
   
   { source: 'C1', target: 'R2', relation: 'specializes in', strength: 1 },
-  { source: 'C2', target: 'R1', relation: 'audits', strength: 1 },
+  { source: 'C1', target: 'R1', relation: 'audits', strength: 1 },
   { source: 'A1', target: 'S1', relation: 'tracks', strength: 1 },
   { source: 'A2', target: 'S2', relation: 'analyzes', strength: 1 },
 ];
@@ -166,7 +165,7 @@ export default function KnowledgeGraph() {
       console.error("AI Recommendation Error:", error);
       setAiRecommendations([
         "Optimize APAC expansion by leveraging Market Sentinel signals.",
-        "Address AI Transformation regulatory constraints via Marcus Thorne's audit.",
+        "Address AI Transformation regulatory constraints via Stephen Raj's strategic audit.",
         "Strengthen Sustainable Supply resilience against Energy Volatility signals."
       ]);
     } finally {

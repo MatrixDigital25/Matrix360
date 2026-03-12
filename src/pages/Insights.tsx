@@ -27,9 +27,9 @@ const FEED_POSTS = [
   {
     id: 1,
     author: {
-      name: 'Dr. Sarah Jenkins',
+      name: 'Stephen Raj',
       role: 'Regulatory Strategist',
-      avatar: 'https://picsum.photos/seed/sarah/100/100'
+      avatar: '/Stephen.jpg'
     },
     type: 'Strategic Insight',
     timestamp: '2h ago',
@@ -75,9 +75,9 @@ const FEED_POSTS = [
   {
     id: 4,
     author: {
-      name: 'Marcus Chen',
+      name: 'Stephen Raj',
       role: 'APAC Expansion Lead',
-      avatar: 'https://picsum.photos/seed/marcus/100/100'
+      avatar: '/Stephen.jpg'
     },
     type: 'Project Update',
     timestamp: '1d ago',
