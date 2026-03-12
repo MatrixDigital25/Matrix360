@@ -20,7 +20,19 @@ const GEOGRAPHIES = ['All Regions', 'Europe', 'North America', 'APAC', 'Middle E
 const SPECIALTIES = ['All Specialties', 'M&A', 'ESG', 'Compliance', 'Risk Mitigation', 'Automation', 'Change Management', 'Turnaround', 'PropTech', 'R&D Strategy'];
 
 export default function ConsultantGallery() {
-  const [consultants, setConsultants] = useState<any[]>([]);
+  const [consultants, setConsultants] = useState<any[]>([{
+    id: 1,
+    name: 'Stephen Raj',
+    title: 'Expert',
+    specialties: ['Strategy'],
+    geographies: ['Global'],
+    projects: [],
+    aiRating: '5.0',
+    img: '/experts/stephen.jpg',
+    industry: 'All Industries',
+    availability: 'Available',
+    exp: 15
+  }]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filters, setFilters] = useState({
@@ -32,32 +44,7 @@ export default function ConsultantGallery() {
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
-    const fetchConsultants = async () => {
-      try {
-        const response = await fetch('/api/consultants');
-        const data = await response.json();
-        
-        // Parse JSON strings from SQLite
-        const parsedData = data.map((c: any) => ({
-          ...c,
-          id: c.consultant_id,
-          specialties: c.strategic_specialization.split(',').map((s: string) => s.trim()),
-          geographies: JSON.parse(c.geographies),
-          projects: JSON.parse(c.projects),
-          aiRating: c.ai_rating,
-          img: c.profile_photo,
-          industry: c.industry_expertise
-        }));
-        
-        setConsultants(parsedData);
-      } catch (error) {
-        console.error('Error fetching consultants:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchConsultants();
+    setIsLoading(false);
   }, []);
 
   const filteredConsultants = useMemo(() => {
