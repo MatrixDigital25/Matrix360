@@ -23,7 +23,7 @@ export default function ConsultantGallery() {
   const [consultants, setConsultants] = useState<any[]>([{
     id: 1,
     name: 'Stephen Raj',
-    title: 'Expert',
+    title: 'Consultant',
     specialties: ['Strategy'],
     geographies: ['Global'],
     projects: [],

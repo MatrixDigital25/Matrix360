@@ -72,7 +72,7 @@ export default function ChallengeSubmission() {
       // Mocking expert matching based on industry and scope
       await new Promise(resolve => setTimeout(resolve, 1500));
       const mockMatches = [
-        { consultant_id: 1, name: 'Stephen Raj', title: 'Senior Strategic Advisor', industry_expertise: 'AI Strategy, Digital Transformation', profile_photo: '/Stephen.jpg' },
+        { consultant_id: 1, name: 'Stephen Raj', title: 'Senior Strategic Consultant', industry_expertise: 'AI Strategy, Digital Transformation', profile_photo: '/Stephen.jpg' },
       ];
       setMatches(mockMatches);
     } catch (error) {

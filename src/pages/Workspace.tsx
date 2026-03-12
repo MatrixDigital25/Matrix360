@@ -271,7 +271,7 @@ export default function Workspace() {
             </CardHeader>
             <CardContent className="space-y-4">
               {[
-                { name: 'Stephen Raj', role: 'Lead Strategist', img: '/Stephen.jpg' }
+                { name: 'Stephen Raj', role: 'Lead Strategy Consultant', img: '/Stephen.jpg' }
               ].map((member, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <img src={member.img} alt={member.name} className="h-8 w-8 rounded-full object-cover border border-panel-border" referrerPolicy="no-referrer" />

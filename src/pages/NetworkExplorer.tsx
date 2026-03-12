@@ -65,7 +65,7 @@ export default function NetworkExplorer() {
           {
             id: 1,
             name: 'Stephen Raj',
-            title: 'Senior Strategic Advisor',
+            title: 'Senior Strategic Consultant',
             expertiseDomain: 'AI Strategy & Digital Transformation',
             yearsExperience: 15,
             geographicExperience: ['Global', 'APAC', 'EMEA'],

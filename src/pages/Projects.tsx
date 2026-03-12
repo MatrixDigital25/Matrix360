@@ -61,7 +61,7 @@ const PROJECTS: Project[] = [
     phase: 'Strategy Design',
     timeline: { start: 'Jan 2024', end: 'Oct 2024' },
     consultants: [
-      { name: 'Stephen Raj', role: 'Lead Strategist' }
+      { name: 'Stephen Raj', role: 'Lead Strategy Consultant' }
     ],
     aiAgents: [
       { name: 'Market Sentinel', type: 'Intelligence' },
@@ -83,7 +83,7 @@ const PROJECTS: Project[] = [
     phase: 'Discovery',
     timeline: { start: 'Mar 2024', end: 'Nov 2024' },
     consultants: [
-      { name: 'Stephen Raj', role: 'AI Ethics Lead' }
+      { name: 'Stephen Raj', role: 'AI Ethics Consultant' }
     ],
     aiAgents: [
       { name: 'Compliance Bot', type: 'Audit' }
@@ -104,7 +104,7 @@ const PROJECTS: Project[] = [
     phase: 'Optimization',
     timeline: { start: 'Jun 2023', end: 'Mar 2024' },
     consultants: [
-      { name: 'Stephen Raj', role: 'Operations Lead' }
+      { name: 'Stephen Raj', role: 'Operations Consultant' }
     ],
     aiAgents: [
       { name: 'Supply Chain Oracle', type: 'Predictive' },

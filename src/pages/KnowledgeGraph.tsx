@@ -74,7 +74,7 @@ const INITIAL_NODES: GraphNode[] = [
   { id: 'S2', label: 'Energy Volatility', type: 'Signal', val: 15, description: 'Fluctuating costs affecting manufacturing margins.' },
   
   // Consultants (Experts)
-  { id: 'C1', label: 'Stephen Raj', type: 'Consultant', val: 14, description: 'Expert in AI Strategy & Digital Transformation.' },
+  { id: 'C1', label: 'Stephen Raj', type: 'Consultant', val: 14, description: 'Consultant in AI Strategy & Digital Transformation.' },
   
   // AI Agents
   { id: 'A1', label: 'Market Sentinel', type: 'Agent', val: 16, description: 'Autonomous agent monitoring global trade signals.' },

@@ -292,7 +292,7 @@ export function AppLayout() {
                 <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] mb-4">Recommended Experts</h3>
                 <div className="space-y-4">
                   {[
-                    { name: 'Stephen Raj', role: 'AI Strategy Expert', img: '/Stephen.jpg' }
+                    { name: 'Stephen Raj', role: 'AI Strategy Consultant', img: '/Stephen.jpg' }
                   ].map((expert, i) => (
                     <div key={i} className="flex items-center gap-3 group cursor-pointer">
                       <img src={expert.img} alt={expert.name} className="h-10 w-10 rounded-full object-cover border border-border-light group-hover:border-interaction-primary transition-all" referrerPolicy="no-referrer" />
