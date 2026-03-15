@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import Footer from '@/app/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Matrix360 Consulting - Hybrid Intelligence Operating System',
-  description: 'Transform enterprise strategy and consultant capabilities with Hybrid Intelligence',
+  title: 'Matrix360 - Hybrid Intelligence Platform',
+  description: 'Transform Enterprise Decisions with Hybrid Intelligence',
   viewport: 'width=device-width, initial-scale=1',
 }
 
@@ -16,9 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-white text-matrix-dark">
+      <body className="bg-white text-gray-900">
         <Header />
-        <main>
+        <main className="min-h-screen">
           {children}
         </main>
         <Footer />
